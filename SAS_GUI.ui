@@ -64,7 +64,7 @@ color: white;
         <number>9</number>
        </property>
        <item>
-        <widget class="QPushButton" name="pushButton_3">
+        <widget class="QPushButton" name="pushButton_home">
          <property name="minimumSize">
           <size>
            <width>40</width>
@@ -95,7 +95,7 @@ QPushButton{
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_4">
+        <widget class="QPushButton" name="pushButton_monitor">
          <property name="minimumSize">
           <size>
            <width>40</width>
@@ -126,7 +126,7 @@ QPushButton{
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QPushButton" name="pushButton_help">
          <property name="minimumSize">
           <size>
            <width>40</width>
@@ -409,6 +409,12 @@ QPushButton{
          </item>
          <item row="3" column="3">
           <widget class="QPushButton" name="pushButton_defEdge">
+           <property name="maximumSize">
+            <size>
+             <width>30</width>
+             <height>20</height>
+            </size>
+           </property>
            <property name="styleSheet">
             <string notr="true">QPushButton::hover{
 	background-color: rgb(68, 67, 68);
@@ -423,6 +429,12 @@ QPushButton{
            <property name="icon">
             <iconset>
              <normaloff>res/back.png</normaloff>res/back.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>16</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -435,6 +447,12 @@ QPushButton{
          </item>
          <item row="2" column="3">
           <widget class="QPushButton" name="pushButton_defSmoothiter">
+           <property name="maximumSize">
+            <size>
+             <width>30</width>
+             <height>20</height>
+            </size>
+           </property>
            <property name="styleSheet">
             <string notr="true">QPushButton::hover{
 	background-color: rgb(68, 67, 68);
@@ -449,6 +467,12 @@ QPushButton{
            <property name="icon">
             <iconset>
              <normaloff>res/back.png</normaloff>res/back.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>16</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -543,6 +567,12 @@ QPushButton{
          </item>
          <item row="1" column="3">
           <widget class="QPushButton" name="pushButton_defRadius">
+           <property name="maximumSize">
+            <size>
+             <width>30</width>
+             <height>20</height>
+            </size>
+           </property>
            <property name="styleSheet">
             <string notr="true">QPushButton::hover{
 	background-color: rgb(68, 67, 68);
@@ -557,6 +587,12 @@ QPushButton{
            <property name="icon">
             <iconset>
              <normaloff>res/back.png</normaloff>res/back.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>16</height>
+            </size>
            </property>
           </widget>
          </item>
@@ -629,6 +665,9 @@ QPushButton:disabled {
             <weight>75</weight>
             <bold>true</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">padding :0 10 0 0</string>
           </property>
           <property name="text">
            <string>Viewer</string>
@@ -853,8 +892,6 @@ QPushButton:disabled {
    </property>
   </action>
  </widget>
- <resources>
-  <include location="res/source.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

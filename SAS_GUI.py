@@ -80,17 +80,17 @@ def export_mesh(subdir, ms, p):
     
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        #PRIVATE VARIABLES
+        # PRIVATE VARIABLES
         self.inputPath = ""
         self.outputPath = ""
 
-        #MAIN WINDOW
+        # MAIN WINDOW
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(874, 528)
         font = QtGui.QFont()
         font.setFamily("Arial")
         MainWindow.setFont(font)
-        MainWindow.setWindowOpacity(0.950)
+        MainWindow.setWindowOpacity(0.965)
         MainWindow.setStyleSheet("background-color: rgb(30,30,30);\n"
         "color: white; \n"
         "\n"
@@ -99,9 +99,64 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
-
-        #PANEL LEFT
+        self.verticalFrame = QtWidgets.QFrame(self.centralwidget)
+        self.verticalFrame.setStyleSheet("background-color: rgb(51, 51, 51);")
+        self.verticalFrame.setObjectName("verticalFrame")
+        self.verticalLayout_sidebar = QtWidgets.QVBoxLayout(self.verticalFrame)
+        self.verticalLayout_sidebar.setContentsMargins(0, 9, 0, 9)
+        self.verticalLayout_sidebar.setObjectName("verticalLayout_sidebar")
+        self.pushButton_home = QtWidgets.QPushButton(self.verticalFrame)
+        self.pushButton_home.setMinimumSize(QtCore.QSize(40, 40))
+        self.pushButton_home.setStyleSheet("QPushButton:hover{\n"
+        "    background-color: rgb(255, 255, 255);\n"
+        "}\n"
+        "QPushButton{\n"
+        "    border: 10px;\n"
+        "}")
+        self.pushButton_home.setText("")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("res/home.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_home.setIcon(icon)
+        self.pushButton_home.setIconSize(QtCore.QSize(25, 25))
+        self.pushButton_home.setObjectName("pushButton_home")
+        self.verticalLayout_sidebar.addWidget(self.pushButton_home)
+        self.pushButton_monitor = QtWidgets.QPushButton(self.verticalFrame)
+        self.pushButton_monitor.setMinimumSize(QtCore.QSize(40, 40))
+        self.pushButton_monitor.setStyleSheet("QPushButton:hover{\n"
+        "    background-color: rgb(255, 255, 255);\n"
+        "}\n"
+        "QPushButton{\n"
+        "    border: 10px;\n"
+        "}")
+        self.pushButton_monitor.setText("")
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("res/monitor.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_monitor.setIcon(icon1)
+        self.pushButton_monitor.setIconSize(QtCore.QSize(25, 25))
+        self.pushButton_monitor.setObjectName("pushButton_monitor")
+        self.verticalLayout_sidebar.addWidget(self.pushButton_monitor)
+        self.pushButton_help = QtWidgets.QPushButton(self.verticalFrame)
+        self.pushButton_help.setMinimumSize(QtCore.QSize(40, 40))
+        self.pushButton_help.setMouseTracking(True)
+        self.pushButton_help.setStyleSheet("QPushButton:hover{\n"
+        "    background-color: rgb(255, 255, 255);\n"
+        "}\n"
+        "QPushButton{\n"
+        "    border: 10px;\n"
+        "}")
+        self.pushButton_help.setText("")
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap("res/help.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_help.setIcon(icon2)
+        self.pushButton_help.setIconSize(QtCore.QSize(25, 25))
+        self.pushButton_help.setObjectName("pushButton_help")
+        self.verticalLayout_sidebar.addWidget(self.pushButton_help)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_sidebar.addItem(spacerItem)
+        self.horizontalLayout.addWidget(self.verticalFrame)
         self.panel_left = QtWidgets.QFrame(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -114,7 +169,7 @@ class Ui_MainWindow(object):
         self.pushButton_inputDir = QtWidgets.QPushButton(self.panel_left)
         self.pushButton_inputDir.setMinimumSize(QtCore.QSize(200, 0))
         self.pushButton_inputDir.setStyleSheet("QPushButton::hover{\n"
-        "    background-color: rgb(41, 83, 144);\n"
+        "    background-color: rgb(20, 51, 89);\n"
         "}\n"
         "QPushButton{\n"
         "    background-color: rgb(49, 110, 186);\n"
@@ -152,22 +207,25 @@ class Ui_MainWindow(object):
         self.pushButton_outputInfo.setMaximumSize(QtCore.QSize(20, 20))
         self.pushButton_outputInfo.setStyleSheet("QPushButton::hover{\n"
         "    background-color: rgb(68, 67, 68);\n"
+        "}\n"
+        "QPushButton{\n"
+        "    border: 10px;\n"
         "}")
         self.pushButton_outputInfo.setText("")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/images/info.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_outputInfo.setIcon(icon)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap("res/info.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_outputInfo.setIcon(icon3)
         self.pushButton_outputInfo.setObjectName("pushButton_outputInfo")
         self.horizontalLayout_output.addWidget(self.pushButton_outputInfo)
         self.layout_left.addLayout(self.horizontalLayout_output)
         self.pushButton_outputDir = QtWidgets.QPushButton(self.panel_left)
         self.pushButton_outputDir.setStyleSheet("QPushButton::hover{\n"
-        "    background-color: rgb(41, 83, 144);\n"
+        "    background-color: rgb(20, 51, 89);\n"
         "}\n"
         "QPushButton{\n"
         "    background-color: rgb(49, 110, 186);\n"
         "}\n"
-        "QPushButton:disabled {\n"
+        "QPushButton:disabled{\n"
         "    background-color: rgb(121, 121, 121);\n"
         "}")
         self.pushButton_outputDir.setObjectName("pushButton_outputDir")
@@ -212,9 +270,12 @@ class Ui_MainWindow(object):
         self.pushButton.setMaximumSize(QtCore.QSize(20, 20))
         self.pushButton.setStyleSheet("QPushButton::hover{\n"
         "    background-color: rgb(68, 67, 68);\n"
+        "}\n"
+        "QPushButton{\n"
+        "    border: 10px;\n"
         "}")
         self.pushButton.setText("")
-        self.pushButton.setIcon(icon)
+        self.pushButton.setIcon(icon3)
         self.pushButton.setObjectName("pushButton")
         self.horizontalLayout_configurator.addWidget(self.pushButton)
         self.layout_left.addLayout(self.horizontalLayout_configurator)
@@ -225,24 +286,34 @@ class Ui_MainWindow(object):
         self.spinBox_radius.setObjectName("spinBox_radius")
         self.gridLayout_topRight.addWidget(self.spinBox_radius, 1, 2, 1, 1)
         self.pushButton_defEdge = QtWidgets.QPushButton(self.panel_left)
+        self.pushButton_defEdge.setMaximumSize(QtCore.QSize(30, 20))
         self.pushButton_defEdge.setStyleSheet("QPushButton::hover{\n"
         "    background-color: rgb(68, 67, 68);\n"
+        "}\n"
+        "QPushButton{\n"
+        "    border: 10px;\n"
         "}")
         self.pushButton_defEdge.setText("")
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/images/back.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.pushButton_defEdge.setIcon(icon1)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap("res/back.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pushButton_defEdge.setIcon(icon4)
+        self.pushButton_defEdge.setIconSize(QtCore.QSize(20, 16))
         self.pushButton_defEdge.setObjectName("pushButton_defEdge")
         self.gridLayout_topRight.addWidget(self.pushButton_defEdge, 3, 3, 1, 1)
         self.label_smoothiter = QtWidgets.QLabel(self.panel_left)
         self.label_smoothiter.setObjectName("label_smoothiter")
         self.gridLayout_topRight.addWidget(self.label_smoothiter, 2, 0, 1, 1)
         self.pushButton_defSmoothiter = QtWidgets.QPushButton(self.panel_left)
+        self.pushButton_defSmoothiter.setMaximumSize(QtCore.QSize(30, 20))
         self.pushButton_defSmoothiter.setStyleSheet("QPushButton::hover{\n"
         "    background-color: rgb(68, 67, 68);\n"
+        "}\n"
+        "QPushButton{\n"
+        "    border: 10px;\n"
         "}")
         self.pushButton_defSmoothiter.setText("")
-        self.pushButton_defSmoothiter.setIcon(icon1)
+        self.pushButton_defSmoothiter.setIcon(icon4)
+        self.pushButton_defSmoothiter.setIconSize(QtCore.QSize(20, 16))
         self.pushButton_defSmoothiter.setObjectName("pushButton_defSmoothiter")
         self.gridLayout_topRight.addWidget(self.pushButton_defSmoothiter, 2, 3, 1, 1)
         self.horizontalSlider_radius = QtWidgets.QSlider(self.panel_left)
@@ -288,11 +359,16 @@ class Ui_MainWindow(object):
         self.horizontalSlider_smoothiter.setObjectName("horizontalSlider_smoothiter")
         self.gridLayout_topRight.addWidget(self.horizontalSlider_smoothiter, 2, 1, 1, 1)
         self.pushButton_defRadius = QtWidgets.QPushButton(self.panel_left)
+        self.pushButton_defRadius.setMaximumSize(QtCore.QSize(30, 20))
         self.pushButton_defRadius.setStyleSheet("QPushButton::hover{\n"
         "    background-color: rgb(68, 67, 68);\n"
+        "}\n"
+        "QPushButton{\n"
+        "    border: 10px;\n"
         "}")
         self.pushButton_defRadius.setText("")
-        self.pushButton_defRadius.setIcon(icon1)
+        self.pushButton_defRadius.setIcon(icon4)
+        self.pushButton_defRadius.setIconSize(QtCore.QSize(20, 16))
         self.pushButton_defRadius.setObjectName("pushButton_defRadius")
         self.gridLayout_topRight.addWidget(self.pushButton_defRadius, 1, 3, 1, 1)
         self.spinBox_smoothiter = QtWidgets.QSpinBox(self.panel_left)
@@ -321,11 +397,9 @@ class Ui_MainWindow(object):
         "}")
         self.pushButton_start.setObjectName("pushButton_start")
         self.layout_left.addWidget(self.pushButton_start)
-        spacerItem = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.layout_left.addItem(spacerItem)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.layout_left.addItem(spacerItem1)
         self.horizontalLayout.addWidget(self.panel_left)
-
-        #PANEL MID
         self.panel_mid = QtWidgets.QVBoxLayout()
         self.panel_mid.setObjectName("panel_mid")
         self.horizontalLayout_viewer = QtWidgets.QHBoxLayout()
@@ -337,11 +411,26 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.label_viewer.setFont(font)
+        self.label_viewer.setStyleSheet("padding :0 10 0 0")
         self.label_viewer.setTextFormat(QtCore.Qt.RichText)
         self.label_viewer.setScaledContents(False)
         self.label_viewer.setIndent(0)
         self.label_viewer.setObjectName("label_viewer")
         self.horizontalLayout_viewer.addWidget(self.label_viewer)
+        self.pushButton_viewerInfo = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_viewerInfo.setMaximumSize(QtCore.QSize(20, 20))
+        self.pushButton_viewerInfo.setStyleSheet("QPushButton::hover{\n"
+        "    background-color: rgb(68, 67, 68);\n"
+        "}\n"
+        "QPushButton{\n"
+        "    border: 10px;\n"
+        "}")
+        self.pushButton_viewerInfo.setText("")
+        self.pushButton_viewerInfo.setIcon(icon3)
+        self.pushButton_viewerInfo.setObjectName("pushButton_viewerInfo")
+        self.horizontalLayout_viewer.addWidget(self.pushButton_viewerInfo)
+        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_viewer.addItem(spacerItem2)
         self.gridLayout_midTop = QtWidgets.QGridLayout()
         self.gridLayout_midTop.setObjectName("gridLayout_midTop")
         self.checkBox_autoResume = QtWidgets.QCheckBox(self.centralwidget)
@@ -381,10 +470,10 @@ class Ui_MainWindow(object):
         self.pushButton_saveAndContinue = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_saveAndContinue.setEnabled(False)
         self.pushButton_saveAndContinue.setStyleSheet("QPushButton::hover{\n"
-        "    background-color: rgb(41, 92, 57);\n"
+        "    background-color: rgb(31, 72, 51);\n"
         "}\n"
         "QPushButton{    \n"
-        "    background-color: rgb(0, 144, 81);\n"
+        "    background-color: rgb(57, 130, 92);\n"
         "}\n"
         "QPushButton:disabled {\n"
         "    background-color: rgb(121, 121, 121);\n"
@@ -393,8 +482,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout_midBottom.addWidget(self.pushButton_saveAndContinue)
         self.panel_mid.addLayout(self.horizontalLayout_midBottom)
         self.horizontalLayout.addLayout(self.panel_mid)
-
-        #PANEL RIGHT
         self.panel_right = QtWidgets.QFrame(self.centralwidget)
         self.panel_right.setObjectName("panel_right")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.panel_right)
@@ -423,33 +510,21 @@ class Ui_MainWindow(object):
         self.label_numProcessed = QtWidgets.QLabel(self.panel_right)
         self.label_numProcessed.setObjectName("label_numProcessed")
         self.verticalLayout.addWidget(self.label_numProcessed)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout.addItem(spacerItem1)
+        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem3)
         self.horizontalLayout.addWidget(self.panel_right)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusBar = QtWidgets.QStatusBar(MainWindow)
         self.statusBar.setStyleSheet("background-color: rgb(51, 109, 186);")
         self.statusBar.setObjectName("statusBar")
-        self.statusBar.showMessage("This is status bar")
-        self.label_statusLogo = QtWidgets.QLabel("logo")
-        self.statusBar.addPermanentWidget(self.label_statusLogo)
         MainWindow.setStatusBar(self.statusBar)
-        self.menuBar = QtWidgets.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 874, 21))
-        self.menuBar.setNativeMenuBar(False)
-        self.menuBar.setObjectName("menuBar")
-        self.menuView = QtWidgets.QMenu(self.menuBar)
-        self.menuView.setObjectName("menuView")
-        MainWindow.setMenuBar(self.menuBar)
         self.actionSave = QtWidgets.QAction(MainWindow)
         self.actionSave.setObjectName("actionSave")
         self.actionActivity_Monitor = QtWidgets.QAction(MainWindow)
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(":/newPrefix/info.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionActivity_Monitor.setIcon(icon2)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(":/newPrefix/info.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionActivity_Monitor.setIcon(icon5)
         self.actionActivity_Monitor.setObjectName("actionActivity_Monitor")
-        self.menuView.addAction(self.actionActivity_Monitor)
-        self.menuBar.addAction(self.menuView.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -484,7 +559,6 @@ class Ui_MainWindow(object):
         self.label_avgProcessTime.setText(_translate("MainWindow", "Average process time: 0 seconds"))
         self.label_processTime.setText(_translate("MainWindow", "Process time: 0 seconds"))
         self.label_numProcessed.setText(_translate("MainWindow", "Number of processed scans: 0"))
-        self.menuView.setTitle(_translate("MainWindow", "View"))
         self.actionSave.setText(_translate("MainWindow", "Save"))
         self.actionActivity_Monitor.setText(_translate("MainWindow", "Activity Monitor"))
 
