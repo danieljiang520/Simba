@@ -92,17 +92,33 @@ class MainWindow(QtWidgets.QMainWindow):
         self.checkBox_saveToSameDir.stateChanged.connect(self.checkBoxDir_state_changed)
         self.pushButton_outputDir.clicked.connect(self.getOutputFilePath)
         self.textBrowser_outputDir.textChanged.connect(self.textBrowserDir_state_changed)
+        self.pushButton_monitor.clicked.connect(self.expandMonitor)
+
+        # CONFIGURATIN
+
+
+    def setInputPath(self, inputPath):
+        self.inputPath = inputPath
+    
+    def getInputPath():
+        return self.inputPath
+
+    def setOutputPath(self, outputPath):
+        self.outputPath = outputPath
+
+    def getOutputPath():
+        return self.outputPath
 
     def getInputFilePath(self):
         response = QFileDialog.getExistingDirectory(self.pushButton_inputDir, "Open Directory",
                                                 os.getcwd(),
                                                 QFileDialog.ShowDirsOnly
                                                 | QFileDialog.DontResolveSymlinks)
-        self.inputPath = response
         self.textBrowser_inputDir.setText(response)
+        self.setInputPath(response)
         if self.checkBox_saveToSameDir.isChecked():
-            self.outputPath = response
             self.textBrowser_outputDir.setText(response)
+            self.setOutputPath(response)
 
     def getOutputFilePath(self):
         response = QFileDialog.getExistingDirectory(self.pushButton_outputDir, "Open Directory",
@@ -110,7 +126,7 @@ class MainWindow(QtWidgets.QMainWindow):
                                                 QFileDialog.ShowDirsOnly
                                                 | QFileDialog.DontResolveSymlinks)
         self.textBrowser_outputDir.setText(response)
-        self.outputPath = response
+        self.setOutputPath(response)
 
     def disableButton(self, button):
         button.setEnabled(False)
@@ -133,10 +149,18 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             self.pushButton_start.setEnabled(False)
 
+    def expandMonitor(self):
+        if self.pushButton_monitor.isChecked():
+            self.panel_right.setMaximumWidth(205)
+            self.panel_right.setMinimumWidth(205)
+        else:
+            self.panel_right.setMaximumWidth(0)
+            self.panel_right.setMinimumWidth(0)
+
+
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    widget = QtWidgets.QStackedWidget()
     mainwindow = MainWindow()
-    widget.addWidget(mainwindow)
-    widget.show()
+    mainwindow.show()
     sys.exit(app.exec_())
