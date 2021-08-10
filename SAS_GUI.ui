@@ -221,6 +221,13 @@ QPushButton{
         </widget>
        </item>
        <item>
+        <widget class="QLabel" name="label_inputSign">
+         <property name="text">
+          <string>Input Directory:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QTextBrowser" name="textBrowser_inputDir">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -230,8 +237,8 @@ QPushButton{
          </property>
          <property name="maximumSize">
           <size>
-           <width>300</width>
-           <height>40</height>
+           <width>16777215</width>
+           <height>50</height>
           </size>
          </property>
          <property name="frameShape">
@@ -245,7 +252,7 @@ QPushButton{
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Input Dir:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="openLinks">
           <bool>true</bool>
@@ -320,6 +327,13 @@ QPushButton:disabled {
         </widget>
        </item>
        <item>
+        <widget class="QLabel" name="label_outputSign">
+         <property name="text">
+          <string>Output Directory:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QTextBrowser" name="textBrowser_outputDir">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -329,8 +343,8 @@ QPushButton:disabled {
          </property>
          <property name="maximumSize">
           <size>
-           <width>300</width>
-           <height>40</height>
+           <width>16777215</width>
+           <height>50</height>
           </size>
          </property>
          <property name="frameShape">
@@ -344,7 +358,7 @@ QPushButton:disabled {
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Output Dir:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
        </item>
@@ -426,6 +440,9 @@ QPushButton{
            </property>
            <property name="singleStep">
             <number>50</number>
+           </property>
+           <property name="value">
+            <number>400</number>
            </property>
           </widget>
          </item>
@@ -524,6 +541,9 @@ QPushButton{
            <property name="singleStep">
             <number>50</number>
            </property>
+           <property name="value">
+            <number>400</number>
+           </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -556,6 +576,9 @@ QPushButton{
            <property name="singleStep">
             <number>5</number>
            </property>
+           <property name="value">
+            <number>15</number>
+           </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -584,6 +607,9 @@ QPushButton{
            </property>
            <property name="maximum">
             <number>10</number>
+           </property>
+           <property name="value">
+            <number>2</number>
            </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -626,12 +652,18 @@ QPushButton{
            <property name="maximum">
             <number>10</number>
            </property>
+           <property name="value">
+            <number>2</number>
+           </property>
           </widget>
          </item>
          <item row="3" column="2">
           <widget class="QSpinBox" name="spinBox_edge">
            <property name="maximum">
             <number>50</number>
+           </property>
+           <property name="value">
+            <number>15</number>
            </property>
           </widget>
          </item>
@@ -932,5 +964,118 @@ QPushButton:disabled {
   </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>horizontalSlider_radius</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>spinBox_radius</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>180</x>
+     <y>256</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>227</x>
+     <y>256</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox_radius</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>horizontalSlider_radius</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>258</x>
+     <y>249</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>181</x>
+     <y>256</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_smoothiter</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>spinBox_smoothiter</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>190</x>
+     <y>286</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>236</x>
+     <y>283</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox_smoothiter</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>horizontalSlider_smoothiter</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>253</x>
+     <y>282</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>171</x>
+     <y>283</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_edge</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>spinBox_edge</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>192</x>
+     <y>314</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>253</x>
+     <y>310</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox_edge</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>horizontalSlider_edge</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>245</x>
+     <y>307</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>156</x>
+     <y>309</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_saveToSameDir</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>pushButton_outputDir</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>193</x>
+     <y>115</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>192</x>
+     <y>130</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
