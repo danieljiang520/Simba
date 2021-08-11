@@ -1,13 +1,21 @@
-import sys
-from PyQt5.QtWidgets import QOpenGLWidget, QFileDialog, QApplication, QMainWindow
+import sys, copy
 from PyQt5.uic import loadUi
 from apply_filter import *
 
-defaultRadius = 400
-defaultSmoothiter = 2
-defaultEdgeLength = 15
+from PyQt5 import QtCore      # core Qt functionality
+from PyQt5 import QtGui       # extends QtCore with GUI functionality
+from PyQt5 import QtOpenGL    # provides QGLWidget, a special OpenGL QWidget
+from PyQt5 import QtWidgets
+
+import open3d as o3d
+
+defaultConfig = {
+    'radius': 400,
+    'smoothiter': 2,
+    'edgeLength': 15,
+}
     
-class MainWindow(QMainWindow):
+class MainWindow(QtWidgets.QMainWindow):
     inputPath = ""
     outputPath = ""
 
@@ -16,11 +24,7 @@ class MainWindow(QMainWindow):
         loadUi("SAS_GUI.ui", self)
 
         # CONFIGURATOR
-        self.config = {
-            'radius': defaultRadius,
-            'smoothiter': defaultSmoothiter,
-            'edgeLength': defaultEdgeLength,
-        }
+        self.config = copy.deepcopy(defaultConfig)
 
         self.pushButton_inputDir.clicked.connect(self.getInputFilePath)
         self.textBrowser_inputDir.textChanged.connect(self.textBrowserDir_state_changed)
@@ -29,13 +33,15 @@ class MainWindow(QMainWindow):
         self.textBrowser_outputDir.textChanged.connect(self.textBrowserDir_state_changed)
         self.pushButton_monitor.clicked.connect(self.expandMonitor)
         self.pushButton_start.clicked.connect(self.startProcessing)
-        # self.pushButton_defRadius.clicked.connect()
+        self.pushButton_defRadius.clicked.connect(self.resetRadius)
+        self.pushButton_defSmoothiter.clicked.connect(self.resetSmoothiter)
+        self.pushButton_defEdge.clicked.connect(self.resetEdge)
 
     def getInputFilePath(self):
-        response = QFileDialog.getExistingDirectory(self.pushButton_inputDir, "Open Directory",
+        response = QtWidgets.QFileDialog.getExistingDirectory(self.pushButton_inputDir, "Open Directory",
                                                 os.getcwd(),
-                                                QFileDialog.ShowDirsOnly
-                                                | QFileDialog.DontResolveSymlinks)
+                                                QtWidgets.QFileDialog.ShowDirsOnly
+                                                | QtWidgets.QFileDialog.DontResolveSymlinks)
         self.inputPath = response
         self.textBrowser_inputDir.setText(response)
         if self.checkBox_saveToSameDir.isChecked():
@@ -43,10 +49,10 @@ class MainWindow(QMainWindow):
             self.textBrowser_outputDir.setText(response)
 
     def getOutputFilePath(self):
-        response = QFileDialog.getExistingDirectory(self.pushButton_outputDir, "Open Directory",
+        response = QtWidgets.QFileDialog.getExistingDirectory(self.pushButton_outputDir, "Open Directory",
                                                 os.getcwd(),
-                                                QFileDialog.ShowDirsOnly
-                                                | QFileDialog.DontResolveSymlinks)
+                                                QtWidgets.QFileDialog.ShowDirsOnly
+                                                | QtWidgets.QFileDialog.DontResolveSymlinks)
         self.outputPath = response
         self.textBrowser_outputDir.setText(response)
 
@@ -69,16 +75,35 @@ class MainWindow(QMainWindow):
             self.panel_right.setMaximumWidth(0)
             self.panel_right.setMinimumWidth(0)
 
+    def resetRadius(self):
+        self.spinBox_radius.setValue(defaultConfig['radius'])
 
+    def resetSmoothiter(self):
+        self.spinBox_smoothiter.setValue(defaultConfig['smoothiter'])
 
+    def resetEdge(self):
+        self.spinBox_edge.setValue(defaultConfig['edgeLength'])
+
+    def updateConfig(self):
+        self.config['radius'] = self.spinBox_radius.value()
+        self.config['smoothiter'] = self.spinBox_smoothiter.value()
+        self.config['edgeLength'] = self.spinBox_edge.value()
 
     def startProcessing(self):
+        self.updateConfig()
+        print(self.config)
         job = ApplyFilter(self.inputPath, self.outputPath, self.config)
         job.start()
         print("Done!")
 
+def main():
+    cloud = o3d.io.read_point_cloud("/Volumes/tri-biosci/Avatars/TRAINING_MATERIALS_2021/SAS_ExampleScans/Results_SAS_Mesh/CPat_SC_N_S01_A0_P_11h_23m_43s_processed.ply") # Read the point cloud
+    o3d.visualization.draw_geometries([cloud]) # Visualize the point cloud     
+
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     mainwindow = MainWindow()
     mainwindow.show()
+    # main()
     sys.exit(app.exec_())
+    

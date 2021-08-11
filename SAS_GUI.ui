@@ -402,7 +402,38 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="pushButton_resetAll">
+           <property name="minimumSize">
+            <size>
+             <width>30</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton::hover{
+	background-color: rgb(68, 67, 68);
+}
+QPushButton{
+	border: 10px;
+}</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>res/back.png</normaloff>res/back.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>16</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_configInfo">
            <property name="maximumSize">
             <size>
              <width>20</width>
@@ -793,6 +824,14 @@ QPushButton{
             <property name="layoutDirection">
              <enum>Qt::RightToLeft</enum>
             </property>
+            <property name="styleSheet">
+             <string notr="true">QCheckBox:disabled{
+	color: rgb(146, 146, 146);
+}
+QCheckBox{
+	color: rgb(255, 255, 255);
+}</string>
+            </property>
             <property name="text">
              <string>Auto Resume</string>
             </property>
@@ -813,6 +852,13 @@ QPushButton{
        </layout>
       </item>
       <item>
+       <widget class="QLabel" name="label_currentScan">
+        <property name="text">
+         <string>Current Scan: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QOpenGLWidget" name="openGLWidget">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -825,7 +871,7 @@ QPushButton{
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_midBottom">
         <item>
-         <widget class="QPushButton" name="pushButton_DontSave">
+         <widget class="QPushButton" name="pushButton_dontSave">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -843,6 +889,13 @@ QPushButton:disabled {
           </property>
           <property name="text">
            <string>Don't Save</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_redo">
+          <property name="text">
+           <string>Redo </string>
           </property>
          </widget>
         </item>
@@ -972,12 +1025,12 @@ QPushButton:disabled {
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>180</x>
-     <y>256</y>
+     <x>215</x>
+     <y>324</y>
     </hint>
     <hint type="destinationlabel">
-     <x>227</x>
-     <y>256</y>
+     <x>271</x>
+     <y>327</y>
     </hint>
    </hints>
   </connection>
@@ -988,12 +1041,12 @@ QPushButton:disabled {
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>258</x>
-     <y>249</y>
+     <x>271</x>
+     <y>327</y>
     </hint>
     <hint type="destinationlabel">
-     <x>181</x>
-     <y>256</y>
+     <x>215</x>
+     <y>324</y>
     </hint>
    </hints>
   </connection>
@@ -1004,12 +1057,12 @@ QPushButton:disabled {
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>190</x>
-     <y>286</y>
+     <x>215</x>
+     <y>352</y>
     </hint>
     <hint type="destinationlabel">
-     <x>236</x>
-     <y>283</y>
+     <x>271</x>
+     <y>355</y>
     </hint>
    </hints>
   </connection>
@@ -1020,12 +1073,12 @@ QPushButton:disabled {
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>253</x>
-     <y>282</y>
+     <x>271</x>
+     <y>355</y>
     </hint>
     <hint type="destinationlabel">
-     <x>171</x>
-     <y>283</y>
+     <x>215</x>
+     <y>352</y>
     </hint>
    </hints>
   </connection>
@@ -1036,12 +1089,12 @@ QPushButton:disabled {
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>192</x>
-     <y>314</y>
+     <x>215</x>
+     <y>380</y>
     </hint>
     <hint type="destinationlabel">
-     <x>253</x>
-     <y>310</y>
+     <x>271</x>
+     <y>383</y>
     </hint>
    </hints>
   </connection>
@@ -1052,12 +1105,12 @@ QPushButton:disabled {
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>245</x>
-     <y>307</y>
+     <x>271</x>
+     <y>383</y>
     </hint>
     <hint type="destinationlabel">
-     <x>156</x>
-     <y>309</y>
+     <x>215</x>
+     <y>380</y>
     </hint>
    </hints>
   </connection>
@@ -1068,12 +1121,92 @@ QPushButton:disabled {
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>193</x>
-     <y>115</y>
+     <x>243</x>
+     <y>149</y>
     </hint>
     <hint type="destinationlabel">
-     <x>192</x>
-     <y>130</y>
+     <x>241</x>
+     <y>182</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_resetAll</sender>
+   <signal>clicked()</signal>
+   <receiver>pushButton_defRadius</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>265</x>
+     <y>289</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>290</x>
+     <y>319</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_resetAll</sender>
+   <signal>clicked()</signal>
+   <receiver>pushButton_defSmoothiter</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>260</x>
+     <y>283</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>291</x>
+     <y>352</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_resetAll</sender>
+   <signal>clicked()</signal>
+   <receiver>pushButton_defEdge</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>253</x>
+     <y>282</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>378</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_disableView</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_autoResume</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>826</x>
+     <y>12</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>834</x>
+     <y>41</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_disableView</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>openGLWidget</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>799</x>
+     <y>15</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>600</x>
+     <y>293</y>
     </hint>
    </hints>
   </connection>
