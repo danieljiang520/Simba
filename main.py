@@ -1,13 +1,14 @@
-import sys, copy
+import sys, copy, vtk, pathlib, os
 from PyQt5.uic import loadUi
-from apply_filter import *
+from job import *
 
 from PyQt5 import QtCore      # core Qt functionality
 from PyQt5 import QtGui       # extends QtCore with GUI functionality
 from PyQt5 import QtOpenGL    # provides QGLWidget, a special OpenGL QWidget
 from PyQt5 import QtWidgets
+from PyQt5 import Qt
 
-import open3d as o3d
+from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
 defaultConfig = {
     'radius': 400,
@@ -16,12 +17,12 @@ defaultConfig = {
 }
     
 class MainWindow(QtWidgets.QMainWindow):
-    inputPath = ""
-    outputPath = ""
-
     def __init__(self):
         super(MainWindow, self).__init__()
         loadUi("SAS_GUI.ui", self)
+
+        self.inputPath = ""
+        self.outputPath = ""
 
         # CONFIGURATOR
         self.config = copy.deepcopy(defaultConfig)
@@ -36,6 +37,17 @@ class MainWindow(QtWidgets.QMainWindow):
         self.pushButton_defRadius.clicked.connect(self.resetRadius)
         self.pushButton_defSmoothiter.clicked.connect(self.resetSmoothiter)
         self.pushButton_defEdge.clicked.connect(self.resetEdge)
+
+
+        # Set up VTK
+        self.frame = Qt.QFrame()
+        self.vtkWidget = QVTKRenderWindowInteractor(self.frame)
+        self.panel_mid.addWidget(self.vtkWidget)
+        self.ren = vtk.vtkRenderer()
+        self.vtkWidget.GetRenderWindow().AddRenderer(self.ren)
+        self.iren = self.vtkWidget.GetRenderWindow().GetInteractor()
+        style = vtk.vtkInteractorStyleTrackballCamera()
+        self.iren.SetInteractorStyle(style)
 
     def getInputFilePath(self):
         response = QtWidgets.QFileDialog.getExistingDirectory(self.pushButton_inputDir, "Open Directory",
@@ -92,18 +104,90 @@ class MainWindow(QtWidgets.QMainWindow):
     def startProcessing(self):
         self.updateConfig()
         print(self.config)
-        job = ApplyFilter(self.inputPath, self.outputPath, self.config)
-        job.start()
-        print("Done!")
 
-def main():
-    cloud = o3d.io.read_point_cloud("/Volumes/tri-biosci/Avatars/TRAINING_MATERIALS_2021/SAS_ExampleScans/Results_SAS_Mesh/CPat_SC_N_S01_A0_P_11h_23m_43s_processed.ply") # Read the point cloud
-    o3d.visualization.draw_geometries([cloud]) # Visualize the point cloud     
+        projectPaths = []
+
+        self.pushButton_start.setEnabled(False)
+        self.pushButton_dontSave.setEnabled(True)
+        self.pushButton_saveAndContinue.setEnabled(True)
+
+        for subdir, dirs, files in os.walk(self.inputPath):
+            # search for scan with filename 'scan_*.ply'
+            filepath = os.path.join(subdir, 'scan_0.ply')
+            if os.path.isfile(filepath):
+                projectPaths.append(subdir)
+                print("added")
+
+        print(projectPaths)
+        if (self.checkBox_disableViewer.isChecked()):
+            self.autoProcessing(projectPaths)
+        else:
+            indPath = 0
+            self.singleProcessing(projectPaths[indPath])
+
+    def displayResult(self, filename):
+        # Read and display for verification
+        reader = vtk.vtkPLYReader()
+        reader.SetFileName(filename)
+        reader.Update()
+        # Create a mapper
+        mapper = vtk.vtkPolyDataMapper()
+        mapper.SetInputConnection(reader.GetOutputPort())
+        # Create an actor
+        actor = vtk.vtkActor()
+        actor.SetMapper(mapper)
+        self.ren.AddActor(actor)
+        self.ren.ResetCamera()
+        # Show
+        self.iren.Initialize()
+        self.iren.Start()
+
+
+    def singleProcessing(self, projectPath):
+        job = Job(projectPath, self.outputPath, self.config)
+        try:
+            # load joint ponts to a numpy array
+            joint_arr = job.load_joint_points()
+        except ValueError:
+            # skip file if joint_arr is empty
+            print("No joint points! Skipped.\n")
+            return
+        # create a meshset with a single mesh that has been flattened
+        job.load_meshes()
+        # remove background vertices
+        job.remove_background(joint_arr)
+        # apply filters
+        job.apply_filters()
+        # save mesh
+        filename = job.export_mesh()
+
+        self.displayResult(filename)
+
+    def autoProcessing(self, projectPaths):
+        for projectPath in projectPaths:
+            print(projectPath)
+            job = Job(projectPath, self.outputPath, self.config)
+            try:
+                # load joint ponts to a numpy array
+                joint_arr = job.load_joint_points()
+            except ValueError:
+                # skip file if joint_arr is empty
+                print("No joint points! Skipped.\n")
+                continue
+            # create a meshset with a single mesh that has been flattened
+            job.load_meshes()
+            # remove background vertices
+            job.remove_background(joint_arr)
+            # apply filters
+            job.apply_filters()
+            # save mesh
+            job.export_mesh()
+
+    
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     mainwindow = MainWindow()
     mainwindow.show()
-    # main()
     sys.exit(app.exec_())
     

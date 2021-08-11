@@ -750,6 +750,15 @@ QPushButton:disabled {
     </item>
     <item>
      <layout class="QVBoxLayout" name="panel_mid">
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_viewer">
         <item>
@@ -819,8 +828,8 @@ QPushButton{
         </item>
         <item>
          <layout class="QGridLayout" name="gridLayout_midTop">
-          <item row="2" column="1">
-           <widget class="QCheckBox" name="checkBox_autoResume">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="checkBox_disableViewer">
             <property name="layoutDirection">
              <enum>Qt::RightToLeft</enum>
             </property>
@@ -831,16 +840,6 @@ QPushButton{
 QCheckBox{
 	color: rgb(255, 255, 255);
 }</string>
-            </property>
-            <property name="text">
-             <string>Auto Resume</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QCheckBox" name="checkBox_disableView">
-            <property name="layoutDirection">
-             <enum>Qt::RightToLeft</enum>
             </property>
             <property name="text">
              <string>Disable Viewer</string>
@@ -855,16 +854,6 @@ QCheckBox{
        <widget class="QLabel" name="label_currentScan">
         <property name="text">
          <string>Current Scan: </string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QOpenGLWidget" name="openGLWidget">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
         </property>
        </widget>
       </item>
@@ -895,7 +884,7 @@ QPushButton:disabled {
         <item>
          <widget class="QPushButton" name="pushButton_redo">
           <property name="text">
-           <string>Redo </string>
+           <string>Redo Current File</string>
           </property>
          </widget>
         </item>
@@ -1175,38 +1164,6 @@ QPushButton:disabled {
     <hint type="destinationlabel">
      <x>286</x>
      <y>378</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox_disableView</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>checkBox_autoResume</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>826</x>
-     <y>12</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>834</x>
-     <y>41</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox_disableView</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>openGLWidget</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>799</x>
-     <y>15</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>600</x>
-     <y>293</y>
     </hint>
    </hints>
   </connection>

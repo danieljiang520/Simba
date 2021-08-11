@@ -1,15 +1,15 @@
-import os, pymeshlab, glob, time, pathlib
+import os, pymeshlab, glob, pathlib
 import numpy as np
 import pandas as pd
-class ApplyFilter:
-    def __init__(self, inputPath, outputPath, config):
-        self.inputPath = inputPath
-        self.outputPath = os.path.join(outputPath,'Results_SAS_Mesh')
+class Job:
+    def __init__(self, subdir, outputPath, config):
         self.config = config
+        self.subdir = subdir
+        self.outputPath = outputPath
 
-    def load_joint_points(self, subdir):
+    def load_joint_points(self):
         # get filepaths for each of the joint file
-        filepaths = glob.glob(os.path.join(subdir, "joints_*.csv"))  
+        filepaths = glob.glob(os.path.join(self.subdir, "joints_*.csv"))  
         # combine the three files into one dataframe
         df_from_each_file = (pd.read_csv(f, header=None) for f in filepaths)
         concatenated_df = pd.concat(df_from_each_file, ignore_index=True)
@@ -17,11 +17,11 @@ class ApplyFilter:
         # return a numpy array
         return concatenated_df.to_numpy()
 
-    def load_meshes(self, subdir):
+    def load_meshes(self):
         # create a new MeshSet
         self.ms = pymeshlab.MeshSet()
         # load meshes
-        filepaths = glob.glob(os.path.join(subdir, "scan_*.ply"))  
+        filepaths = glob.glob(os.path.join(self.subdir, "scan_*.ply"))  
         for filepath in filepaths:
             self.ms.load_new_mesh(filepath)
         # flatten visible layers - combine all meshes
@@ -51,7 +51,7 @@ class ApplyFilter:
         self.ms.delete_selected_vertices()
         print(f'Keeping {m.vertex_number()} vertices')
 
-    def export_mesh(self, subdir):
+    def apply_filters(self):
         # compute normals for the points. use smooth iteration number 2.
         self.ms.compute_normals_for_point_sets(smoothiter = self.config['smoothiter'])
         # reconstruct points as a surface using the Poisson method. use default parameters for now. 
@@ -66,44 +66,11 @@ class ApplyFilter:
         self.ms.delete_selected_faces()
         self.ms.remove_unreferenced_vertices()
 
+    def export_mesh(self):
         # save mesh
-        basename = os.path.basename(os.path.normpath(subdir)) # extract last directory name
+        basename = os.path.basename(os.path.normpath(self.subdir)) # extract last directory name
         complete_name = os.path.join(self.outputPath, basename + '_processed.ply')
         self.ms.save_current_mesh(complete_name)
         self.ms.clear()
         print("Saved!")
-
-    def start(self):
-        process_time_sum = .0 # process time for each scan
-        processed_scans_num = 0 # total number of processed scans
-        pathlib.Path(self.outputPath).mkdir(exist_ok=True) # create output directory if it doesn't exist
-        for subdir, dirs, files in os.walk(self.inputPath):
-            filepath = os.path.join(subdir, 'scan_0.ply')
-            if os.path.isfile(filepath):
-                tic = time.perf_counter()
-                print(subdir)
-                try:
-                    # load joint ponts to a numpy array
-                    joint_arr = self.load_joint_points(subdir)
-                except ValueError:
-                    # skip file if joint_arr is empty
-                    print("No joint points! Skipped.\n")
-                    continue
-                # create a meshset with a single mesh that has been flattened
-                self.load_meshes(subdir)
-                # remove background vertices
-                self.remove_background(joint_arr)
-                # apply filters and save mesh
-                self.export_mesh(subdir)
-
-                toc = time.perf_counter()
-                print(f"Process time = {toc - tic:0.4f} seconds\n")
-                processed_scans_num = processed_scans_num + 1
-                process_time_sum = process_time_sum + toc - tic
-
-        print(f"Number of processed scans = {processed_scans_num}\n")
-        try:
-            averageProcessTime = process_time_sum/processed_scans_num
-        except ZeroDivisionError:
-            averageProcessTime = 0
-        print(f"Avg process time = {averageProcessTime:0.4f} seconds\n")
+        return complete_name
