@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>877</width>
-    <height>529</height>
+    <width>898</width>
+    <height>541</height>
    </rect>
   </property>
   <property name="font">
@@ -756,11 +756,8 @@ QPushButton:disabled {
       <property name="rightMargin">
        <number>9</number>
       </property>
-      <property name="bottomMargin">
-       <number>9</number>
-      </property>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_viewer">
+       <layout class="QHBoxLayout" name="horizontalLayout_midTop">
         <item>
          <widget class="QLabel" name="label_viewer">
           <property name="font">
@@ -846,16 +843,35 @@ QCheckBox{
             </property>
            </widget>
           </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="checkBox_autoResume">
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QCheckBox:disabled {
+	color: rgb(121, 121, 121);
+}</string>
+            </property>
+            <property name="text">
+             <string>Auto Resume</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
        </layout>
       </item>
       <item>
-       <widget class="QLabel" name="label_currentScan">
-        <property name="text">
-         <string>Current Scan: </string>
-        </property>
-       </widget>
+       <layout class="QVBoxLayout" name="verticalLayout_midMid">
+        <item>
+         <widget class="QLabel" name="label_currentProject">
+          <property name="text">
+           <string>Current Project: </string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_midBottom">
@@ -1164,6 +1180,22 @@ QPushButton:disabled {
     <hint type="destinationlabel">
      <x>286</x>
      <y>378</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_disableViewer</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_autoResume</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>860</x>
+     <y>62</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>859</x>
+     <y>129</y>
     </hint>
    </hints>
   </connection>

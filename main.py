@@ -23,10 +23,14 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.inputPath = ""
         self.outputPath = ""
-
+        self.indPath = 0
+        self.projectPaths = []
+        self.resultPath = ""
+        
         # CONFIGURATOR
         self.config = copy.deepcopy(defaultConfig)
 
+        # Connections
         self.pushButton_inputDir.clicked.connect(self.getInputFilePath)
         self.textBrowser_inputDir.textChanged.connect(self.textBrowserDir_state_changed)
         self.checkBox_saveToSameDir.stateChanged.connect(self.checkBoxDir_state_changed)
@@ -37,12 +41,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.pushButton_defRadius.clicked.connect(self.resetRadius)
         self.pushButton_defSmoothiter.clicked.connect(self.resetSmoothiter)
         self.pushButton_defEdge.clicked.connect(self.resetEdge)
-
+        self.pushButton_saveAndContinue.clicked.connect(self.saveAndContinue)
+        self.pushButton_dontSave.clicked.connect(self.deleteAndContinue)
 
         # Set up VTK
-        self.frame = Qt.QFrame()
-        self.vtkWidget = QVTKRenderWindowInteractor(self.frame)
-        self.panel_mid.addWidget(self.vtkWidget)
+        self.vtkWidget = QVTKRenderWindowInteractor()
+        self.verticalLayout_midMid.addWidget(self.vtkWidget)
         self.ren = vtk.vtkRenderer()
         self.vtkWidget.GetRenderWindow().AddRenderer(self.ren)
         self.iren = self.vtkWidget.GetRenderWindow().GetInteractor()
@@ -104,26 +108,24 @@ class MainWindow(QtWidgets.QMainWindow):
     def startProcessing(self):
         self.updateConfig()
         print(self.config)
-
-        projectPaths = []
-
         self.pushButton_start.setEnabled(False)
-        self.pushButton_dontSave.setEnabled(True)
-        self.pushButton_saveAndContinue.setEnabled(True)
+        
+        self.projectPaths = self.getProjectPaths()
+        print(self.projectPaths)
+        
+        if (self.checkBox_disableViewer.isChecked()):
+            self.autoProcessing()
+        else:
+            self.singleProcessing()
 
+    def getProjectPaths(self):
+        projectPaths = []
         for subdir, dirs, files in os.walk(self.inputPath):
             # search for scan with filename 'scan_*.ply'
             filepath = os.path.join(subdir, 'scan_0.ply')
             if os.path.isfile(filepath):
                 projectPaths.append(subdir)
-                print("added")
-
-        print(projectPaths)
-        if (self.checkBox_disableViewer.isChecked()):
-            self.autoProcessing(projectPaths)
-        else:
-            indPath = 0
-            self.singleProcessing(projectPaths[indPath])
+        return projectPaths
 
     def displayResult(self, filename):
         # Read and display for verification
@@ -142,8 +144,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.iren.Initialize()
         self.iren.Start()
 
-
-    def singleProcessing(self, projectPath):
+    def processProject(self, projectPath, boolDisplay):
+        self.label_currentProject.setText("Current Project:" + projectPath)
         job = Job(projectPath, self.outputPath, self.config)
         try:
             # load joint ponts to a numpy array
@@ -159,31 +161,44 @@ class MainWindow(QtWidgets.QMainWindow):
         # apply filters
         job.apply_filters()
         # save mesh
-        filename = job.export_mesh()
+        job.export_mesh()
 
-        self.displayResult(filename)
+        if(boolDisplay):
+            self.resultPath = job.getResultPath()
+            self.displayResult(self.resultPath)
 
-    def autoProcessing(self, projectPaths):
-        for projectPath in projectPaths:
-            print(projectPath)
-            job = Job(projectPath, self.outputPath, self.config)
-            try:
-                # load joint ponts to a numpy array
-                joint_arr = job.load_joint_points()
-            except ValueError:
-                # skip file if joint_arr is empty
-                print("No joint points! Skipped.\n")
-                continue
-            # create a meshset with a single mesh that has been flattened
-            job.load_meshes()
-            # remove background vertices
-            job.remove_background(joint_arr)
-            # apply filters
-            job.apply_filters()
-            # save mesh
-            job.export_mesh()
+    def singleProcessing(self):
+        if(self.indPath < len(self.projectPaths)):
+            self.processProject(self.projectPaths[self.indPath], True)
+            self.indPath = self.indPath + 1
+            self.pushButton_dontSave.setEnabled(True)
+            self.pushButton_saveAndContinue.setEnabled(True)
+        else:
+            self.finishProcessing()
 
-    
+    def autoProcessing(self):
+        boolDisplay = self.checkBox_autoResume.isChecked()
+        for projectPath in self.projectPaths:
+            self.processProject(projectPath, boolDisplay)
+        self.finishProcessing()
+
+    def finishProcessing(self):
+        self.pushButton_dontSave.setEnabled(False)
+        self.pushButton_saveAndContinue.setEnabled(False)
+        self.indPath = 0
+        self.projectPaths = []
+        print("finished!")
+
+    def saveAndContinue(self):
+        self.pushButton_dontSave.setEnabled(False)
+        self.pushButton_saveAndContinue.setEnabled(False)
+        self.singleProcessing()
+
+    def deleteAndContinue(self):
+        self.pushButton_dontSave.setEnabled(False)
+        self.pushButton_saveAndContinue.setEnabled(False)
+        os.remove(self.resultPath)
+        self.singleProcessing()
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

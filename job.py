@@ -5,7 +5,8 @@ class Job:
     def __init__(self, subdir, outputPath, config):
         self.config = config
         self.subdir = subdir
-        self.outputPath = outputPath
+        basename = os.path.basename(os.path.normpath(subdir)) # extract last directory name
+        self.outputPath = os.path.join(outputPath, basename + '_processed.ply')
 
     def load_joint_points(self):
         # get filepaths for each of the joint file
@@ -68,9 +69,11 @@ class Job:
 
     def export_mesh(self):
         # save mesh
-        basename = os.path.basename(os.path.normpath(self.subdir)) # extract last directory name
-        complete_name = os.path.join(self.outputPath, basename + '_processed.ply')
-        self.ms.save_current_mesh(complete_name)
+        self.ms.save_current_mesh(self.outputPath)
         self.ms.clear()
         print("Saved!")
-        return complete_name
+
+    def getResultPath(self):
+        return self.outputPath
+
+    
