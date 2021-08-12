@@ -2,11 +2,14 @@ import sys, copy, vtk, time
 from PyQt5.uic import loadUi
 from job import *
 
-from PyQt5 import QtCore      # core Qt functionality
-from PyQt5 import QtGui       # extends QtCore with GUI functionality
-from PyQt5 import QtOpenGL    # provides QGLWidget, a special OpenGL QWidget
-from PyQt5 import QtWidgets
-from PyQt5 import Qt
+from PyQt5.QtCore import QObject, QThread, pyqtSignal
+from PyQt5.QtWidgets import (
+    QMainWindow, 
+    QFileDialog, 
+    QListWidgetItem, 
+    QMessageBox, 
+    QApplication,
+)
 
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
@@ -15,22 +18,31 @@ defaultConfig = {
     'smoothiter': 2,
     'edgeLength': 15,
 }
+
+class Worker(QObject):
+    finished = pyqtSignal()
+    progress = pyqtSignal(int)
+
+    def run(self):
+        """Long-running task."""
+        for i in range(5):
+            sleep(1)
+            self.progress.emit(i + 1)
+        self.finished.emit()
     
-class MainWindow(QtWidgets.QMainWindow):
+class MainWindow(QMainWindow):
+    inputPath = ""
+    outputPath = ""
+    indPath = 0
+    projectPaths = []
+    resultPath = ""
+    sumProcessTime = .0 # process time for each scan
+    numProcessed = 0 # total number of processed scans
+    config = copy.deepcopy(defaultConfig)
+
     def __init__(self):
         super(MainWindow, self).__init__()
         loadUi("SAS_GUI.ui", self)
-
-        self.inputPath = ""
-        self.outputPath = ""
-        self.indPath = 0
-        self.projectPaths = []
-        self.resultPath = ""
-        self.sumProcessTime = .0 # process time for each scan
-        self.numProcessed = 0 # total number of processed scans
-        
-        # CONFIGURATOR
-        self.config = copy.deepcopy(defaultConfig)
 
         # Connections
         self.pushButton_inputDir.clicked.connect(self.getInputFilePath)
@@ -50,16 +62,20 @@ class MainWindow(QtWidgets.QMainWindow):
         self.vtkWidget = QVTKRenderWindowInteractor()
         self.verticalLayout_midMid.addWidget(self.vtkWidget)
         self.ren = vtk.vtkRenderer()
+        colors = vtk.vtkNamedColors()
+        self.ren.SetBackground(colors.GetColor3d('DarkSlateBlue'))
+        self.ren.SetBackground2(colors.GetColor3d('MidnightBlue'))
+        self.ren.GradientBackgroundOn()
         self.vtkWidget.GetRenderWindow().AddRenderer(self.ren)
         self.iren = self.vtkWidget.GetRenderWindow().GetInteractor()
         style = vtk.vtkInteractorStyleTrackballCamera()
         self.iren.SetInteractorStyle(style)
 
     def getInputFilePath(self):
-        response = QtWidgets.QFileDialog.getExistingDirectory(self.pushButton_inputDir, "Open Directory",
+        response = QFileDialog.getExistingDirectory(self.pushButton_inputDir, "Open Directory",
                                                 os.getcwd(),
-                                                QtWidgets.QFileDialog.ShowDirsOnly
-                                                | QtWidgets.QFileDialog.DontResolveSymlinks)
+                                                QFileDialog.ShowDirsOnly
+                                                | QFileDialog.DontResolveSymlinks)
         self.inputPath = response
         self.textBrowser_inputDir.setText(response)
         if self.checkBox_saveToSameDir.isChecked():
@@ -67,10 +83,10 @@ class MainWindow(QtWidgets.QMainWindow):
             self.textBrowser_outputDir.setText(response)
 
     def getOutputFilePath(self):
-        response = QtWidgets.QFileDialog.getExistingDirectory(self.pushButton_outputDir, "Open Directory",
+        response = QFileDialog.getExistingDirectory(self.pushButton_outputDir, "Open Directory",
                                                 os.getcwd(),
-                                                QtWidgets.QFileDialog.ShowDirsOnly
-                                                | QtWidgets.QFileDialog.DontResolveSymlinks)
+                                                QFileDialog.ShowDirsOnly
+                                                | QFileDialog.DontResolveSymlinks)
         self.outputPath = response
         self.textBrowser_outputDir.setText(response)
 
@@ -108,12 +124,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.config['edgeLength'] = self.spinBox_edge.value()
 
     def startProcessing(self):
-        self.updateConfig()
-        print(self.config)
         self.pushButton_start.setEnabled(False)
-
         self.getProjectPaths()
-        print(self.projectPaths)
         
         if (self.checkBox_disableViewer.isChecked()):
             self.autoProcessing()
@@ -146,6 +158,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.iren.Start()
 
     def processProject(self, projectPath, boolDisplay):
+        tic = time.perf_counter()
         self.textBrowser_currentProject.setText("Current Project: " + projectPath)
         job = Job(projectPath, self.outputPath, self.config)
         try:
@@ -164,27 +177,29 @@ class MainWindow(QtWidgets.QMainWindow):
         # save mesh
         job.export_mesh()
 
+        #print to screen
         if(boolDisplay):
             self.resultPath = job.getResultPath()
             self.displayResult(self.resultPath)
 
+        toc = time.perf_counter()
+        self.computeProcessTIme(tic, toc)
+
     def singleProcessing(self):
-        tic = time.perf_counter()
+        self.updateConfig()
+        print(self.config)
+        
         if(self.indPath < len(self.projectPaths)):
             self.processProject(self.projectPaths[self.indPath], True)
             self.indPath = self.indPath + 1
             self.pushButton_dontSave.setEnabled(True)
             self.pushButton_saveAndContinue.setEnabled(True)
-            toc = time.perf_counter()
-            self.computeProcessTIme(tic, toc)
         else:
             self.finishProcessing()
         
-
     def autoProcessing(self):
-        boolDisplay = self.checkBox_autoResume.isChecked()
         for projectPath in self.projectPaths:
-            self.processProject(projectPath, boolDisplay)
+            self.processProject(projectPath, False)
         self.finishProcessing()
 
     def computeProcessTIme(self, tic, toc):
@@ -202,28 +217,37 @@ class MainWindow(QtWidgets.QMainWindow):
     def finishProcessing(self):
         self.pushButton_dontSave.setEnabled(False)
         self.pushButton_saveAndContinue.setEnabled(False)
+        self.pushButton_start.setEnabled(True)
         self.indPath = 0
         self.projectPaths = []
-        print("finished!")
+        self.sumProcessTime = .0
+        self.numProcessed = 0
+        self.show_popup()
 
     def saveAndContinue(self):
-        listWidgetItem = QtWidgets.QListWidgetItem(self.resultPath)
+        listWidgetItem = QListWidgetItem(self.resultPath)
         self.listWidget_savedProjects.addItem(listWidgetItem)
+        print("added to list")
         self.pushButton_dontSave.setEnabled(False)
         self.pushButton_saveAndContinue.setEnabled(False)
         self.singleProcessing()
 
     def deleteAndContinue(self):
-        listWidgetItem = QtWidgets.QListWidgetItem(self.resultPath)
+        listWidgetItem = QListWidgetItem(self.resultPath)
         self.listWidget_unsavedProjects.addItem(listWidgetItem)
         self.pushButton_dontSave.setEnabled(False)
         self.pushButton_saveAndContinue.setEnabled(False)
         os.remove(self.resultPath)
         self.singleProcessing()
 
+    def show_popup(self):
+        msg = QMessageBox()
+        msg.setText("Processed All Scans!")
+        msg.exec()
+
 if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     mainwindow = MainWindow()
     mainwindow.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
     

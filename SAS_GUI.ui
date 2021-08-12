@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>898</width>
-    <height>541</height>
+    <width>839</width>
+    <height>546</height>
    </rect>
   </property>
   <property name="font">
@@ -221,11 +221,40 @@ QPushButton{
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_inputSign">
-         <property name="text">
-          <string>Input Directory:</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label_inputSign">
+           <property name="text">
+            <string>Input Directory:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_outputInfo">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton::hover{
+	background-color: rgb(68, 67, 68);
+}
+QPushButton{
+	border: 10px;
+}</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>res/info.png</normaloff>res/info.png</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QTextBrowser" name="textBrowser_inputDir">
@@ -270,43 +299,14 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_output">
-         <item>
-          <widget class="QCheckBox" name="checkBox_saveToSameDir">
-           <property name="text">
-            <string>Save to Same Directory</string>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_outputInfo">
-           <property name="maximumSize">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton::hover{
-	background-color: rgb(68, 67, 68);
-}
-QPushButton{
-	border: 10px;
-}</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>res/info.png</normaloff>res/info.png</iconset>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QCheckBox" name="checkBox_saveToSameDir">
+         <property name="text">
+          <string>Save to Same Directory</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QPushButton" name="pushButton_outputDir">
@@ -749,155 +749,147 @@ QPushButton:disabled {
      </widget>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="panel_mid">
-      <property name="topMargin">
-       <number>9</number>
-      </property>
-      <property name="rightMargin">
-       <number>9</number>
-      </property>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_midTop">
-        <item>
-         <widget class="QLabel" name="label_viewer">
-          <property name="font">
-           <font>
-            <family>Arial</family>
-            <pointsize>18</pointsize>
-            <weight>75</weight>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">padding :0 10 0 0</string>
-          </property>
-          <property name="text">
-           <string>Viewer</string>
-          </property>
-          <property name="textFormat">
-           <enum>Qt::RichText</enum>
-          </property>
-          <property name="scaledContents">
-           <bool>false</bool>
-          </property>
-          <property name="indent">
-           <number>0</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_viewerInfo">
-          <property name="maximumSize">
-           <size>
-            <width>20</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QPushButton::hover{
+     <widget class="QFrame" name="panel_mid_2">
+      <layout class="QVBoxLayout" name="panel_mid">
+       <property name="topMargin">
+        <number>9</number>
+       </property>
+       <property name="rightMargin">
+        <number>9</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_midTop">
+         <item>
+          <widget class="QLabel" name="label_viewer">
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <pointsize>18</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">padding :0 10 0 0</string>
+           </property>
+           <property name="text">
+            <string>Viewer</string>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::RichText</enum>
+           </property>
+           <property name="scaledContents">
+            <bool>false</bool>
+           </property>
+           <property name="indent">
+            <number>0</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_viewerInfo">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton::hover{
 	background-color: rgb(68, 67, 68);
 }
 QPushButton{
 	border: 10px;
 }</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>res/info.png</normaloff>res/info.png</iconset>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <layout class="QGridLayout" name="gridLayout_midTop">
-          <item row="0" column="0">
-           <widget class="QCheckBox" name="checkBox_disableViewer">
-            <property name="layoutDirection">
-             <enum>Qt::RightToLeft</enum>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QCheckBox:disabled{
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>res/info.png</normaloff>res/info.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QGridLayout" name="gridLayout_midTop">
+           <item row="0" column="0">
+            <widget class="QCheckBox" name="checkBox_disableViewer">
+             <property name="layoutDirection">
+              <enum>Qt::RightToLeft</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QCheckBox:disabled{
 	color: rgb(146, 146, 146);
 }
 QCheckBox{
 	color: rgb(255, 255, 255);
 }</string>
-            </property>
-            <property name="text">
-             <string>Disable Viewer</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="checkBox_autoResume">
-            <property name="layoutDirection">
-             <enum>Qt::RightToLeft</enum>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QCheckBox:disabled {
-	color: rgb(121, 121, 121);
-}</string>
-            </property>
-            <property name="text">
-             <string>Auto Resume</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_midMid">
-        <item>
-         <widget class="QTextBrowser" name="textBrowser_currentProject">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>50</height>
-           </size>
-          </property>
-          <property name="html">
-           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+             </property>
+             <property name="text">
+              <string>Disable Viewer</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_midMid">
+         <item>
+          <widget class="QTextBrowser" name="textBrowser_currentProject">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Box</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Plain</enum>
+           </property>
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Current Project: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_midBottom">
-        <item>
-         <widget class="QPushButton" name="pushButton_dontSave">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QPushButton::hover{
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_midBottom">
+         <item>
+          <widget class="QPushButton" name="pushButton_dontSave">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton::hover{
 	
 	background-color: rgb(112, 27, 14);
 }
@@ -907,19 +899,19 @@ QPushButton{
 QPushButton:disabled {
 	background-color: rgb(121, 121, 121);
 }</string>
-          </property>
-          <property name="text">
-           <string>Don't Save</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_saveAndContinue">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QPushButton::hover{
+           </property>
+           <property name="text">
+            <string>Don't Save</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_saveAndContinue">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton::hover{
 	background-color: rgb(31, 72, 51);
 }
 QPushButton{	
@@ -928,21 +920,22 @@ QPushButton{
 QPushButton:disabled {
 	background-color: rgb(121, 121, 121);
 }</string>
-          </property>
-          <property name="text">
-           <string>Save and Continue</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
+           </property>
+           <property name="text">
+            <string>Save and Continue</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </item>
     <item>
      <widget class="QFrame" name="panel_right">
       <property name="maximumSize">
        <size>
-        <width>300</width>
+        <width>0</width>
         <height>16777215</height>
        </size>
       </property>
@@ -1080,6 +1073,10 @@ QPushButton:disabled {
      </widget>
     </item>
    </layout>
+   <zorder>verticalFrame_menu</zorder>
+   <zorder>panel_left</zorder>
+   <zorder>panel_right</zorder>
+   <zorder>panel_mid_2</zorder>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="styleSheet">
@@ -1260,22 +1257,6 @@ QPushButton:disabled {
     <hint type="destinationlabel">
      <x>286</x>
      <y>378</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox_disableViewer</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>checkBox_autoResume</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>860</x>
-     <y>62</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>859</x>
-     <y>129</y>
     </hint>
    </hints>
   </connection>
