@@ -1,4 +1,4 @@
-import sys, copy, vtk, pathlib, os
+import sys, copy, vtk, time
 from PyQt5.uic import loadUi
 from job import *
 
@@ -26,6 +26,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.indPath = 0
         self.projectPaths = []
         self.resultPath = ""
+        self.sumProcessTime = .0 # process time for each scan
+        self.numProcessed = 0 # total number of processed scans
         
         # CONFIGURATOR
         self.config = copy.deepcopy(defaultConfig)
@@ -109,8 +111,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.updateConfig()
         print(self.config)
         self.pushButton_start.setEnabled(False)
-        
-        self.projectPaths = self.getProjectPaths()
+
+        self.getProjectPaths()
         print(self.projectPaths)
         
         if (self.checkBox_disableViewer.isChecked()):
@@ -119,15 +121,14 @@ class MainWindow(QtWidgets.QMainWindow):
             self.singleProcessing()
 
     def getProjectPaths(self):
-        projectPaths = []
         for subdir, dirs, files in os.walk(self.inputPath):
             # search for scan with filename 'scan_*.ply'
             filepath = os.path.join(subdir, 'scan_0.ply')
             if os.path.isfile(filepath):
-                projectPaths.append(subdir)
-        return projectPaths
+                self.projectPaths.append(subdir)
 
     def displayResult(self, filename):
+        self.ren.RemoveAllViewProps()
         # Read and display for verification
         reader = vtk.vtkPLYReader()
         reader.SetFileName(filename)
@@ -145,7 +146,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.iren.Start()
 
     def processProject(self, projectPath, boolDisplay):
-        self.label_currentProject.setText("Current Project:" + projectPath)
+        self.textBrowser_currentProject.setText("Current Project: " + projectPath)
         job = Job(projectPath, self.outputPath, self.config)
         try:
             # load joint ponts to a numpy array
@@ -168,19 +169,35 @@ class MainWindow(QtWidgets.QMainWindow):
             self.displayResult(self.resultPath)
 
     def singleProcessing(self):
+        tic = time.perf_counter()
         if(self.indPath < len(self.projectPaths)):
             self.processProject(self.projectPaths[self.indPath], True)
             self.indPath = self.indPath + 1
             self.pushButton_dontSave.setEnabled(True)
             self.pushButton_saveAndContinue.setEnabled(True)
+            toc = time.perf_counter()
+            self.computeProcessTIme(tic, toc)
         else:
             self.finishProcessing()
+        
 
     def autoProcessing(self):
         boolDisplay = self.checkBox_autoResume.isChecked()
         for projectPath in self.projectPaths:
             self.processProject(projectPath, boolDisplay)
         self.finishProcessing()
+
+    def computeProcessTIme(self, tic, toc):
+        processTime = toc - tic
+        self.sumProcessTime = self.sumProcessTime + processTime
+        self.numProcessed = self.numProcessed + 1
+        self.label_numProcessed.setText(f"{self.numProcessed} projects")
+        try:
+            averageProcessTime = self.sumProcessTime/self.numProcessed
+        except ZeroDivisionError:
+            averageProcessTime = 0
+        self.label_avgProcessTime.setText(f"{averageProcessTime:0.4f} seconds")
+        self.label_processTime.setText(f"{processTime:0.4f} seconds")
 
     def finishProcessing(self):
         self.pushButton_dontSave.setEnabled(False)
@@ -190,11 +207,15 @@ class MainWindow(QtWidgets.QMainWindow):
         print("finished!")
 
     def saveAndContinue(self):
+        listWidgetItem = QtWidgets.QListWidgetItem(self.resultPath)
+        self.listWidget_savedProjects.addItem(listWidgetItem)
         self.pushButton_dontSave.setEnabled(False)
         self.pushButton_saveAndContinue.setEnabled(False)
         self.singleProcessing()
 
     def deleteAndContinue(self):
+        listWidgetItem = QtWidgets.QListWidgetItem(self.resultPath)
+        self.listWidget_unsavedProjects.addItem(listWidgetItem)
         self.pushButton_dontSave.setEnabled(False)
         self.pushButton_saveAndContinue.setEnabled(False)
         os.remove(self.resultPath)

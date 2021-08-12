@@ -1,11 +1,12 @@
 Mac Setup
-pip install PyOpenGL PyOpenGL_accelerate
 pip install pymeshlab
+pip install numpy
+pip install pandas
 pip install pyqt5
-pip install pyqt5-tools
+pip install pyqt5-tools (optional)
 pip install vtk
 
-Big Sur+
+Big Sur+ (not used)
 https://stackoverflow.com/questions/66424295/pyopengl-installation-on-macos-big-sur
 
 open3d (not used)
