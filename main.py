@@ -112,21 +112,52 @@ class MainWindow(QMainWindow):
         self.config['smoothiter'] = self.spinBox_smoothiter.value()
         self.config['edgeLength'] = self.spinBox_edge.value()
 
-    def startProcessing(self):
-        self.pushButton_start.setEnabled(False)
-        self.getProjectPaths()
-        
-        if (self.checkBox_disableViewer.isChecked()):
-            self.autoProcessing()
-        else:
-            self.singleProcessing()
-
     def getProjectPaths(self):
         for subdir, dirs, files in os.walk(self.inputPath):
             # search for scan with filename 'scan_*.ply'
-            filepath = os.path.join(subdir, 'scan_0.ply')
-            if os.path.isfile(filepath):
+            scanPath = os.path.join(subdir, 'scan_0.ply')
+            jointPath = os.path.join(subdir, 'joints_0.csv')
+            if (os.path.isfile(scanPath) and os.path.isfile(jointPath)):
                 self.projectPaths.append(subdir)
+
+    def startProcessing(self):
+        self.getProjectPaths()
+        self.pushButton_start.setEnabled(False)
+        self.singleProcessing()
+
+    def singleProcessing(self):
+        if(self.indPath < len(self.projectPaths)):
+            tic = time.perf_counter()
+            projectPath = self.projectPaths[self.indPath]
+            self.textBrowser_currentProject.setText("Current Project: " + projectPath)
+            self.updateConfig()
+
+            self.resultPath = self.processProject(projectPath)
+            self.displayResult(self.resultPath)
+        
+            self.indPath = self.indPath + 1
+            self.pushButton_dontSave.setEnabled(True)
+            self.pushButton_saveAndContinue.setEnabled(True)
+
+            toc = time.perf_counter()
+            self.computeProcessTIme(tic, toc)
+        else:
+            self.finishProcessing()
+
+    def processProject(self, projectPath):
+        job = Job(projectPath, self.outputPath, self.config)
+        # load joint ponts to a numpy array
+        joint_arr = job.load_joint_points()
+        # create a meshset with a single mesh that has been flattened
+        job.load_meshes()
+        # remove background vertices
+        job.remove_background(joint_arr)
+        # apply filters
+        job.apply_filters()
+        # save mesh
+        job.export_mesh()
+        #get result path
+        return job.getResultPath()
 
     def displayResult(self, filename):
         self.ren.RemoveAllViewProps()
@@ -145,51 +176,6 @@ class MainWindow(QMainWindow):
         # Show
         self.iren.Initialize()
         self.iren.Start()
-
-    def processProject(self, projectPath, boolDisplay):
-        tic = time.perf_counter()
-        self.textBrowser_currentProject.setText("Current Project: " + projectPath)
-        job = Job(projectPath, self.outputPath, self.config)
-        try:
-            # load joint ponts to a numpy array
-            joint_arr = job.load_joint_points()
-        except ValueError:
-            # skip file if joint_arr is empty
-            print("No joint points! Skipped.\n")
-            return
-        # create a meshset with a single mesh that has been flattened
-        job.load_meshes()
-        # remove background vertices
-        job.remove_background(joint_arr)
-        # apply filters
-        job.apply_filters()
-        # save mesh
-        job.export_mesh()
-
-        #print to screen
-        if(boolDisplay):
-            self.resultPath = job.getResultPath()
-            self.displayResult(self.resultPath)
-
-        toc = time.perf_counter()
-        self.computeProcessTIme(tic, toc)
-
-    def singleProcessing(self):
-        self.updateConfig()
-        print(self.config)
-        
-        if(self.indPath < len(self.projectPaths)):
-            self.processProject(self.projectPaths[self.indPath], True)
-            self.indPath = self.indPath + 1
-            self.pushButton_dontSave.setEnabled(True)
-            self.pushButton_saveAndContinue.setEnabled(True)
-        else:
-            self.finishProcessing()
-        
-    def autoProcessing(self):
-        for projectPath in self.projectPaths:
-            self.processProject(projectPath, False)
-        self.finishProcessing()
 
     def computeProcessTIme(self, tic, toc):
         processTime = toc - tic

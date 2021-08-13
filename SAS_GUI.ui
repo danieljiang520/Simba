@@ -825,26 +825,7 @@ QPushButton{
           </spacer>
          </item>
          <item>
-          <layout class="QGridLayout" name="gridLayout_midTop">
-           <item row="0" column="0">
-            <widget class="QCheckBox" name="checkBox_disableViewer">
-             <property name="layoutDirection">
-              <enum>Qt::RightToLeft</enum>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QCheckBox:disabled{
-	color: rgb(146, 146, 146);
-}
-QCheckBox{
-	color: rgb(255, 255, 255);
-}</string>
-             </property>
-             <property name="text">
-              <string>Disable Viewer</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <layout class="QGridLayout" name="gridLayout_midTop"/>
          </item>
         </layout>
        </item>
