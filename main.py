@@ -123,6 +123,8 @@ class MainWindow(QMainWindow):
     def startProcessing(self):
         self.getProjectPaths()
         self.pushButton_start.setEnabled(False)
+        self.pushButton_inputDir.setEnabled(False)
+        self.pushButton_outputDir.setEnabled(False)
         self.singleProcessing()
 
     def singleProcessing(self):
@@ -193,6 +195,8 @@ class MainWindow(QMainWindow):
         self.pushButton_dontSave.setEnabled(False)
         self.pushButton_saveAndContinue.setEnabled(False)
         self.pushButton_start.setEnabled(True)
+        self.pushButton_inputDir.setEnabled(True)
+        self.pushButton_outputDir.setEnabled(True)
         self.indPath = 0
         self.projectPaths = []
         self.sumProcessTime = .0
