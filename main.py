@@ -14,11 +14,11 @@ from PyQt5.QtWidgets import (
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
 defaultConfig = {
-    'radius': 400,
-    'smoothiter': 2,
-    'edgeLength': 15,
+        'radius': 400,
+        'smoothiter': 2,
+        'edgeLength': 15,
 }
-    
+
 class MainWindow(QMainWindow):
     inputPath = ""
     outputPath = ""
@@ -46,6 +46,7 @@ class MainWindow(QMainWindow):
         self.pushButton_defEdge.clicked.connect(self.resetEdge)
         self.pushButton_saveAndContinue.clicked.connect(self.saveAndContinue)
         self.pushButton_dontSave.clicked.connect(self.deleteAndContinue)
+        self.pushButton_redo.clicked.connect(self.redo)
 
         # Set up VTK
         self.vtkWidget = QVTKRenderWindowInteractor()
@@ -92,8 +93,8 @@ class MainWindow(QMainWindow):
 
     def expandMonitor(self):
         if self.pushButton_monitor.isChecked():
-            self.panel_right.setMaximumWidth(205)
-            self.panel_right.setMinimumWidth(205)
+            self.panel_right.setMaximumWidth(220)
+            self.panel_right.setMinimumWidth(220)
         else:
             self.panel_right.setMaximumWidth(0)
             self.panel_right.setMinimumWidth(0)
@@ -131,7 +132,7 @@ class MainWindow(QMainWindow):
         if(self.indPath < len(self.projectPaths)):
             tic = time.perf_counter()
             projectPath = self.projectPaths[self.indPath]
-            self.textBrowser_currentProject.setText("Current Project: " + projectPath)
+            self.textBrowser_currentProject.setText(projectPath)
             self.updateConfig()
 
             self.resultPath = self.processProject(projectPath)
@@ -140,6 +141,7 @@ class MainWindow(QMainWindow):
             self.indPath = self.indPath + 1
             self.pushButton_dontSave.setEnabled(True)
             self.pushButton_saveAndContinue.setEnabled(True)
+            self.pushButton_redo.setEnabled(True)
 
             toc = time.perf_counter()
             self.computeProcessTIme(tic, toc)
@@ -194,6 +196,7 @@ class MainWindow(QMainWindow):
     def finishProcessing(self):
         self.pushButton_dontSave.setEnabled(False)
         self.pushButton_saveAndContinue.setEnabled(False)
+        self.pushButton_redo.setEnabled(False)
         self.pushButton_start.setEnabled(True)
         self.pushButton_inputDir.setEnabled(True)
         self.pushButton_outputDir.setEnabled(True)
@@ -209,6 +212,7 @@ class MainWindow(QMainWindow):
         print("added to list")
         self.pushButton_dontSave.setEnabled(False)
         self.pushButton_saveAndContinue.setEnabled(False)
+        self.pushButton_redo.setEnabled(False)
         self.singleProcessing()
 
     def deleteAndContinue(self):
@@ -216,7 +220,15 @@ class MainWindow(QMainWindow):
         self.listWidget_unsavedProjects.addItem(listWidgetItem)
         self.pushButton_dontSave.setEnabled(False)
         self.pushButton_saveAndContinue.setEnabled(False)
+        self.pushButton_redo.setEnabled(False)
         os.remove(self.resultPath)
+        self.singleProcessing()
+
+    def redo(self):
+        self.pushButton_dontSave.setEnabled(False)
+        self.pushButton_saveAndContinue.setEnabled(False)
+        self.pushButton_redo.setEnabled(False)
+        self.indPath = self.indPath - 1
         self.singleProcessing()
 
     def show_popup(self):
