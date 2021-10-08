@@ -2,7 +2,7 @@
 1. Open terminal and locate a folder where you want to store the files. For example, type ```cd Documents```.
 ![Screen Shot 2021-10-08 at 10 02 53](https://user-images.githubusercontent.com/71047773/136570679-fb029f7a-6c15-49b9-aed7-663cd9e4f6c6.png)
 2. Clone the Files ```git clone https://github.com/danieljiang520/UMTRI_3D_Scan_Processing.git```
-4. Install required libries: 
+4. Install required libraries: 
 ```
 pip install pymeshlab
 pip install numpy
