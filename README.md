@@ -1,14 +1,20 @@
-Mac Setup
+## Mac Setup
+1. Open terminal and locate a folder where you want to store the files. For example, type ```cd Documents```.
+![Screen Shot 2021-10-08 at 10 02 53](https://user-images.githubusercontent.com/71047773/136570679-fb029f7a-6c15-49b9-aed7-663cd9e4f6c6.png)
+2. Clone the Files ```git clone https://github.com/danieljiang520/UMTRI_3D_Scan_Processing.git```
+4. Install required libries: 
+```
 pip install pymeshlab
 pip install numpy
 pip install pandas
 pip install pyqt5
-pip install pyqt5-tools (optional)
+pip install pyqt5-tools
 pip install vtk
-
-Big Sur+ (not used)
-https://stackoverflow.com/questions/66424295/pyopengl-installation-on-macos-big-sur
-
-open3d (not used)
-pip install --user --pre https://storage.googleapis.com/open3d-releases-master/python-wheels/open3d-0.13.0+635e21d-cp39-cp39-macosx_10_14_x86_64.whl
-http://www.open3d.org/docs/latest/getting_started.html
+```
+## To run the code
+1. Open terminal and locate a folder where you stored the files for the application in Mac Setup Step 1. For example, type ```cd Documents```.
+2. Type ```ls``` in the terminal to see the children directories of the current folder
+3. Type ```cd UMTRI_3D_Scan_Processing```
+4. Run the code: type ```python3 main.py```
+5. You should see this window
+![Screen Shot 2021-10-08 at 10 09 14](https://user-images.githubusercontent.com/71047773/136571692-2f0d567a-9927-4147-8fff-16169e12e52c.png)
