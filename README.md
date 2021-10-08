@@ -18,3 +18,7 @@ pip install vtk
 4. Run the code: type ```python3 main.py```
 5. You should see this window
 ![Screen Shot 2021-10-08 at 10 09 14](https://user-images.githubusercontent.com/71047773/136571692-2f0d567a-9927-4147-8fff-16169e12e52c.png)
+
+## Missing functions
+- Help page
+- Help icons
