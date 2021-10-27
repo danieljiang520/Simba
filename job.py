@@ -1,4 +1,5 @@
-import os, pymeshlab, glob, pathlib
+import os, glob, pathlib
+from pymeshlab import MeshSet, Mesh
 import numpy as np
 import pandas as pd
 class Job:
@@ -20,7 +21,7 @@ class Job:
 
     def load_meshes(self):
         # create a new MeshSet
-        self.ms = pymeshlab.MeshSet()
+        self.ms = MeshSet()
         # load meshes
         filepaths = glob.glob(os.path.join(self.subdir, "scan_*.ply"))  
         for filepath in filepaths:
@@ -38,7 +39,7 @@ class Job:
         print(f'Total vertices: {m.vertex_number()}')
 
         # create a new mesh with the joint points
-        m = pymeshlab.Mesh(vertex_matrix = joint_arr)
+        m = Mesh(vertex_matrix = joint_arr)
         self.ms.add_mesh(m)
         joint_mesh_id = self.ms.current_mesh_id()
 
