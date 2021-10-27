@@ -1,5 +1,4 @@
 import os, pymeshlab, glob, pathlib
-import numpy as np
 import pandas as pd
 class Job:
     def __init__(self, subdir, outputPath, config):

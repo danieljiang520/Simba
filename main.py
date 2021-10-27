@@ -1,6 +1,7 @@
 import sys, copy, vtk, time
 from PyQt5.uic import loadUi
 from job import *
+from mergeJob import *
 
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 from PyQt5.QtWidgets import (
@@ -21,6 +22,7 @@ defaultConfig = {
 
 class MainWindow(QMainWindow):
     inputPath = ""
+    seatInputPath = ""
     outputPath = ""
     indPath = 0
     projectPaths = []
@@ -48,6 +50,9 @@ class MainWindow(QMainWindow):
         self.pushButton_dontSave.clicked.connect(self.deleteAndContinue)
         self.pushButton_redo.clicked.connect(self.redo)
 
+        self.pushButton_seatInputDir.clicked.connect(self.getSeatInputFilePath)
+        self.pushButton_seatStart.clicked.connect(self.mergeSeat)
+
         # Set up VTK
         self.vtkWidget = QVTKRenderWindowInteractor()
         self.verticalLayout_midMid.addWidget(self.vtkWidget)
@@ -61,24 +66,30 @@ class MainWindow(QMainWindow):
         style = vtk.vtkInteractorStyleTrackballCamera()
         self.iren.SetInteractorStyle(style)
 
-    def getInputFilePath(self):
-        response = QFileDialog.getExistingDirectory(self.pushButton_inputDir, "Open Directory",
+    def getDirPath(self):
+        return QFileDialog.getExistingDirectory(self, "Open Directory",
                                                 os.getcwd(),
                                                 QFileDialog.ShowDirsOnly
                                                 | QFileDialog.DontResolveSymlinks)
-        self.inputPath = response
-        self.textBrowser_inputDir.setText(response)
+    
+    def getScanFilePath(self):
+        return QFileDialog.getOpenFileName(self, 'Open File', 
+         os.getcwd(),"Ply Scan Files (*.ply)")[0]
+
+    def getInputFilePath(self):
+        self.inputPath = self.getDirPath()
+        self.textBrowser_inputDir.setText(self.inputPath)
         if self.checkBox_saveToSameDir.isChecked():
-            self.outputPath = response
-            self.textBrowser_outputDir.setText(response)
+            self.outputPath = self.inputPath
+            self.textBrowser_outputDir.setText(self.inputPath)
 
     def getOutputFilePath(self):
-        response = QFileDialog.getExistingDirectory(self.pushButton_outputDir, "Open Directory",
-                                                os.getcwd(),
-                                                QFileDialog.ShowDirsOnly
-                                                | QFileDialog.DontResolveSymlinks)
-        self.outputPath = response
-        self.textBrowser_outputDir.setText(response)
+        self.outputPath = self.getDirPath()
+        self.textBrowser_outputDir.setText(self.outputPath)
+
+    def getSeatInputFilePath(self):
+        self.seatInputPath = self.getScanFilePath()
+        self.textBrowser_seatInputDir.setText(self.seatInputPath)
 
     def checkBoxDir_state_changed(self):
         if self.checkBox_saveToSameDir.isChecked():
@@ -132,11 +143,11 @@ class MainWindow(QMainWindow):
         if(self.indPath < len(self.projectPaths)):
             tic = time.perf_counter()
             projectPath = self.projectPaths[self.indPath]
-            self.textBrowser_currentProject.setText(projectPath)
             self.updateConfig()
 
             self.resultPath = self.processProject(projectPath)
             self.displayResult(self.resultPath)
+            self.textBrowser_currentProject.setText(self.resultPath)
         
             self.indPath = self.indPath + 1
             self.pushButton_dontSave.setEnabled(True)
@@ -235,6 +246,12 @@ class MainWindow(QMainWindow):
         msg = QMessageBox()
         msg.setText("Processed All Scans!")
         msg.exec()
+
+    def mergeSeat(self):
+        print(self.textBrowser_currentProject.toPlainText())
+        mergeJob = MergeJob(self.resultPath, self.seatInputPath,self.outputPath)
+        mergeJob.start()
+        self.displayResult(mergeJob.getResultPath())
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
