@@ -1,7 +1,6 @@
 import sys, copy, vtk, time
 from PyQt5.uic import loadUi
 from job import *
-from mergeJob import *
 
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 from PyQt5.QtWidgets import (
@@ -112,12 +111,15 @@ class MainWindow(QMainWindow):
 
     def resetRadius(self):
         self.spinBox_radius.setValue(defaultConfig['radius'])
+        self.horizontalSlider_radius.setValue(defaultConfig['radius'])
 
     def resetSmoothiter(self):
         self.spinBox_smoothiter.setValue(defaultConfig['smoothiter'])
+        self.horizontalSlider_smoothiter.setValue(defaultConfig['smoothiter'])
 
     def resetEdge(self):
         self.spinBox_edge.setValue(defaultConfig['edgeLength'])
+        self.horizontalSlider_edge.setValue(defaultConfig['edgeLength'])
 
     def updateConfig(self):
         self.config['radius'] = self.spinBox_radius.value()
@@ -249,7 +251,7 @@ class MainWindow(QMainWindow):
 
     def mergeSeat(self):
         print(self.textBrowser_currentProject.toPlainText())
-        mergeJob = MergeJob(self.resultPath, self.seatInputPath,self.outputPath)
+        mergeJob = MergeJob(self.resultPath, self.seatInputPath,self.resultPath)
         mergeJob.start()
         self.displayResult(mergeJob.getResultPath())
 
