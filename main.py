@@ -1,8 +1,8 @@
-import sys, copy, vtk, time
+import sys, copy, time
 from PyQt5.uic import loadUi
 from job import *
 
-from PyQt5.QtCore import QObject, QThread, pyqtSignal
+from PyQt5.QtCore import QObject, QThread, pyqtSignal #for multi core
 from PyQt5.QtWidgets import (
     QMainWindow, 
     QFileDialog, 
@@ -10,7 +10,18 @@ from PyQt5.QtWidgets import (
     QMessageBox, 
     QApplication,
 )
-
+from vtkmodules.vtkIOPLY import (
+    vtkPLYReader
+)
+from vtkmodules.vtkRenderingCore import (
+    vtkActor,
+    vtkPolyDataMapper,
+    # vtkRenderWindow,
+    # vtkRenderWindowInteractor,
+    vtkRenderer
+)
+from vtkmodules.vtkCommonColor import vtkNamedColors
+from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
 defaultConfig = {
@@ -55,14 +66,14 @@ class MainWindow(QMainWindow):
         # Set up VTK
         self.vtkWidget = QVTKRenderWindowInteractor()
         self.verticalLayout_midMid.addWidget(self.vtkWidget)
-        self.ren = vtk.vtkRenderer()
-        colors = vtk.vtkNamedColors()
+        self.ren = vtkRenderer()
+        colors = vtkNamedColors()
         self.ren.SetBackground(colors.GetColor3d('DarkSlateBlue'))
         self.ren.SetBackground2(colors.GetColor3d('MidnightBlue'))
         self.ren.GradientBackgroundOn()
         self.vtkWidget.GetRenderWindow().AddRenderer(self.ren)
         self.iren = self.vtkWidget.GetRenderWindow().GetInteractor()
-        style = vtk.vtkInteractorStyleTrackballCamera()
+        style = vtkInteractorStyleTrackballCamera()
         self.iren.SetInteractorStyle(style)
 
     def getDirPath(self):
@@ -179,14 +190,14 @@ class MainWindow(QMainWindow):
     def displayResult(self, filename):
         self.ren.RemoveAllViewProps()
         # Read and display for verification
-        reader = vtk.vtkPLYReader()
+        reader = vtkPLYReader()
         reader.SetFileName(filename)
         reader.Update()
         # Create a mapper
-        mapper = vtk.vtkPolyDataMapper()
+        mapper = vtkPolyDataMapper()
         mapper.SetInputConnection(reader.GetOutputPort())
         # Create an actor
-        actor = vtk.vtkActor()
+        actor = vtkActor()
         actor.SetMapper(mapper)
         self.ren.AddActor(actor)
         self.ren.ResetCamera()
