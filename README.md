@@ -1,3 +1,9 @@
+## Simba
+Simba is a graphical user interface tool for processing 3D kinect scan files. It can automatically remove background points from 3D scans, create watertight body shape surfaces, and visualize final noise-free meshes, providing data to generate realistic body shape and dimension predictions. 
+
+## Install
+Download the latest version from the [releases](https://github.com/danieljiang520/UMTRI_3D_Scan_Processing/releases/tag/v1.0.0) page.
+
 ## Mac Setup
 1. Open terminal and locate a folder where you want to store the files. For example, type ```cd Documents```.
 ![Screen Shot 2021-10-08 at 10 02 53](https://user-images.githubusercontent.com/71047773/136570679-fb029f7a-6c15-49b9-aed7-663cd9e4f6c6.png)
