@@ -1,4 +1,4 @@
-## Simba
+# Simba
 Simba is a graphical user interface tool for processing 3D kinect scan files. It can automatically remove background points from 3D scans, create watertight body shape surfaces, and visualize final noise-free meshes, providing data to generate realistic body shape and dimension predictions. 
 
 ## Install
@@ -17,7 +17,7 @@ pip install pyqt5
 pip install pyqt5-tools
 pip install vtk
 ```
-# To run the code
+### To run the code
 1. Open terminal and locate a folder where you stored the files for the application in Mac Setup Step 1. For example, type ```cd Documents```.
 2. Type ```ls``` in the terminal to see the children directories of the current folder
 3. Type ```cd UMTRI_3D_Scan_Processing```
