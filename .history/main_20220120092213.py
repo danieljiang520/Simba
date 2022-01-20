@@ -167,7 +167,6 @@ class MainWindow(QMainWindow):
             scanPath = os.path.join(subdir, 'scan_0.ply')
             jointPath = os.path.join(subdir, 'joints_0.csv')
             if (os.path.isfile(scanPath) and os.path.isfile(jointPath)):
-                # add to projectPaths
                 self.projectPaths.append(subdir)
 
     def startProcessing(self):

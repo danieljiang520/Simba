@@ -161,13 +161,11 @@ class MainWindow(QMainWindow):
         self.config['edgeLength'] = self.spinBox_edge.value()
 
     def getProjectPaths(self):
-        # walk through the input folder
         for subdir, dirs, files in os.walk(self.inputPath):
             # search for scan with filename 'scan_*.ply'
             scanPath = os.path.join(subdir, 'scan_0.ply')
             jointPath = os.path.join(subdir, 'joints_0.csv')
             if (os.path.isfile(scanPath) and os.path.isfile(jointPath)):
-                # add to projectPaths
                 self.projectPaths.append(subdir)
 
     def startProcessing(self):

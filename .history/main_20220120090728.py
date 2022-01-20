@@ -26,21 +26,28 @@ from vtkmodules.vtkCommonColor import vtkNamedColors
 from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
-# Default parameters for the configurator
+
 defaultConfig = {
         'radius': 400,
         'smoothiter': 2,
         'edgeLength': 15,
 }
 
-# Main application window
+class AnotherWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        layout = QVBoxLayout()
+        self.label = QLabel("Another Window")
+        layout.addWidget(self.label)
+        self.setLayout(layout)
+
 class MainWindow(QMainWindow):
-    inputPath = "" # absolute path to the input folder
-    seatInputPath = "" # absolute path to the seat scan
-    outputPath = "" # absolute path to the output folder
-    indPath = 0 # current project index
-    projectPaths = [] # contains all qualified undone projects' path
-    resultPath = "" # path to the most recent finished project ply file
+    inputPath = ""
+    seatInputPath = ""
+    outputPath = ""
+    indPath = 0
+    projectPaths = []
+    resultPath = ""
     sumProcessTime = .0 # process time for each scan
     numProcessed = 0 # total number of processed scans
     config = copy.deepcopy(defaultConfig)
@@ -49,7 +56,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         loadUi("SAS_GUI.ui", self)
 
-        # Connections for all elements in Mainwindow
+        # Connections
         self.pushButton_inputDir.clicked.connect(self.getInputFilePath)
         self.textBrowser_inputDir.textChanged.connect(self.textBrowserDir_state_changed)
         self.checkBox_saveToSameDir.stateChanged.connect(self.checkBoxDir_state_changed)
@@ -67,7 +74,7 @@ class MainWindow(QMainWindow):
         self.pushButton_seatInputDir.clicked.connect(self.getSeatInputFilePath)
         self.pushButton_seatStart.clicked.connect(self.mergeSeat)
 
-        # Set up VTK widget
+        # Set up VTK
         self.vtkWidget = QVTKRenderWindowInteractor()
         self.verticalLayout_midMid.addWidget(self.vtkWidget)
         self.ren = vtkRenderer()
@@ -81,27 +88,16 @@ class MainWindow(QMainWindow):
         self.iren.SetInteractorStyle(style)
 
     def getDirPath(self):
-        """
-        getDirPath opens a file dialog and only allows the user to select folders
-        """ 
         return QFileDialog.getExistingDirectory(self, "Open Directory",
                                                 os.getcwd(),
                                                 QFileDialog.ShowDirsOnly
                                                 | QFileDialog.DontResolveSymlinks)
     
     def getScanFilePath(self):
-        """
-        getScanFilePath opens a file dialog and only allows the user to select ply files
-        """ 
         return QFileDialog.getOpenFileName(self, 'Open File', 
          os.getcwd(),"Ply Scan Files (*.ply)")[0]
 
     def getInputFilePath(self):
-        """
-        logics for enabling the set input path button.
-        when the save to same dir checkbox is checked,
-        set the output path. 
-        """ 
         self.inputPath = self.getDirPath()
         self.textBrowser_inputDir.setText(self.inputPath)
         if self.checkBox_saveToSameDir.isChecked():
@@ -109,18 +105,10 @@ class MainWindow(QMainWindow):
             self.textBrowser_outputDir.setText(self.inputPath)
 
     def getOutputFilePath(self):
-        """
-        logics for enabling the set input path button.
-        when the save to same dir checkbox is checked,
-        set the output path. 
-        """ 
         self.outputPath = self.getDirPath()
         self.textBrowser_outputDir.setText(self.outputPath)
 
     def getSeatInputFilePath(self):
-        """
-        set the output path. 
-        """ 
         self.seatInputPath = self.getScanFilePath()
         self.textBrowser_seatInputDir.setText(self.seatInputPath)
 
@@ -161,13 +149,11 @@ class MainWindow(QMainWindow):
         self.config['edgeLength'] = self.spinBox_edge.value()
 
     def getProjectPaths(self):
-        # walk through the input folder
         for subdir, dirs, files in os.walk(self.inputPath):
             # search for scan with filename 'scan_*.ply'
             scanPath = os.path.join(subdir, 'scan_0.ply')
             jointPath = os.path.join(subdir, 'joints_0.csv')
             if (os.path.isfile(scanPath) and os.path.isfile(jointPath)):
-                # add to projectPaths
                 self.projectPaths.append(subdir)
 
     def startProcessing(self):

@@ -1,5 +1,6 @@
 import os, pymeshlab, glob
 import pandas as pd
+from PyQt5.QtCore import QObject, QThread, pyqtSignal #for multi core
 
 from vtkmodules.vtkCommonDataModel import (
     vtkIterativeClosestPointTransform
@@ -46,7 +47,9 @@ from vtkmodules.vtkRenderingCore import (
     vtkRenderer
 )
 
-class Job:
+class Job(QObject):
+    finished = pyqtSignal()
+    progress = pyqtSignal(int)
     def __init__(self, subdir, outputPath, config):
         self.config = config
         self.subdir = subdir

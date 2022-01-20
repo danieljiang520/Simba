@@ -109,18 +109,10 @@ class MainWindow(QMainWindow):
             self.textBrowser_outputDir.setText(self.inputPath)
 
     def getOutputFilePath(self):
-        """
-        logics for enabling the set input path button.
-        when the save to same dir checkbox is checked,
-        set the output path. 
-        """ 
         self.outputPath = self.getDirPath()
         self.textBrowser_outputDir.setText(self.outputPath)
 
     def getSeatInputFilePath(self):
-        """
-        set the output path. 
-        """ 
         self.seatInputPath = self.getScanFilePath()
         self.textBrowser_seatInputDir.setText(self.seatInputPath)
 
@@ -161,13 +153,11 @@ class MainWindow(QMainWindow):
         self.config['edgeLength'] = self.spinBox_edge.value()
 
     def getProjectPaths(self):
-        # walk through the input folder
         for subdir, dirs, files in os.walk(self.inputPath):
             # search for scan with filename 'scan_*.ply'
             scanPath = os.path.join(subdir, 'scan_0.ply')
             jointPath = os.path.join(subdir, 'joints_0.csv')
             if (os.path.isfile(scanPath) and os.path.isfile(jointPath)):
-                # add to projectPaths
                 self.projectPaths.append(subdir)
 
     def startProcessing(self):
