@@ -17,7 +17,7 @@ pip install pyqt5
 pip install pyqt5-tools
 pip install vtk
 ```
-## To run the code
+# To run the code
 1. Open terminal and locate a folder where you stored the files for the application in Mac Setup Step 1. For example, type ```cd Documents```.
 2. Type ```ls``` in the terminal to see the children directories of the current folder
 3. Type ```cd UMTRI_3D_Scan_Processing```
