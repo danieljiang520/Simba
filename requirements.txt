@@ -1,0 +1,4 @@
+pandas==1.3.4
+pymeshlab==2021.10
+PyQt5==5.15.6
+vtk==9.0.3
