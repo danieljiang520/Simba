@@ -1,55 +1,7 @@
 import os, pymeshlab, glob
 import pandas as pd
-from PyQt5.QtCore import QObject, QThread, pyqtSignal #for multi core
 
-from vtkmodules.vtkCommonDataModel import (
-    vtkIterativeClosestPointTransform
-)
-from vtkmodules.vtkIOPLY import (
-    vtkPLYReader,
-    vtkPLYWriter
-)
-from vtkmodules.vtkFiltersGeneral import vtkTransformPolyDataFilter
-
-# transform
-# import vtkmodules.vtkInteractionStyle
-# noinspection PyUnresolvedReferences
-# import vtkmodules.vtkRenderingOpenGL2
-from vtkmodules.vtkCommonColor import vtkNamedColors
-from vtkmodules.vtkCommonCore import (
-    VTK_DOUBLE_MAX,
-    vtkPoints
-)
-from vtkmodules.vtkCommonDataModel import (
-    vtkIterativeClosestPointTransform,
-    vtkPolyData
-)
-from vtkmodules.vtkCommonTransforms import (
-    vtkLandmarkTransform,
-    vtkTransform
-)
-from vtkmodules.vtkFiltersGeneral import (
-    vtkOBBTree,
-    vtkTransformPolyDataFilter
-)
-from vtkmodules.vtkFiltersModeling import vtkHausdorffDistancePointSetFilter
-from vtkmodules.vtkIOGeometry import (
-    vtkBYUReader,
-    vtkOBJReader,
-    vtkSTLReader
-)
-from vtkmodules.vtkIOPLY import vtkPLYReader
-from vtkmodules.vtkRenderingCore import (
-    vtkActor,
-    vtkDataSetMapper,
-    vtkRenderWindow,
-    vtkRenderWindowInteractor,
-    vtkRenderer
-)
-
-class Job(QObject):
-    finished = pyqtSignal()
-    progress = pyqtSignal(int)
+class Job():
     def __init__(self, subdir, outputPath, config):
         self.config = config
         self.subdir = subdir
