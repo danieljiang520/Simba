@@ -7,10 +7,7 @@ from PyQt5.QtWidgets import (
     QFileDialog, 
     QListWidgetItem, 
     QMessageBox, 
-    QApplication,
-    QWidget,
-    QVBoxLayout,
-    QLabel
+    QApplication
 )
 from vtkmodules.vtkIOPLY import (
     vtkPLYReader
@@ -26,46 +23,26 @@ from vtkmodules.vtkCommonColor import vtkNamedColors
 from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
-# Default parameters for the configurator
-defaultConfig = {
-        'radius': 400,
-        'smoothiter': 2,
-        'edgeLength': 15,
-}
-
 # Main application window
 class MainWindow(QMainWindow):
-    inputPath = "" # absolute path to the input folder
-    seatInputPath = "" # absolute path to the seat scan
+    inputPath = "" # absolute path to the input ply scan
     outputPath = "" # absolute path to the output folder
-    indPath = 0 # current project index
-    projectPaths = [] # contains all qualified undone projects' path
     resultPath = "" # path to the most recent finished project ply file
-    sumProcessTime = .0 # process time for each scan
-    numProcessed = 0 # total number of processed scans
-    config = copy.deepcopy(defaultConfig)
 
     def __init__(self):
         super(MainWindow, self).__init__()
-        loadUi("SAS_GUI.ui", self)
+        loadUi("SAS_GUI.ui", self) # load the components defined in th xml file
 
         # Connections for all elements in Mainwindow
         self.pushButton_inputDir.clicked.connect(self.getInputFilePath)
         self.textBrowser_inputDir.textChanged.connect(self.textBrowserDir_state_changed)
-        self.checkBox_saveToSameDir.stateChanged.connect(self.checkBoxDir_state_changed)
         self.pushButton_outputDir.clicked.connect(self.getOutputFilePath)
         self.textBrowser_outputDir.textChanged.connect(self.textBrowserDir_state_changed)
         self.pushButton_monitor.clicked.connect(self.expandMonitor)
         self.pushButton_start.clicked.connect(self.startProcessing)
-        self.pushButton_defRadius.clicked.connect(self.resetRadius)
-        self.pushButton_defSmoothiter.clicked.connect(self.resetSmoothiter)
-        self.pushButton_defEdge.clicked.connect(self.resetEdge)
         self.pushButton_saveAndContinue.clicked.connect(self.saveAndContinue)
         self.pushButton_dontSave.clicked.connect(self.deleteAndContinue)
         self.pushButton_redo.clicked.connect(self.redo)
-
-        self.pushButton_seatInputDir.clicked.connect(self.getSeatInputFilePath)
-        self.pushButton_seatStart.clicked.connect(self.mergeSeat)
 
         # Set up VTK widget
         self.vtkWidget = QVTKRenderWindowInteractor()
@@ -98,44 +75,31 @@ class MainWindow(QMainWindow):
 
     def getInputFilePath(self):
         """
-        logics for enabling the set input path button.
-        when the save to same dir checkbox is checked,
-        set the output path. 
+        enable the set input path button.
         """ 
-        self.inputPath = self.getDirPath()
+        self.inputPath = self.getScanFilePath()
         self.textBrowser_inputDir.setText(self.inputPath)
-        if self.checkBox_saveToSameDir.isChecked():
-            self.outputPath = self.inputPath
-            self.textBrowser_outputDir.setText(self.inputPath)
 
     def getOutputFilePath(self):
         """
-        logics for enabling the set input path button.
-        when the save to same dir checkbox is checked,
-        set the output path. 
+        enable the set input path button.
         """ 
         self.outputPath = self.getDirPath()
         self.textBrowser_outputDir.setText(self.outputPath)
 
-    def getSeatInputFilePath(self):
-        """
-        set the output path. 
-        """ 
-        self.seatInputPath = self.getScanFilePath()
-        self.textBrowser_seatInputDir.setText(self.seatInputPath)
-
-    def checkBoxDir_state_changed(self):
-        if self.checkBox_saveToSameDir.isChecked():
-            self.outputPath = self.inputPath
-            self.textBrowser_outputDir.setText(self.inputPath)
-
     def textBrowserDir_state_changed(self):
+        """
+        enable the start button if both the input and output paths are selected.
+        """ 
         if (self.inputPath and self.outputPath):
             self.pushButton_start.setEnabled(True)
         else:
             self.pushButton_start.setEnabled(False)
 
     def expandMonitor(self):
+        """
+        expand and retract the activity monitor
+        """ 
         if self.pushButton_monitor.isChecked():
             self.panel_right.setMaximumWidth(220)
             self.panel_right.setMinimumWidth(220)
@@ -143,74 +107,31 @@ class MainWindow(QMainWindow):
             self.panel_right.setMaximumWidth(0)
             self.panel_right.setMinimumWidth(0)
 
-    def resetRadius(self):
-        self.spinBox_radius.setValue(defaultConfig['radius'])
-        self.horizontalSlider_radius.setValue(defaultConfig['radius'])
-
-    def resetSmoothiter(self):
-        self.spinBox_smoothiter.setValue(defaultConfig['smoothiter'])
-        self.horizontalSlider_smoothiter.setValue(defaultConfig['smoothiter'])
-
-    def resetEdge(self):
-        self.spinBox_edge.setValue(defaultConfig['edgeLength'])
-        self.horizontalSlider_edge.setValue(defaultConfig['edgeLength'])
-
-    def updateConfig(self):
-        self.config['radius'] = self.spinBox_radius.value()
-        self.config['smoothiter'] = self.spinBox_smoothiter.value()
-        self.config['edgeLength'] = self.spinBox_edge.value()
-
-    def getProjectPaths(self):
-        # walk through the input folder
-        for subdir, dirs, files in os.walk(self.inputPath):
-            # search for scan with filename 'scan_*.ply'
-            scanPath = os.path.join(subdir, 'scan_0.ply')
-            jointPath = os.path.join(subdir, 'joints_0.csv')
-            if (os.path.isfile(scanPath) and os.path.isfile(jointPath)):
-                # add to projectPaths
-                self.projectPaths.append(subdir)
-
     def startProcessing(self):
-        self.getProjectPaths()
+        """
+        start processing the input file.
+        disable the start and set path buttons.
+        """ 
         self.pushButton_start.setEnabled(False)
         self.pushButton_inputDir.setEnabled(False)
         self.pushButton_outputDir.setEnabled(False)
-        self.singleProcessing()
+        self.singleProcessing() # process one project. 
 
     def singleProcessing(self):
-        if(self.indPath < len(self.projectPaths)):
-            tic = time.perf_counter()
-            projectPath = self.projectPaths[self.indPath]
-            self.updateConfig()
+        """
+        Create a pymeshlab job instance and enable the start and set path buttons afterwards.
+        """ 
+        job = PymeshlabJob(self.inputPath, self.outputPath)
+        self.resultPath = job.startProcessing()
+        job2 = VTKJob(self.resultPath,self.outputPath)
+        #  I forgot how to load the colors using vtk. Job2 will lose its colors
+        self.resultPath = job2.startProcessing()
+        self.displayResult(self.resultPath)
+        self.textBrowser_currentProject.setText(self.resultPath)
 
-            self.resultPath = self.processProject(projectPath)
-            self.displayResult(self.resultPath)
-            self.textBrowser_currentProject.setText(self.resultPath)
-        
-            self.indPath = self.indPath + 1
-            self.pushButton_dontSave.setEnabled(True)
-            self.pushButton_saveAndContinue.setEnabled(True)
-            self.pushButton_redo.setEnabled(True)
-
-            toc = time.perf_counter()
-            self.computeProcessTIme(tic, toc)
-        else:
-            self.finishProcessing()
-
-    def processProject(self, projectPath):
-        job = Job(projectPath, self.outputPath, self.config)
-        # load joint ponts to a numpy array
-        joint_arr = job.load_joint_points()
-        # create a meshset with a single mesh that has been flattened
-        job.load_meshes()
-        # remove background vertices
-        job.remove_background(joint_arr)
-        # apply filters
-        job.apply_filters()
-        # save mesh
-        job.export_mesh()
-        #get result path
-        return job.getResultPath()
+        self.pushButton_dontSave.setEnabled(True)
+        self.pushButton_saveAndContinue.setEnabled(True)
+        self.pushButton_redo.setEnabled(True)
 
     def displayResult(self, filename):
         self.ren.RemoveAllViewProps()
@@ -230,18 +151,6 @@ class MainWindow(QMainWindow):
         self.iren.Initialize()
         self.iren.Start()
 
-    def computeProcessTIme(self, tic, toc):
-        processTime = toc - tic
-        self.sumProcessTime = self.sumProcessTime + processTime
-        self.numProcessed = self.numProcessed + 1
-        self.label_numProcessed.setText(f"{self.numProcessed} projects")
-        try:
-            averageProcessTime = self.sumProcessTime/self.numProcessed
-        except ZeroDivisionError:
-            averageProcessTime = 0
-        self.label_avgProcessTime.setText(f"{averageProcessTime:0.4f} seconds")
-        self.label_processTime.setText(f"{processTime:0.4f} seconds")
-
     def finishProcessing(self):
         self.pushButton_dontSave.setEnabled(False)
         self.pushButton_saveAndContinue.setEnabled(False)
@@ -249,20 +158,22 @@ class MainWindow(QMainWindow):
         self.pushButton_start.setEnabled(True)
         self.pushButton_inputDir.setEnabled(True)
         self.pushButton_outputDir.setEnabled(True)
-        self.indPath = 0
-        self.projectPaths = []
-        self.sumProcessTime = .0
-        self.numProcessed = 0
         self.show_popup()
 
     def saveAndContinue(self):
         listWidgetItem = QListWidgetItem(self.resultPath)
         self.listWidget_savedProjects.addItem(listWidgetItem)
         print("added to list")
+
+        """
+        if there are more projects to work on
         self.pushButton_dontSave.setEnabled(False)
         self.pushButton_saveAndContinue.setEnabled(False)
         self.pushButton_redo.setEnabled(False)
         self.singleProcessing()
+        """
+
+        self.finishProcessing()
 
     def deleteAndContinue(self):
         listWidgetItem = QListWidgetItem(self.resultPath)
@@ -271,25 +182,21 @@ class MainWindow(QMainWindow):
         self.pushButton_saveAndContinue.setEnabled(False)
         self.pushButton_redo.setEnabled(False)
         os.remove(self.resultPath)
-        self.singleProcessing()
+
+        # if there are more projects to work on
+        # self.singleProcessing()
+        self.finishProcessing()
 
     def redo(self):
         self.pushButton_dontSave.setEnabled(False)
         self.pushButton_saveAndContinue.setEnabled(False)
         self.pushButton_redo.setEnabled(False)
-        self.indPath = self.indPath - 1
         self.singleProcessing()
 
     def show_popup(self):
         msg = QMessageBox()
         msg.setText("Processed All Scans!")
         msg.exec()
-
-    def mergeSeat(self):
-        print(self.textBrowser_currentProject.toPlainText())
-        mergeJob = MergeJob(self.resultPath, self.seatInputPath,self.resultPath)
-        mergeJob.start()
-        self.displayResult(mergeJob.getResultPath())
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

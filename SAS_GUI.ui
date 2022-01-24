@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>839</width>
+    <width>861</width>
     <height>546</height>
    </rect>
   </property>
@@ -209,777 +209,195 @@ QPushButton{
       </property>
       <layout class="QVBoxLayout" name="layout_left">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <item>
-          <widget class="QPushButton" name="pushButton_mainPage">
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton::hover{
-	background-color: rgb(18, 18, 18);
+        <widget class="QPushButton" name="pushButton_inputDir">
+         <property name="minimumSize">
+          <size>
+           <width>200</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton::hover{
+	background-color: rgb(20, 51, 89);
 }
 QPushButton{
-	background-color: rgb(51, 51, 51);
-}</string>
-           </property>
-           <property name="text">
-            <string>Main</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_seatPage">
-           <property name="font">
-            <font>
-             <family>Arial</family>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton::hover{
-	background-color: rgb(18, 18, 18);
+	background-color: rgb(49, 110, 186);
 }
-QPushButton{
-	background-color: rgb(51, 51, 51);
+QPushButton:disabled {
+	background-color: rgb(121, 121, 121);
 }</string>
-           </property>
-           <property name="text">
-            <string>Merge Seat</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="spinBox">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>1</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="frame">
-            <bool>false</bool>
-           </property>
-           <property name="buttonSymbols">
-            <enum>QAbstractSpinBox::NoButtons</enum>
-           </property>
-           <property name="maximum">
-            <number>1</number>
-           </property>
-          </widget>
-         </item>
-        </layout>
+         </property>
+         <property name="text">
+          <string>Select Input Directory</string>
+         </property>
+         <property name="autoDefault">
+          <bool>false</bool>
+         </property>
+        </widget>
        </item>
        <item>
-        <widget class="QStackedWidget" name="stackedWidget">
+        <widget class="QLabel" name="label_inputSign">
+         <property name="text">
+          <string>Input Directory:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextBrowser" name="textBrowser_inputDir">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="currentIndex">
-          <number>0</number>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>50</height>
+          </size>
          </property>
-         <widget class="QWidget" name="panel_left_page_1">
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <item>
-            <widget class="QPushButton" name="pushButton_inputDir">
-             <property name="minimumSize">
-              <size>
-               <width>200</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton::hover{
-	background-color: rgb(20, 51, 89);
-}
-QPushButton{
-	background-color: rgb(49, 110, 186);
-}
-QPushButton:disabled {
-	background-color: rgb(121, 121, 121);
-}</string>
-             </property>
-             <property name="text">
-              <string>Select Input Directory</string>
-             </property>
-             <property name="autoDefault">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <item>
-              <widget class="QLabel" name="label_inputSign">
-               <property name="text">
-                <string>Input Directory:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_outputInfo">
-               <property name="maximumSize">
-                <size>
-                 <width>20</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton::hover{
-	background-color: rgb(68, 67, 68);
-}
-QPushButton{
-	border: 10px;
-}</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>res/info.png</normaloff>res/info.png</iconset>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QTextBrowser" name="textBrowser_inputDir">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>50</height>
-              </size>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Plain</enum>
-             </property>
-             <property name="html">
-              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="openLinks">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="Line" name="line_topLeft">
-             <property name="frameShadow">
-              <enum>QFrame::Plain</enum>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QCheckBox" name="checkBox_saveToSameDir">
-             <property name="text">
-              <string>Save to Same Directory</string>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_outputDir">
-             <property name="styleSheet">
-              <string notr="true">QPushButton::hover{
-	background-color: rgb(20, 51, 89);
-}
-QPushButton{
-	background-color: rgb(49, 110, 186);
-}
-QPushButton:disabled {
-	background-color: rgb(121, 121, 121);
-}</string>
-             </property>
-             <property name="text">
-              <string>Select Output Directory</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_outputSign">
-             <property name="text">
-              <string>Output Directory:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QTextBrowser" name="textBrowser_outputDir">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>50</height>
-              </size>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Plain</enum>
-             </property>
-             <property name="html">
-              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="Line" name="line_bottomLeft">
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(68, 67, 68);</string>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Plain</enum>
-             </property>
-             <property name="lineWidth">
-              <number>1</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_configurator">
-             <item>
-              <widget class="QLabel" name="label_configurator">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="font">
-                <font>
-                 <family>Arial</family>
-                 <pointsize>18</pointsize>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="text">
-                <string>Configurator</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_resetAll">
-               <property name="minimumSize">
-                <size>
-                 <width>30</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton::hover{
-	background-color: rgb(68, 67, 68);
-}
-QPushButton{
-	border: 10px;
-}</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>res/back.png</normaloff>res/back.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>20</width>
-                 <height>16</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_configInfo">
-               <property name="maximumSize">
-                <size>
-                 <width>20</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton::hover{
-	background-color: rgb(68, 67, 68);
-}
-QPushButton{
-	border: 10px;
-}</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>res/info.png</normaloff>res/info.png</iconset>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout_topRight">
-             <property name="sizeConstraint">
-              <enum>QLayout::SetMaximumSize</enum>
-             </property>
-             <item row="1" column="2">
-              <widget class="QSpinBox" name="spinBox_radius">
-               <property name="maximum">
-                <number>999</number>
-               </property>
-               <property name="singleStep">
-                <number>50</number>
-               </property>
-               <property name="value">
-                <number>400</number>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="3">
-              <widget class="QPushButton" name="pushButton_defEdge">
-               <property name="maximumSize">
-                <size>
-                 <width>30</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton::hover{
-	background-color: rgb(68, 67, 68);
-}
-QPushButton{
-	border: 10px;
-}</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>res/back.png</normaloff>res/back.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>20</width>
-                 <height>16</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_smoothiter">
-               <property name="text">
-                <string>Smoothiter</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="3">
-              <widget class="QPushButton" name="pushButton_defSmoothiter">
-               <property name="maximumSize">
-                <size>
-                 <width>30</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton::hover{
-	background-color: rgb(68, 67, 68);
-}
-QPushButton{
-	border: 10px;
-}</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>res/back.png</normaloff>res/back.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>20</width>
-                 <height>16</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QSlider" name="horizontalSlider_radius">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>137</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="autoFillBackground">
-                <bool>false</bool>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="maximum">
-                <number>999</number>
-               </property>
-               <property name="singleStep">
-                <number>50</number>
-               </property>
-               <property name="value">
-                <number>400</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_radius">
-               <property name="text">
-                <string>Radius</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QSlider" name="horizontalSlider_edge">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>137</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="maximum">
-                <number>50</number>
-               </property>
-               <property name="singleStep">
-                <number>5</number>
-               </property>
-               <property name="value">
-                <number>15</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_edge">
-               <property name="text">
-                <string>Edge Length</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QSlider" name="horizontalSlider_smoothiter">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>137</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="maximum">
-                <number>10</number>
-               </property>
-               <property name="value">
-                <number>2</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="3">
-              <widget class="QPushButton" name="pushButton_defRadius">
-               <property name="maximumSize">
-                <size>
-                 <width>30</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton::hover{
-	background-color: rgb(68, 67, 68);
-}
-QPushButton{
-	border: 10px;
-}</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>res/back.png</normaloff>res/back.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>20</width>
-                 <height>16</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="2">
-              <widget class="QSpinBox" name="spinBox_smoothiter">
-               <property name="maximum">
-                <number>10</number>
-               </property>
-               <property name="value">
-                <number>2</number>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="2">
-              <widget class="QSpinBox" name="spinBox_edge">
-               <property name="maximum">
-                <number>50</number>
-               </property>
-               <property name="value">
-                <number>15</number>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_start">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="font">
-              <font>
-               <family>Arial</family>
-               <pointsize>18</pointsize>
-               <weight>50</weight>
-               <bold>false</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton::hover{
-	background-color: rgb(41, 83, 144);
-}
-QPushButton{
-	background-color: rgb(49, 110, 186);
-}
-QPushButton:disabled {
-	background-color: rgb(121, 121, 121);
-}</string>
-             </property>
-             <property name="text">
-              <string>START</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_panelLeft">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Expanding</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>34</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="panel_left_page2">
-          <layout class="QVBoxLayout" name="verticalLayout_3">
-           <item>
-            <widget class="QPushButton" name="pushButton_seatInputDir">
-             <property name="minimumSize">
-              <size>
-               <width>200</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton::hover{
-	background-color: rgb(20, 51, 89);
-}
-QPushButton{
-	background-color: rgb(49, 110, 186);
-}
-QPushButton:disabled {
-	background-color: rgb(121, 121, 121);
-}</string>
-             </property>
-             <property name="text">
-              <string>Select Seat Scan Directory</string>
-             </property>
-             <property name="autoDefault">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_seatInputSign">
-             <property name="text">
-              <string>Seat Directory:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QTextBrowser" name="textBrowser_seatInputDir">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>50</height>
-              </size>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Plain</enum>
-             </property>
-             <property name="html">
-              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-             <property name="openLinks">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="Line" name="line_topLeft_2">
-             <property name="frameShadow">
-              <enum>QFrame::Plain</enum>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_seatStart">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <property name="font">
-              <font>
-               <family>Arial</family>
-               <pointsize>18</pointsize>
-               <weight>50</weight>
-               <bold>false</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton::hover{
-	background-color: rgb(41, 83, 144);
-}
-QPushButton{
-	background-color: rgb(49, 110, 186);
-}
-QPushButton:disabled {
-	background-color: rgb(121, 121, 121);
-}</string>
-             </property>
-             <property name="text">
-              <string>START</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </widget>
+         </property>
+         <property name="openLinks">
+          <bool>true</bool>
+         </property>
         </widget>
+       </item>
+       <item>
+        <widget class="Line" name="line_topLeft">
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_outputDir">
+         <property name="styleSheet">
+          <string notr="true">QPushButton::hover{
+	background-color: rgb(20, 51, 89);
+}
+QPushButton{
+	background-color: rgb(49, 110, 186);
+}
+QPushButton:disabled {
+	background-color: rgb(121, 121, 121);
+}</string>
+         </property>
+         <property name="text">
+          <string>Select Output Directory</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_outputSign">
+         <property name="text">
+          <string>Output Directory:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextBrowser" name="textBrowser_outputDir">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Line" name="line_bottomLeft">
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(68, 67, 68);</string>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>1</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_start">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>18</pointsize>
+           <weight>50</weight>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton::hover{
+	background-color: rgb(41, 83, 144);
+}
+QPushButton{
+	background-color: rgb(49, 110, 186);
+}
+QPushButton:disabled {
+	background-color: rgb(121, 121, 121);
+}</string>
+         </property>
+         <property name="text">
+          <string>START</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_panelLeft">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>34</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -1019,31 +437,6 @@ QPushButton:disabled {
            </property>
            <property name="indent">
             <number>0</number>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_viewerInfo">
-           <property name="maximumSize">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton::hover{
-	background-color: rgb(68, 67, 68);
-}
-QPushButton{
-	border: 10px;
-}</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>res/info.png</normaloff>res/info.png</iconset>
            </property>
           </widget>
          </item>
@@ -1218,58 +611,6 @@ QPushButton:disabled {
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_numProcessedTitle">
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Number of processed projects:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_numProcessed">
-         <property name="text">
-          <string>0 project</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_avgProcessTimeTitle">
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Average process time:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_avgProcessTime">
-         <property name="text">
-          <string>0 second</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_processTimeTitle">
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Last process time:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_processTime">
-         <property name="text">
-          <string>0 second</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="Line" name="line_rightMid">
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QLabel" name="label_savedProjects">
          <property name="text">
           <string>Saved Projects:</string>
@@ -1352,214 +693,5 @@ QPushButton:disabled {
   </action>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>pushButton_resetAll</sender>
-   <signal>clicked()</signal>
-   <receiver>pushButton_defEdge</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>286</x>
-     <y>339</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>312</x>
-     <y>425</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>horizontalSlider_edge</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>spinBox_edge</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>224</x>
-     <y>423</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>280</x>
-     <y>426</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>horizontalSlider_smoothiter</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>spinBox_smoothiter</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>224</x>
-     <y>395</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>280</x>
-     <y>398</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox_saveToSameDir</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>pushButton_outputDir</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>301</x>
-     <y>193</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>299</x>
-     <y>225</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_resetAll</sender>
-   <signal>clicked()</signal>
-   <receiver>pushButton_defRadius</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>286</x>
-     <y>339</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>312</x>
-     <y>369</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_resetAll</sender>
-   <signal>clicked()</signal>
-   <receiver>pushButton_defSmoothiter</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>286</x>
-     <y>339</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>312</x>
-     <y>397</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>spinBox_radius</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>horizontalSlider_radius</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>280</x>
-     <y>370</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>224</x>
-     <y>367</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>spinBox_edge</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>horizontalSlider_edge</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>280</x>
-     <y>426</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>224</x>
-     <y>423</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>spinBox_smoothiter</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>horizontalSlider_smoothiter</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>280</x>
-     <y>398</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>224</x>
-     <y>395</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>horizontalSlider_radius</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>spinBox_radius</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>224</x>
-     <y>367</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>280</x>
-     <y>370</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>spinBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>stackedWidget</receiver>
-   <slot>setCurrentIndex(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>186</x>
-     <y>12</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>193</x>
-     <y>48</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_mainPage</sender>
-   <signal>clicked()</signal>
-   <receiver>spinBox</receiver>
-   <slot>stepDown()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>121</x>
-     <y>27</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>176</x>
-     <y>25</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_seatPage</sender>
-   <signal>clicked()</signal>
-   <receiver>spinBox</receiver>
-   <slot>stepUp()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>260</x>
-     <y>24</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>194</x>
-     <y>24</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
