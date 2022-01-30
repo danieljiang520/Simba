@@ -22,7 +22,9 @@ Download the latest version from the [releases](https://github.com/danieljiang52
 
 ## Usage
 #### Input Folder
-* Simba checks all paths underneath the input directory that contain at least 1 .ply file with the pattern scan.py and 1 joint file obtained from the Kinect Scanner with the pattern joint_.csv
+Simba checks all paths underneath the input directory that contain the following files
+* At least 1 .ply file with the naming pattern scan_*.py
+* At least 1 joint file obtained from the Kinect Scanner with the naming pattern joint_*.csv
 
 #### Seat Merging Input File
 * Any .ply file
