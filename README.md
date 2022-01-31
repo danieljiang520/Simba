@@ -1,5 +1,8 @@
+<img width="128px" src="https://user-images.githubusercontent.com/71047773/151723180-2b6cc351-e4c6-4f3a-b520-8b0d197e728e.png" alt="Logo" align="left" />
+
 # Simba
-Simba is a graphical user interface tool for processing 3D kinect scan files. It can automatically remove background points from 3D scans, create watertight body shape surfaces, and visualize final noise-free meshes, providing data to generate realistic body shape and dimension predictions.
+
+Simba is a graphical user interface tool for processing 3D kinect scan files. It can automatically remove background points from 3D Kinect scans, create watertight body shape surfaces, and visualize final noise-free meshes, providing data to generate realistic body shape and dimension predictions.
 
 Simba works on macOS Mojave 10.14 or higher.
 
@@ -38,7 +41,7 @@ In 2014, the Bioscience Group at the University of Michigan Transportation Resea
 * The user should be able to work through multiple projects one at
 a time, and set custom configuration for individual meshes
 
-When fitting a body shape model to a noisy point cloud to measure body dimensions, the fitting method needs to decide the most feasible target location for each vertex of the model, which is computationally quite expensive. This program generates noise- free body shape meshes from noisy point cloud data, which greatly reduce fitting time (from 10 sec to 1 sec) and increase the accuracy of the body shape and dimension predictions.
+When fitting a body shape model to a noisy point cloud to measure body dimensions, the fitting method needs to decide the most feasible target location for each vertex of the model, which is computationally quite expensive. This program generates noise-free body shape meshes from noisy point cloud data, which greatly reduce fitting time (from 10 sec to 1 sec) and increase the accuracy of the body shape and dimension predictions.
 
 #### References
 Park, B. K., Lumeng, J. C., Lumeng, C. N., Ebert, S. M., & Reed, M. P. (2014). Child body shape measurement using depth cameras and a statistical body shape model. Ergonomics, 58(2), 301–309. https://doi.org/10.1080/00140139.2014.965754
