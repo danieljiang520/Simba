@@ -1,4 +1,4 @@
-<img width="128px" src="https://user-images.githubusercontent.com/71047773/151723180-2b6cc351-e4c6-4f3a-b520-8b0d197e728e.png" alt="Logo" align="left" />
+<img width="128px" src="https://user-images.githubusercontent.com/71047773/151742219-b1d93688-36f1-4bab-a7e0-40b8bed34cdc.png" alt="Logo" align="left" />
 
 # Simba
 
