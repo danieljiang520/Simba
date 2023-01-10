@@ -1,6 +1,5 @@
-import os, glob, pathlib
+import os, glob
 from pymeshlab import MeshSet, Mesh
-import numpy as np
 import pandas as pd
 class Job:
     def __init__(self, subdir, outputPath, config):
@@ -11,7 +10,7 @@ class Job:
 
     def load_joint_points(self):
         # get filepaths for each of the joint file
-        filepaths = glob.glob(os.path.join(self.subdir, "joints_*.csv"))  
+        filepaths = glob.glob(os.path.join(self.subdir, "joints_*.csv"))
         # combine the three files into one dataframe
         df_from_each_file = (pd.read_csv(f, header=None) for f in filepaths)
         concatenated_df = pd.concat(df_from_each_file, ignore_index=True)
@@ -23,7 +22,7 @@ class Job:
         # create a new MeshSet
         self.ms = MeshSet()
         # load meshes
-        filepaths = glob.glob(os.path.join(self.subdir, "scan_*.ply"))  
+        filepaths = glob.glob(os.path.join(self.subdir, "scan_*.ply"))
         for filepath in filepaths:
             self.ms.load_new_mesh(filepath)
         # flatten visible layers - combine all meshes
@@ -46,7 +45,7 @@ class Job:
         # set current mesh back to the scan mesh
         self.ms.set_current_mesh(scan_mesh_id)
         m = self.ms.current_mesh()
-        # Hausdorff Distance filter will store into the "quality" for each vertex of A the distance from the closest vertex of B; 
+        # Hausdorff Distance filter will store into the "quality" for each vertex of A the distance from the closest vertex of B;
         # then use the conditional selection filter by testing against quality to remove background vertices.
         self.ms.hausdorff_distance(sampledmesh = scan_mesh_id, targetmesh = joint_mesh_id, samplenum = sample_num, maxdist = self.config['radius'])
         self.ms.conditional_vertex_selection(condselect = f"(q >= {self.config['radius']})")
@@ -56,7 +55,7 @@ class Job:
     def apply_filters(self):
         # compute normals for the points. use smooth iteration number 2.
         self.ms.compute_normals_for_point_sets(smoothiter = self.config['smoothiter'])
-        # reconstruct points as a surface using the Poisson method. use default parameters for now. 
+        # reconstruct points as a surface using the Poisson method. use default parameters for now.
         self.ms.surface_reconstruction_screened_poisson()
 
         # print out default value for 'select_faces_with_edges_longer_than' function
@@ -76,5 +75,3 @@ class Job:
 
     def getResultPath(self):
         return self.outputPath
-
-    

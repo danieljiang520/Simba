@@ -1,14 +1,12 @@
-import sys, copy, vtk, time
-from PyQt5.uic import loadUi
-from job import *
-import resources
+import sys, copy, vtkmodules, time
+# from job import *
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import (
-    QMainWindow, 
-    QFileDialog, 
-    QListWidgetItem, 
-    QMessageBox, 
+    QMainWindow,
+    QFileDialog,
+    QListWidgetItem,
+    QMessageBox,
     QApplication,
 )
 
@@ -641,17 +639,17 @@ class MainWindow(QMainWindow):
         self.pushButton_dontSave.clicked.connect(self.deleteAndContinue)
         self.pushButton_redo.clicked.connect(self.redo)
 
-        # Set up VTK
+        # Set up vtkmodules
         self.vtkWidget = QVTKRenderWindowInteractor()
         self.verticalLayout_midMid.addWidget(self.vtkWidget)
-        self.ren = vtk.vtkRenderer()
-        colors = vtk.vtkNamedColors()
+        self.ren = vtkmodules.vtkRenderer()
+        colors = vtkmodules.vtkNamedColors()
         self.ren.SetBackground(colors.GetColor3d('DarkSlateBlue'))
         self.ren.SetBackground2(colors.GetColor3d('MidnightBlue'))
         self.ren.GradientBackgroundOn()
         self.vtkWidget.GetRenderWindow().AddRenderer(self.ren)
         self.iren = self.vtkWidget.GetRenderWindow().GetInteractor()
-        style = vtk.vtkInteractorStyleTrackballCamera()
+        style = vtkmodules.vtkInteractorStyleTrackballCamera()
         self.iren.SetInteractorStyle(style)
 
     def getInputFilePath(self):
@@ -728,9 +726,9 @@ class MainWindow(QMainWindow):
             self.textBrowser_currentProject.setText(projectPath)
             self.updateConfig()
 
-            self.resultPath = self.processProject(projectPath)
-            self.displayResult(self.resultPath)
-        
+            # self.resultPath = self.processProject(projectPath)
+            # self.displayResult(self.resultPath)
+
             self.indPath = self.indPath + 1
             self.pushButton_dontSave.setEnabled(True)
             self.pushButton_saveAndContinue.setEnabled(True)
@@ -741,32 +739,32 @@ class MainWindow(QMainWindow):
         else:
             self.finishProcessing()
 
-    def processProject(self, projectPath):
-        job = Job(projectPath, self.outputPath, self.config)
-        # load joint ponts to a numpy array
-        joint_arr = job.load_joint_points()
-        # create a meshset with a single mesh that has been flattened
-        job.load_meshes()
-        # remove background vertices
-        job.remove_background(joint_arr)
-        # apply filters
-        job.apply_filters()
-        # save mesh
-        job.export_mesh()
-        #get result path
-        return job.getResultPath()
+    # def processProject(self, projectPath):
+    #     job = Job(projectPath, self.outputPath, self.config)
+    #     # load joint ponts to a numpy array
+    #     joint_arr = job.load_joint_points()
+    #     # create a meshset with a single mesh that has been flattened
+    #     job.load_meshes()
+    #     # remove background vertices
+    #     job.remove_background(joint_arr)
+    #     # apply filters
+    #     job.apply_filters()
+    #     # save mesh
+    #     job.export_mesh()
+    #     #get result path
+    #     return job.getResultPath()
 
     def displayResult(self, filename):
         self.ren.RemoveAllViewProps()
         # Read and display for verification
-        reader = vtk.vtkPLYReader()
+        reader = vtkmodules.vtkPLYReader()
         reader.SetFileName(filename)
         reader.Update()
         # Create a mapper
-        mapper = vtk.vtkPolyDataMapper()
+        mapper = vtkmodules.vtkPolyDataMapper()
         mapper.SetInputConnection(reader.GetOutputPort())
         # Create an actor
-        actor = vtk.vtkActor()
+        actor = vtkmodules.vtkActor()
         actor.SetMapper(mapper)
         self.ren.AddActor(actor)
         self.ren.ResetCamera()
@@ -834,4 +832,4 @@ if __name__ == "__main__":
     mainwindow = MainWindow()
     mainwindow.show()
     sys.exit(app.exec())
-    
+
