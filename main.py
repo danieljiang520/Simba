@@ -3,28 +3,20 @@ from PyQt5.uic import loadUi
 from job import *
 
 from PyQt5.QtWidgets import (
-    QMainWindow, 
-    QFileDialog, 
-    QListWidgetItem, 
-    QMessageBox, 
+    QMainWindow,
+    QFileDialog,
+    QListWidgetItem,
+    QMessageBox,
     QApplication,
-    QWidget,
-    QVBoxLayout,
-    QLabel
 )
-from vtkmodules.vtkIOPLY import (
-    vtkPLYReader
-)
-from vtkmodules.vtkRenderingCore import (
-    vtkActor,
-    vtkPolyDataMapper,
-    # vtkRenderWindow,
-    # vtkRenderWindowInteractor,
-    vtkRenderer
-)
-from vtkmodules.vtkCommonColor import vtkNamedColors
-from vtkmodules.vtkInteractionStyle import vtkInteractorStyleTrackballCamera
+
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+
+## vedo
+from vedo import (
+    Plotter,
+    Mesh,
+)
 
 # Default parameters for the configurator
 defaultConfig = {
@@ -67,41 +59,39 @@ class MainWindow(QMainWindow):
         self.pushButton_seatInputDir.clicked.connect(self.getSeatInputFilePath)
         self.pushButton_seatStart.clicked.connect(self.mergeSeat)
 
-        # Set up VTK widget
+        """ Set up VTK widget """
         self.vtkWidget = QVTKRenderWindowInteractor()
+        self.vtkWidget._getPixelRatio = lambda: 1 # A hacky way to resolve vtk widget screen resolution bug
         self.verticalLayout_midMid.addWidget(self.vtkWidget)
-        self.ren = vtkRenderer()
-        colors = vtkNamedColors()
-        self.ren.SetBackground(colors.GetColor3d('DarkSlateBlue'))
-        self.ren.SetBackground2(colors.GetColor3d('MidnightBlue'))
-        self.ren.GradientBackgroundOn()
-        self.vtkWidget.GetRenderWindow().AddRenderer(self.ren)
-        self.iren = self.vtkWidget.GetRenderWindow().GetInteractor()
-        style = vtkInteractorStyleTrackballCamera()
-        self.iren.SetInteractorStyle(style)
+
+        """ Create renderer and add the vedo objects and callbacks """
+        self.plt = Plotter(bg='DarkSlateBlue',bg2='MidnightBlue',qt_widget=self.vtkWidget)
+        # self.plt.add_callback("LeftButtonPress", self.onLeftClick)
+        # self.plt.add_callback("key press", self.onKeyPress)
+        # self.plt.add_callback('MouseMove', self.onMouseMove)
+        self.plt.show(zoom=True)                  # <--- show the vedo rendering
 
     def getDirPath(self):
         """
         getDirPath opens a file dialog and only allows the user to select folders
-        """ 
+        """
         return QFileDialog.getExistingDirectory(self, "Open Directory",
                                                 os.getcwd(),
                                                 QFileDialog.ShowDirsOnly
                                                 | QFileDialog.DontResolveSymlinks)
-    
+
     def getScanFilePath(self):
         """
         getScanFilePath opens a file dialog and only allows the user to select ply files
-        """ 
-        return QFileDialog.getOpenFileName(self, 'Open File', 
-         os.getcwd(),"Ply Scan Files (*.ply)")[0]
+        """
+        return QFileDialog.getOpenFileName(self, 'Open File', os.getcwd(), "Ply Scan Files (*.ply)")[0]
 
     def getInputFilePath(self):
         """
         logics for enabling the set input path button.
         when the save to same dir checkbox is checked,
-        set the output path. 
-        """ 
+        set the output path.
+        """
         self.inputPath = self.getDirPath()
         self.textBrowser_inputDir.setText(self.inputPath)
         if self.checkBox_saveToSameDir.isChecked():
@@ -112,15 +102,15 @@ class MainWindow(QMainWindow):
         """
         logics for enabling the set input path button.
         when the save to same dir checkbox is checked,
-        set the output path. 
-        """ 
+        set the output path.
+        """
         self.outputPath = self.getDirPath()
         self.textBrowser_outputDir.setText(self.outputPath)
 
     def getSeatInputFilePath(self):
         """
-        set the output path. 
-        """ 
+        set the output path.
+        """
         self.seatInputPath = self.getScanFilePath()
         self.textBrowser_seatInputDir.setText(self.seatInputPath)
 
@@ -186,7 +176,7 @@ class MainWindow(QMainWindow):
             self.resultPath = self.processProject(projectPath)
             self.displayResult(self.resultPath)
             self.textBrowser_currentProject.setText(self.resultPath)
-        
+
             self.indPath = self.indPath + 1
             self.pushButton_dontSave.setEnabled(True)
             self.pushButton_saveAndContinue.setEnabled(True)
@@ -213,22 +203,15 @@ class MainWindow(QMainWindow):
         return job.getResultPath()
 
     def displayResult(self, filename):
-        self.ren.RemoveAllViewProps()
-        # Read and display for verification
-        reader = vtkPLYReader()
-        reader.SetFileName(filename)
-        reader.Update()
-        # Create a mapper
-        mapper = vtkPolyDataMapper()
-        mapper.SetInputConnection(reader.GetOutputPort())
-        # Create an actor
-        actor = vtkActor()
-        actor.SetMapper(mapper)
-        self.ren.AddActor(actor)
-        self.ren.ResetCamera()
-        # Show
-        self.iren.Initialize()
-        self.iren.Start()
+        if (not filename.lower().endswith(('.ply', '.obj', '.stl'))):
+            return
+
+        fileBaseName = os.path.basename(filename)
+        m = Mesh(filename)
+        m.name = fileBaseName
+        self.plt.clear()
+        self.plt += m
+
 
     def computeProcessTIme(self, tic, toc):
         processTime = toc - tic
@@ -296,4 +279,4 @@ if __name__ == "__main__":
     mainwindow = MainWindow()
     mainwindow.show()
     sys.exit(app.exec())
-    
+
