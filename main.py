@@ -1,57 +1,54 @@
-import sys, copy, time
-from PyQt5.uic import loadUi
-from job import *
+# -----------------------------------------------------------
+# Author: Daniel Jiang (danieldj@umich.edu)
+# This file is part of the Seat Adjustment System (SAS) project.
+# -----------------------------------------------------------
 
+# %% standard lib imports
+import sys, time, os
+
+# %% first party imports
+from job import *
+from config import *
+from utils import *
+
+# %% project-specific imports
+## Qt
+from PyQt5.uic import loadUi
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import (
     QMainWindow,
     QFileDialog,
     QListWidgetItem,
     QMessageBox,
     QApplication,
+    QSlider,
+    QWidget,
 )
 
+## VTK
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
 ## vedo
-from vedo import (
-    Plotter,
-    Mesh,
-)
+from vedo import Plotter, Mesh
 
-# Default parameters for the configurator
-defaultConfig = {
-        'radius': 400,
-        'smoothiter': 2,
-        'edgeLength': 15,
-}
-
+#-------------------------------------------------------------------------------------------------
 # Main application window
 class MainWindow(QMainWindow):
-    inputPath = "" # absolute path to the input folder
-    seatInputPath = "" # absolute path to the seat scan
-    outputPath = "" # absolute path to the output folder
-    indPath = 0 # current project index
-    projectPaths = [] # contains all qualified undone projects' path
-    resultPath = "" # path to the most recent finished project ply file
-    sumProcessTime = .0 # process time for each scan
-    numProcessed = 0 # total number of processed scans
-    config = copy.deepcopy(defaultConfig)
 
     def __init__(self):
         super(MainWindow, self).__init__()
         loadUi("SAS_GUI.ui", self)
 
-        # Connections for all elements in Mainwindow
+        """ Connections for all elements in Mainwindow """
         self.pushButton_inputDir.clicked.connect(self.getInputFilePath)
         self.textBrowser_inputDir.textChanged.connect(self.textBrowserDir_state_changed)
         self.checkBox_saveToSameDir.stateChanged.connect(self.checkBoxDir_state_changed)
         self.pushButton_outputDir.clicked.connect(self.getOutputFilePath)
         self.textBrowser_outputDir.textChanged.connect(self.textBrowserDir_state_changed)
+
         self.pushButton_monitor.clicked.connect(self.expandMonitor)
         self.pushButton_start.clicked.connect(self.startProcessing)
-        self.pushButton_defRadius.clicked.connect(self.resetRadius)
-        self.pushButton_defSmoothiter.clicked.connect(self.resetSmoothiter)
-        self.pushButton_defEdge.clicked.connect(self.resetEdge)
+
         self.pushButton_saveAndContinue.clicked.connect(self.saveAndContinue)
         self.pushButton_dontSave.clicked.connect(self.deleteAndContinue)
         self.pushButton_redo.clicked.connect(self.redo)
@@ -65,22 +62,36 @@ class MainWindow(QMainWindow):
         self.verticalLayout_midMid.addWidget(self.vtkWidget)
 
         """ Create renderer and add the vedo objects and callbacks """
-        self.plt = Plotter(bg='DarkSlateBlue',bg2='MidnightBlue',qt_widget=self.vtkWidget)
+        self.plt = Plotter(bg='DarkSlateBlue', bg2='MidnightBlue', qt_widget=self.vtkWidget)
         # self.plt.add_callback("LeftButtonPress", self.onLeftClick)
         # self.plt.add_callback("key press", self.onKeyPress)
         # self.plt.add_callback('MouseMove', self.onMouseMove)
         self.plt.show(zoom=True)                  # <--- show the vedo rendering
+        self.initialize()
 
-    def getDirPath(self):
+    def initialize(self):
         """
-        getDirPath opens a file dialog and only allows the user to select folders
+        initialize is called when the program starts.
         """
-        return QFileDialog.getExistingDirectory(self, "Open Directory",
-                                                os.getcwd(),
-                                                QFileDialog.ShowDirsOnly
-                                                | QFileDialog.DontResolveSymlinks)
+        self.inputPath = "" # absolute path to the input folder
+        self.seatInputPath = "" # absolute path to the seat scan
+        self.outputPath = "" # absolute path to the output folder
+        self.indPath = 0 # current project index
+        self.projectPaths = [] # contains all qualified undone projects' path
+        self.resultPath = "" # path to the most recent finished project ply file
+        self.sumProcessTime = .0 # process time for each scan
+        self.numProcessed = 0 # total number of processed scans
 
-    def getScanFilePath(self):
+        self.configurator = Configurator()
+        self.verticalLayout_2.addLayout(self.configurator)
+
+    def getfilePath(self, ):
+        """
+        getScanFilePath opens a file dialog and only allows the user to select ply files
+        """
+        return QFileDialog.getOpenFileName(self, 'Open File', os.getcwd(), "json file (*.json)")[0]
+
+    def getScanFilePath(self, ):
         """
         getScanFilePath opens a file dialog and only allows the user to select ply files
         """
@@ -92,7 +103,7 @@ class MainWindow(QMainWindow):
         when the save to same dir checkbox is checked,
         set the output path.
         """
-        self.inputPath = self.getDirPath()
+        self.inputPath = getDirPath()
         self.textBrowser_inputDir.setText(self.inputPath)
         if self.checkBox_saveToSameDir.isChecked():
             self.outputPath = self.inputPath
@@ -104,7 +115,7 @@ class MainWindow(QMainWindow):
         when the save to same dir checkbox is checked,
         set the output path.
         """
-        self.outputPath = self.getDirPath()
+        self.outputPath = getDirPath()
         self.textBrowser_outputDir.setText(self.outputPath)
 
     def getSeatInputFilePath(self):
@@ -133,23 +144,6 @@ class MainWindow(QMainWindow):
             self.panel_right.setMaximumWidth(0)
             self.panel_right.setMinimumWidth(0)
 
-    def resetRadius(self):
-        self.spinBox_radius.setValue(defaultConfig['radius'])
-        self.horizontalSlider_radius.setValue(defaultConfig['radius'])
-
-    def resetSmoothiter(self):
-        self.spinBox_smoothiter.setValue(defaultConfig['smoothiter'])
-        self.horizontalSlider_smoothiter.setValue(defaultConfig['smoothiter'])
-
-    def resetEdge(self):
-        self.spinBox_edge.setValue(defaultConfig['edgeLength'])
-        self.horizontalSlider_edge.setValue(defaultConfig['edgeLength'])
-
-    def updateConfig(self):
-        self.config['radius'] = self.spinBox_radius.value()
-        self.config['smoothiter'] = self.spinBox_smoothiter.value()
-        self.config['edgeLength'] = self.spinBox_edge.value()
-
     def getProjectPaths(self):
         # walk through the input folder
         for subdir, dirs, files in os.walk(self.inputPath):
@@ -171,9 +165,10 @@ class MainWindow(QMainWindow):
         if(self.indPath < len(self.projectPaths)):
             tic = time.perf_counter()
             projectPath = self.projectPaths[self.indPath]
-            self.updateConfig()
+            config = self.configurator.getConfig()
+            print(config)
 
-            self.resultPath = self.processProject(projectPath)
+            self.resultPath = self.processProject(projectPath, config)
             self.displayResult(self.resultPath)
             self.textBrowser_currentProject.setText(self.resultPath)
 
@@ -187,11 +182,11 @@ class MainWindow(QMainWindow):
         else:
             self.finishProcessing()
 
-    def processProject(self, projectPath):
-        job = Job(projectPath, self.outputPath, self.config)
-        # load joint ponts to a numpy array
+    def processProject(self, projectPath, config):
+        job = Job(projectPath, self.outputPath, config)
+        # load joint points to a numpy array
         joint_arr = job.load_joint_points()
-        # create a meshset with a single mesh that has been flattened
+        # create a mesh set with a single mesh that has been flattened
         job.load_meshes()
         # remove background vertices
         job.remove_background(joint_arr)
@@ -210,7 +205,7 @@ class MainWindow(QMainWindow):
         m = Mesh(filename)
         m.name = fileBaseName
         self.plt.clear()
-        self.plt += m
+        self.plt.show(m, zoom=True)                 # <--- show the vedo rendering
 
 
     def computeProcessTIme(self, tic, toc):
@@ -273,6 +268,46 @@ class MainWindow(QMainWindow):
         mergeJob = MergeJob(self.resultPath, self.seatInputPath,self.resultPath)
         mergeJob.start()
         self.displayResult(mergeJob.getResultPath())
+
+
+class DoubleSlider(QSlider):
+
+    # create our our signal that we can connect to if necessary
+    doubleValueChanged = pyqtSignal(float)
+
+    def __init__(self, decimals=0, *args, **kargs):
+        super(DoubleSlider, self).__init__( *args, **kargs)
+        self._multi = 10 ** decimals
+
+        self.valueChanged.connect(self.emitDoubleValueChanged)
+        self.sliderMoved.connect(self.emitDoubleValueChanged)
+
+    def emitDoubleValueChanged(self):
+        value = float(super(DoubleSlider, self).value()) / self._multi
+        self.doubleValueChanged.emit(value)
+
+    def value(self):
+        return float(super(DoubleSlider, self).value()) / self._multi
+
+    def setMinimum(self, value):
+        return super(DoubleSlider, self).setMinimum(int(value * self._multi))
+
+    def setMaximum(self, value):
+        return super(DoubleSlider, self).setMaximum(int(value * self._multi))
+
+    def setRange(self, min, max):
+        self.setMinimum(min)
+        self.setMaximum(max)
+
+    def setSingleStep(self, value):
+        return super(DoubleSlider, self).setSingleStep(value * self._multi)
+
+    def singleStep(self):
+        return float(super(DoubleSlider, self).singleStep()) / self._multi
+
+    def setValue(self, value):
+        super(DoubleSlider, self).setValue(int(value * self._multi))
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

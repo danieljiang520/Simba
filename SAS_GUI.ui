@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>839</width>
+    <width>861</width>
     <height>546</height>
    </rect>
   </property>
@@ -473,344 +473,6 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item>
-            <widget class="Line" name="line_bottomLeft">
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(68, 67, 68);</string>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Plain</enum>
-             </property>
-             <property name="lineWidth">
-              <number>1</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_configurator">
-             <item>
-              <widget class="QLabel" name="label_configurator">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="font">
-                <font>
-                 <family>Arial</family>
-                 <pointsize>18</pointsize>
-                 <weight>75</weight>
-                 <bold>true</bold>
-                </font>
-               </property>
-               <property name="text">
-                <string>Configurator</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_resetAll">
-               <property name="minimumSize">
-                <size>
-                 <width>30</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton::hover{
-	background-color: rgb(68, 67, 68);
-}
-QPushButton{
-	border: 10px;
-}</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>res/back.png</normaloff>res/back.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>20</width>
-                 <height>16</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_configInfo">
-               <property name="maximumSize">
-                <size>
-                 <width>20</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton::hover{
-	background-color: rgb(68, 67, 68);
-}
-QPushButton{
-	border: 10px;
-}</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>res/info.png</normaloff>res/info.png</iconset>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout_topRight">
-             <property name="sizeConstraint">
-              <enum>QLayout::SetMaximumSize</enum>
-             </property>
-             <item row="1" column="2">
-              <widget class="QSpinBox" name="spinBox_radius">
-               <property name="maximum">
-                <number>999</number>
-               </property>
-               <property name="singleStep">
-                <number>50</number>
-               </property>
-               <property name="value">
-                <number>400</number>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="3">
-              <widget class="QPushButton" name="pushButton_defEdge">
-               <property name="maximumSize">
-                <size>
-                 <width>30</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton::hover{
-	background-color: rgb(68, 67, 68);
-}
-QPushButton{
-	border: 10px;
-}</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>res/back.png</normaloff>res/back.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>20</width>
-                 <height>16</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_smoothiter">
-               <property name="text">
-                <string>Smoothiter</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="3">
-              <widget class="QPushButton" name="pushButton_defSmoothiter">
-               <property name="maximumSize">
-                <size>
-                 <width>30</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton::hover{
-	background-color: rgb(68, 67, 68);
-}
-QPushButton{
-	border: 10px;
-}</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>res/back.png</normaloff>res/back.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>20</width>
-                 <height>16</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QSlider" name="horizontalSlider_radius">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>137</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="autoFillBackground">
-                <bool>false</bool>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="maximum">
-                <number>999</number>
-               </property>
-               <property name="singleStep">
-                <number>50</number>
-               </property>
-               <property name="value">
-                <number>400</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_radius">
-               <property name="text">
-                <string>Radius</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QSlider" name="horizontalSlider_edge">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>137</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="maximum">
-                <number>50</number>
-               </property>
-               <property name="singleStep">
-                <number>5</number>
-               </property>
-               <property name="value">
-                <number>15</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_edge">
-               <property name="text">
-                <string>Edge Length</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QSlider" name="horizontalSlider_smoothiter">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>137</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="maximum">
-                <number>10</number>
-               </property>
-               <property name="value">
-                <number>2</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="3">
-              <widget class="QPushButton" name="pushButton_defRadius">
-               <property name="maximumSize">
-                <size>
-                 <width>30</width>
-                 <height>20</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton::hover{
-	background-color: rgb(68, 67, 68);
-}
-QPushButton{
-	border: 10px;
-}</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>res/back.png</normaloff>res/back.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>20</width>
-                 <height>16</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="2">
-              <widget class="QSpinBox" name="spinBox_smoothiter">
-               <property name="maximum">
-                <number>10</number>
-               </property>
-               <property name="value">
-                <number>2</number>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="2">
-              <widget class="QSpinBox" name="spinBox_edge">
-               <property name="maximum">
-                <number>50</number>
-               </property>
-               <property name="value">
-                <number>15</number>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
             <widget class="QPushButton" name="pushButton_start">
              <property name="enabled">
               <bool>false</bool>
@@ -836,6 +498,22 @@ QPushButton:disabled {
              </property>
              <property name="text">
               <string>START</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_bottomLeft">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(68, 67, 68);</string>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
@@ -1354,162 +1032,18 @@ QPushButton:disabled {
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton_resetAll</sender>
-   <signal>clicked()</signal>
-   <receiver>pushButton_defEdge</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>286</x>
-     <y>339</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>312</x>
-     <y>425</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>horizontalSlider_edge</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>spinBox_edge</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>224</x>
-     <y>423</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>280</x>
-     <y>426</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>horizontalSlider_smoothiter</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>spinBox_smoothiter</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>224</x>
-     <y>395</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>280</x>
-     <y>398</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>checkBox_saveToSameDir</sender>
    <signal>toggled(bool)</signal>
    <receiver>pushButton_outputDir</receiver>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>301</x>
-     <y>193</y>
+     <x>313</x>
+     <y>192</y>
     </hint>
     <hint type="destinationlabel">
-     <x>299</x>
-     <y>225</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_resetAll</sender>
-   <signal>clicked()</signal>
-   <receiver>pushButton_defRadius</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>286</x>
-     <y>339</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>312</x>
-     <y>369</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_resetAll</sender>
-   <signal>clicked()</signal>
-   <receiver>pushButton_defSmoothiter</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>286</x>
-     <y>339</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>312</x>
-     <y>397</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>spinBox_radius</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>horizontalSlider_radius</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>280</x>
-     <y>370</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>224</x>
-     <y>367</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>spinBox_edge</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>horizontalSlider_edge</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>280</x>
-     <y>426</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>224</x>
-     <y>423</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>spinBox_smoothiter</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>horizontalSlider_smoothiter</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>280</x>
-     <y>398</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>224</x>
-     <y>395</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>horizontalSlider_radius</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>spinBox_radius</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>224</x>
-     <y>367</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>280</x>
-     <y>370</y>
+     <x>313</x>
+     <y>224</y>
     </hint>
    </hints>
   </connection>
@@ -1520,8 +1054,8 @@ QPushButton:disabled {
    <slot>setCurrentIndex(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>186</x>
-     <y>12</y>
+     <x>330</x>
+     <y>22</y>
     </hint>
     <hint type="destinationlabel">
      <x>193</x>
@@ -1540,8 +1074,8 @@ QPushButton:disabled {
      <y>27</y>
     </hint>
     <hint type="destinationlabel">
-     <x>176</x>
-     <y>25</y>
+     <x>330</x>
+     <y>22</y>
     </hint>
    </hints>
   </connection>
@@ -1556,8 +1090,8 @@ QPushButton:disabled {
      <y>24</y>
     </hint>
     <hint type="destinationlabel">
-     <x>194</x>
-     <y>24</y>
+     <x>330</x>
+     <y>22</y>
     </hint>
    </hints>
   </connection>
