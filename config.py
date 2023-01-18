@@ -29,30 +29,28 @@ from PyQt5.QtWidgets import (
 # Default parameters for the configurator
 defaultConfigFilepath = 'default_config.json'
 
-def readConfigFile(configFilepath=defaultConfigFilepath):
+def readConfigFile(configFilepath):
     # Read the configuration file
-    # If it doesn't exist or invalid, use the default config file
-    if (not configFilepath or not os.path.isfile(configFilepath)):
-        filepath = defaultConfigFilepath
-
-    else:
-        filepath = configFilepath
+    # If it doesn't exist or invalid, return empty dict
 
     try:
-        with open(filepath) as f:
+        if (not configFilepath or not os.path.isfile(configFilepath)):
+            raise Exception('Invalid config file')
+
+        with open(configFilepath) as f:
             config = json.load(f)
 
         if 'predictors' not in config:
             raise Exception('Invalid config file')
 
     except:
-        print(f'Error reading configuration file: {filepath}')
+        print(f'Error reading configuration file: {configFilepath}')
         return {}
 
     return config
 
 class Configurator(QVBoxLayout):
-    def __init__(self, configFilepath=defaultConfigFilepath, *args, **kargs):
+    def __init__(self, *args, **kargs):
         super(QVBoxLayout, self).__init__(*args, **kargs)
 
         # Add config file input button
@@ -87,8 +85,16 @@ class Configurator(QVBoxLayout):
         font.setWeight(75)
         self.label_configurator.setFont(font)
         self.horizontalLayout.addWidget(self.label_configurator)
+        self.pushButton_exportConfig = QPushButton()
+        self.pushButton_exportConfig.setObjectName("pushButton_exportConfig")
+        self.pushButton_exportConfig.setIcon(QIcon(os.path.join(os.getcwd(), 'res', 'export.png')))
+        self.pushButton_exportConfig.clicked.connect(self._exportConfig)
+        self.pushButton_exportConfig.hide()
+        self.horizontalLayout.addWidget(self.pushButton_exportConfig)
+
         self.pushButton_resetAll = self._createResetBtn()
         self.pushButton_resetAll.setObjectName("pushButton_resetAll")
+        self.pushButton_resetAll.hide()
         self.horizontalLayout.addWidget(self.pushButton_resetAll)
         self.addLayout(self.horizontalLayout)
 
@@ -96,9 +102,8 @@ class Configurator(QVBoxLayout):
         self.gridLayout = QGridLayout()
         self.addLayout(self.gridLayout)
 
-        # Initialize config
+        # config elements (QSlider, QDoubleSpinBox, etc.)
         self.configElements = {}
-        self._initConfig(configFilepath)
 
     def _initConfig(self, configFilepath=None):
         """
@@ -106,6 +111,9 @@ class Configurator(QVBoxLayout):
         """
         self.configFilepath = configFilepath
         self.defaultConfig = readConfigFile(configFilepath)
+        if not self.defaultConfig:
+            return
+
         self.config = copy.deepcopy(self.defaultConfig)
         self.configElements.clear()
 
@@ -116,6 +124,8 @@ class Configurator(QVBoxLayout):
             self.gridLayout.takeAt(i).widget().deleteLater()
 
         self._updateConfigUI()
+        self.pushButton_resetAll.show()
+        self.pushButton_exportConfig.show()
 
     def _updateConfigUI(self):
         """
@@ -191,6 +201,15 @@ class Configurator(QVBoxLayout):
         """
         configFilePath = getfilePath()
         self._initConfig(configFilepath=configFilePath)
+
+    def _exportConfig(self):
+        """
+        exportConfig exports the current config to a json file.
+        """
+        self._updateConfig()
+        # Writing to sample.json
+        with open(self.configFilepath, "w") as outfile:
+            outfile.write(json.dumps(self.config, indent=4))
 
     def getConfig(self):
         """

@@ -22,7 +22,7 @@ from PyQt5.QtWidgets import (
     QMessageBox,
     QApplication,
     QSlider,
-    QWidget,
+    QSpacerItem
 )
 
 ## VTK
@@ -84,6 +84,8 @@ class MainWindow(QMainWindow):
 
         self.configurator = Configurator()
         self.verticalLayout_2.addLayout(self.configurator)
+        spacer = QSpacerItem(20, 20, hPolicy=QSizePolicy.Minimum, vPolicy=QSizePolicy.Expanding)
+        self.verticalLayout_2.addItem(spacer)
 
     def getfilePath(self, ):
         """
