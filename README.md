@@ -11,6 +11,7 @@ Simba works on macOS Mojave 10.14 or higher.
 * [Usage](#usage)
 * [Motivation](#motivation)
 * [Missing Functions](#missing-functions)
+* [Behind the Name](#behind-the-name)
 
 ## Features
 * Native UI
@@ -45,14 +46,15 @@ a time, and set custom configuration for individual meshes
 
 When fitting a body shape model to a noisy point cloud to measure body dimensions, the fitting method needs to decide the most feasible target location for each vertex of the model, which is computationally quite expensive. This program generates noise-free body shape meshes from noisy point cloud data, which greatly reduce fitting time (from 10 sec to 1 sec) and increase the accuracy of the body shape and dimension predictions.
 
-#### Behind the Name: Simba
-The Program was named after my family's dog, Simba.
-![IMG_1527](https://user-images.githubusercontent.com/71047773/216377039-41719516-c755-4697-86c3-c81b365a5b27.JPG)
-
-
 #### References
 Park, B. K., Lumeng, J. C., Lumeng, C. N., Ebert, S. M., & Reed, M. P. (2014). Child body shape measurement using depth cameras and a statistical body shape model. Ergonomics, 58(2), 301–309. https://doi.org/10.1080/00140139.2014.965754
 
 ## Missing functions
 - Help page
 - Help icons
+
+
+## Behind the Name
+The Program was named after my family's dog, Simba.
+
+<img width="250" src="https://user-images.githubusercontent.com/71047773/216377039-41719516-c755-4697-86c3-c81b365a5b27.JPG" />
