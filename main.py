@@ -67,6 +67,8 @@ class MainWindow(QMainWindow):
         # self.plt.add_callback("key press", self.onKeyPress)
         # self.plt.add_callback('MouseMove', self.onMouseMove)
         self.plt.show(zoom=True)                  # <--- show the vedo rendering
+
+        """ Initialize the instance variables """
         self.initialize()
 
     def initialize(self):
@@ -82,6 +84,7 @@ class MainWindow(QMainWindow):
         self.sumProcessTime = .0 # process time for each scan
         self.numProcessed = 0 # total number of processed scans
 
+        ''' Initialize the Configurator '''
         self.configurator = Configurator()
         self.verticalLayout_2.addLayout(self.configurator)
         spacer = QSpacerItem(20, 20, hPolicy=QSizePolicy.Minimum, vPolicy=QSizePolicy.Expanding)

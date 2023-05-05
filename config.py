@@ -104,6 +104,8 @@ class Configurator(QVBoxLayout):
 
         # config elements (QSlider, QDoubleSpinBox, etc.)
         self.configElements = {}
+        # optional: default config file path
+        self._initConfig(defaultConfigFilepath)
 
     def _initConfig(self, configFilepath=None):
         """
