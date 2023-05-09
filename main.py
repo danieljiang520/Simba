@@ -14,13 +14,15 @@ from utils import *
 # %% project-specific imports
 ## Qt
 from PyQt5.uic import loadUi
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, QCoreApplication
+from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (
     QMainWindow,
     QFileDialog,
     QListWidgetItem,
     QMessageBox,
     QApplication,
+    QPushButton,
     QSlider,
     QSpacerItem
 )
@@ -84,11 +86,37 @@ class MainWindow(QMainWindow):
         self.sumProcessTime = .0 # process time for each scan
         self.numProcessed = 0 # total number of processed scans
 
-        ''' Initialize the Configurator '''
-        self.configurator = Configurator()
+        ''' Initialize the Configurator for SAS page'''
+        self.configurator = Configurator(r'config/default_config.json')
         self.verticalLayout_2.addLayout(self.configurator)
         spacer = QSpacerItem(20, 20, hPolicy=QSizePolicy.Minimum, vPolicy=QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacer)
+
+        ''' Initialize the Configurator for Regression Model page '''
+        self.configurator = Configurator(r'config/regression_config_test1.json')
+        self.verticalLayout_4.addLayout(self.configurator)
+        self.pushButton_startRegression = QPushButton(self.stackWidgetPanel_regression)
+        font = QFont()
+        font.setFamily("Arial")
+        font.setPointSize(18)
+        font.setBold(False)
+        font.setWeight(50)
+        self.pushButton_startRegression.setFont(font)
+        self.pushButton_startRegression.setStyleSheet("QPushButton::hover{\n"
+                                                      "    background-color: rgb(41, 83, 144);\n"
+                                                      "}\n"
+                                                      "QPushButton{\n"
+                                                      "    background-color: rgb(49, 110, 186);\n"
+                                                      "}\n"
+                                                      "QPushButton:disabled {\n"
+                                                      "    background-color: rgb(121, 121, 121);\n"
+                                                      "}")
+        self.pushButton_startRegression.setText(QCoreApplication.translate("MainWindow", "START"))
+        self.pushButton_startRegression.setObjectName("pushButton_startRegression")
+        self.verticalLayout_4.addWidget(self.pushButton_startRegression)
+        spacer = QSpacerItem(20, 20, hPolicy=QSizePolicy.Minimum, vPolicy=QSizePolicy.Expanding)
+        self.verticalLayout_4.addItem(spacer)
+
 
     def getfilePath(self, ):
         """

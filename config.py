@@ -27,10 +27,10 @@ from PyQt5.QtWidgets import (
 )
 
 # Default parameters for the configurator
-defaultConfigFilepath = 'default_config.json'
+# defaultConfigFilepath = r'default_config.json'
 
 class Configurator(QVBoxLayout):
-    def __init__(self, *args, **kargs):
+    def __init__(self, defaultConfigFilepath: str=None, *args, **kargs):
         super(QVBoxLayout, self).__init__(*args, **kargs)
 
         # Add config file input button
@@ -85,7 +85,8 @@ class Configurator(QVBoxLayout):
         # config elements (QSlider, QDoubleSpinBox, etc.)
         self.configElements = {}
         # optional: default config file path
-        self._initConfig(defaultConfigFilepath)
+        if defaultConfigFilepath is not None:
+            self._initConfig(defaultConfigFilepath)
 
     def _initConfig(self, configFilepath=None):
         """

@@ -13,16 +13,15 @@ class HermesRegression:
     HermesRegression is a class that contains all the regression methods for the Hermes project
     """
 
-
     def __init__(self):
         # load the statistical model matrices
-        # Question: are these matrices the same for all Hermes seats (change to class variables?)
-        self.A_f_int_high = np.genfromtxt('A_f_int_high.txt', delimiter=',')
-        self.A_f_int_mid = np.genfromtxt('A_f_int_mid.txt', delimiter=',')
-        self.A_f_int_low = np.genfromtxt('A_f_int_low.txt', delimiter=',')
-        self.A_m_int_high = np.genfromtxt('A_m_int_high.txt', delimiter=',')
-        self.A_m_int_mid = np.genfromtxt('A_m_int_mid.txt', delimiter=',')
-        self.A_m_int_low = np.genfromtxt('A_m_int_low.txt', delimiter=',')
+        # Question: are these matrices the same for all Hermes seats?
+        A_f_int_high = np.genfromtxt(r'regression/A_f_int_high.txt', delimiter=',')
+        A_f_int_mid = np.genfromtxt(r'regression/A_f_int_mid.txt', delimiter=',')
+        A_f_int_low = np.genfromtxt(r'regression/A_f_int_low.txt', delimiter=',')
+        A_m_int_high = np.genfromtxt(r'regression/A_m_int_high.txt', delimiter=',')
+        A_m_int_mid = np.genfromtxt(r'regression/A_m_int_mid.txt', delimiter=',')
+        A_m_int_low = np.genfromtxt(r'regression/A_m_int_low.txt', delimiter=',')
 
     def generateHBM(self, config):
         """

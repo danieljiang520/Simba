@@ -1,0 +1,25 @@
+{
+	"header": ["specification file for PCAR model"],
+	"model_definition": "bh_male.json",
+	"geometry_contains": ["vertices", "landmarks"],
+	"pcs": "eigenvectors.tsv",
+	"mean_geometry_vector": "mean_geometry_vector.tsv",
+	"mean_landmarks": "mean_landmarks.tsv",
+	"mean_shape": "mean_shape.obj",
+	"pc_scores": "pc_scores.tsv",
+	"regression_coefficients": "score_coefficients.tsv",
+	"resampled_scoress": "scores_resampled.tsv",
+	"predictors": {
+		"stature": [1600, 1750, 2000],
+		"bmi": [18, 25, 40],
+		"shs": [0.48, 0.52, 0.56],
+		"age": [20, 30, 40],
+		"neck": [40, 50, 60],
+		"waist": [0.5, 0.6, 0.7],
+		"hip": [0.6, 0.7, 0.8],
+		"forearm": [0.3, 0.4, 0.5],
+		"thigh": [5, 5, 20],
+		"biceps": [10, 20, 50]
+	},
+	"comment": "just a comment"
+}
