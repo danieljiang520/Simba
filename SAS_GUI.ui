@@ -211,6 +211,21 @@ QPushButton{
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
+          <widget class="QPushButton" name="pushButton">
+           <property name="styleSheet">
+            <string notr="true">QPushButton::hover{
+	background-color: rgb(18, 18, 18);
+}
+QPushButton{
+	background-color: rgb(51, 51, 51);
+}</string>
+           </property>
+           <property name="text">
+            <string>PushButton</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="pushButton_mainPage">
            <property name="font">
             <font>
@@ -301,7 +316,10 @@ QPushButton{
          <property name="currentIndex">
           <number>0</number>
          </property>
-         <widget class="QWidget" name="panel_left_page_1">
+         <widget class="QWidget" name="stackWidgetPanel_regression">
+          <layout class="QVBoxLayout" name="verticalLayout_4"/>
+         </widget>
+         <widget class="QWidget" name="stackWidgetPanel_SAS">
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
             <widget class="QPushButton" name="pushButton_inputDir">
@@ -519,7 +537,7 @@ QPushButton:disabled {
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="panel_left_page2">
+         <widget class="QWidget" name="stackWidgetPanel_mergeSeat">
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
             <widget class="QPushButton" name="pushButton_seatInputDir">

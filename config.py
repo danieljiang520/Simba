@@ -29,26 +29,6 @@ from PyQt5.QtWidgets import (
 # Default parameters for the configurator
 defaultConfigFilepath = 'default_config.json'
 
-def readConfigFile(configFilepath):
-    # Read the configuration file
-    # If it doesn't exist or invalid, return empty dict
-
-    try:
-        if (not configFilepath or not os.path.isfile(configFilepath)):
-            raise Exception('Invalid config file')
-
-        with open(configFilepath) as f:
-            config = json.load(f)
-
-        if 'predictors' not in config:
-            raise Exception('Invalid config file')
-
-    except:
-        print(f'Error reading configuration file: {configFilepath}')
-        return {}
-
-    return config
-
 class Configurator(QVBoxLayout):
     def __init__(self, *args, **kargs):
         super(QVBoxLayout, self).__init__(*args, **kargs)
