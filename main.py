@@ -44,6 +44,10 @@ class MainWindow(QMainWindow):
         loadUi("SAS_GUI.ui", self)
 
         """ Connections for all elements in Mainwindow """
+        self.pushButton_regressionPage.clicked.connect(self.switchToRegressionPage)
+        self.pushButton_SASPage.clicked.connect(self.switchToSASPage)
+        self.pushButton_seatPage.clicked.connect(self.switchToSeatPage)
+
         self.pushButton_inputDir.clicked.connect(self.getInputFilePath)
         self.textBrowser_inputDir.textChanged.connect(self.textBrowserDir_state_changed)
         self.checkBox_saveToSameDir.stateChanged.connect(self.checkBoxDir_state_changed)
@@ -163,6 +167,15 @@ class MainWindow(QMainWindow):
         """
         self.seatInputPath = self.getScanFilePath()
         self.textBrowser_seatInputDir.setText(self.seatInputPath)
+
+    def switchToRegressionPage(self):
+        self.stackedWidget.setCurrentIndex(0)
+
+    def switchToSASPage(self):
+        self.stackedWidget.setCurrentIndex(1)
+
+    def switchToSeatPage(self):
+        self.stackedWidget.setCurrentIndex(2)
 
     def checkBoxDir_state_changed(self):
         if self.checkBox_saveToSameDir.isChecked():

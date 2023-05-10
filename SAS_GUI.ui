@@ -211,7 +211,7 @@ QPushButton{
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="pushButton_regressionPage">
            <property name="font">
             <font>
              <family>Arial</family>
@@ -239,7 +239,7 @@ QPushButton{
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_mainPage">
+          <widget class="QPushButton" name="pushButton_SASPage">
            <property name="font">
             <font>
              <family>Arial</family>
@@ -282,46 +282,6 @@ QPushButton{
            </property>
           </widget>
          </item>
-         <item>
-          <widget class="QSpinBox" name="spinBox">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>1</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hermes Regression Model&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="whatsThis">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="frame">
-            <bool>false</bool>
-           </property>
-           <property name="buttonSymbols">
-            <enum>QAbstractSpinBox::NoButtons</enum>
-           </property>
-           <property name="maximum">
-            <number>2</number>
-           </property>
-          </widget>
-         </item>
         </layout>
        </item>
        <item>
@@ -333,7 +293,7 @@ QPushButton{
           </sizepolicy>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="stackWidgetPanel_regression">
           <layout class="QVBoxLayout" name="verticalLayout_4"/>
@@ -556,7 +516,7 @@ QPushButton:disabled {
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="stackWidgetPanel_mergeSeat">
+         <widget class="QWidget" name="stackWidgetPanel_seat">
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
             <widget class="QPushButton" name="pushButton_seatInputDir">
@@ -1060,59 +1020,11 @@ QPushButton:disabled {
    <hints>
     <hint type="sourcelabel">
      <x>313</x>
-     <y>271</y>
+     <y>270</y>
     </hint>
     <hint type="destinationlabel">
      <x>313</x>
-     <y>303</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>spinBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>stackedWidget</receiver>
-   <slot>setCurrentIndex(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>321</x>
-     <y>22</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>193</x>
-     <y>48</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_mainPage</sender>
-   <signal>clicked()</signal>
-   <receiver>spinBox</receiver>
-   <slot>stepDown()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>224</x>
-     <y>34</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>321</x>
-     <y>22</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_seatPage</sender>
-   <signal>clicked()</signal>
-   <receiver>spinBox</receiver>
-   <slot>stepUp()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>260</x>
-     <y>24</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>321</x>
-     <y>22</y>
+     <y>302</y>
     </hint>
    </hints>
   </connection>
