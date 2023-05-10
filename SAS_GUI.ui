@@ -211,7 +211,35 @@ QPushButton{
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
-          <widget class="QPushButton" name="pushButton_mainPage">
+          <widget class="QPushButton" name="pushButton_regressionPage">
+           <property name="font">
+            <font>
+             <family>Arial</family>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hermes Regression Model&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton::hover{
+	background-color: rgb(18, 18, 18);
+}
+QPushButton{
+	background-color: rgb(51, 51, 51);
+}</string>
+           </property>
+           <property name="text">
+            <string>Regression</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_SASPage">
            <property name="font">
             <font>
              <family>Arial</family>
@@ -228,7 +256,7 @@ QPushButton{
 }</string>
            </property>
            <property name="text">
-            <string>Main</string>
+            <string>SAS</string>
            </property>
           </widget>
          </item>
@@ -254,40 +282,6 @@ QPushButton{
            </property>
           </widget>
          </item>
-         <item>
-          <widget class="QSpinBox" name="spinBox">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>1</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="frame">
-            <bool>false</bool>
-           </property>
-           <property name="buttonSymbols">
-            <enum>QAbstractSpinBox::NoButtons</enum>
-           </property>
-           <property name="maximum">
-            <number>1</number>
-           </property>
-          </widget>
-         </item>
         </layout>
        </item>
        <item>
@@ -301,7 +295,10 @@ QPushButton{
          <property name="currentIndex">
           <number>0</number>
          </property>
-         <widget class="QWidget" name="panel_left_page_1">
+         <widget class="QWidget" name="stackWidgetPanel_regression">
+          <layout class="QVBoxLayout" name="verticalLayout_4"/>
+         </widget>
+         <widget class="QWidget" name="stackWidgetPanel_SAS">
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
             <widget class="QPushButton" name="pushButton_inputDir">
@@ -519,7 +516,7 @@ QPushButton:disabled {
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="panel_left_page2">
+         <widget class="QWidget" name="stackWidgetPanel_seat">
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
             <widget class="QPushButton" name="pushButton_seatInputDir">
@@ -1023,59 +1020,11 @@ QPushButton:disabled {
    <hints>
     <hint type="sourcelabel">
      <x>313</x>
-     <y>192</y>
+     <y>270</y>
     </hint>
     <hint type="destinationlabel">
      <x>313</x>
-     <y>224</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>spinBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>stackedWidget</receiver>
-   <slot>setCurrentIndex(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>330</x>
-     <y>22</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>193</x>
-     <y>48</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_mainPage</sender>
-   <signal>clicked()</signal>
-   <receiver>spinBox</receiver>
-   <slot>stepDown()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>121</x>
-     <y>27</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>330</x>
-     <y>22</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_seatPage</sender>
-   <signal>clicked()</signal>
-   <receiver>spinBox</receiver>
-   <slot>stepUp()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>260</x>
-     <y>24</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>330</x>
-     <y>22</y>
+     <y>302</y>
     </hint>
    </hints>
   </connection>

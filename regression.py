@@ -4,95 +4,103 @@
 
 # %% standard lib imports
 import numpy as np
+import os
+
+# %% first party imports
+from utils import *
+
 
 class HermesRegression:
     """
     HermesRegression is a class that contains all the regression methods for the Hermes project
     """
 
-
-    def __init__(self):
+    def __init__(self, folderPath: str=r'regression'):
         # load the statistical model matrices
-        # Question: are these matrices the same for all Hermes seats (change to class variables?)
-        self.A_f_int_high = np.genfromtxt('A_f_int_high.txt', delimiter=',')
-        self.A_f_int_mid = np.genfromtxt('A_f_int_mid.txt', delimiter=',')
-        self.A_f_int_low = np.genfromtxt('A_f_int_low.txt', delimiter=',')
-        self.A_m_int_high = np.genfromtxt('A_m_int_high.txt', delimiter=',')
-        self.A_m_int_mid = np.genfromtxt('A_m_int_mid.txt', delimiter=',')
-        self.A_m_int_low = np.genfromtxt('A_m_int_low.txt', delimiter=',')
+        # Question: are these matrices the same for all Hermes seats?
+        self.A_f_int_high = np.genfromtxt(os.path.join(folderPath, r'A_f_int_high.txt'), delimiter=',')
+        self.A_f_int_mid = np.genfromtxt(os.path.join(folderPath, r'A_f_int_mid.txt'), delimiter=',')
+        self.A_f_int_low = np.genfromtxt(os.path.join(folderPath, r'A_f_int_low.txt'), delimiter=',')
+        self.A_m_int_high = np.genfromtxt(os.path.join(folderPath, r'A_m_int_high.txt'), delimiter=',')
+        self.A_m_int_mid = np.genfromtxt(os.path.join(folderPath, r'A_m_int_mid.txt'), delimiter=',')
+        self.A_m_int_low = np.genfromtxt(os.path.join(folderPath, r'A_m_int_low.txt'), delimiter=',')
+
+        self.folderPath = folderPath
+        # read nid for k file output
+        self.nids = np.genfromtxt(os.path.join(folderPath, r'disp_nid.txt')).astype(int)
 
     def generateHBM(self, config):
         """
-        generateHBM generates the HBM for a given configuration
+        generateHBM generates the HBM for a given predictorsuration
         """
 
+        # i_data = struct('stature',1700, 'age',45, 'BMI',25.6, 'sex',1, 'shs',0.52);
+        predictors = config["predictors"]
+
         # generate statsitically predicted HBMs
-        if config.gender==1:
+        if predictors["sex"][1] == 1:
             # male subjects
-            if config.BMI < 22:
-                predicted_model1 = np.multiply(self.A_m_int_low,
-                                               [1, config.stature, config.BMI, config.age, config.shs,
-                                                config.stature*config.BMI, config.stature*config.age,
-                                                config.BMI*config.age])
-            elif config.BMI >= 22 and config.BMI < 33:
-                predicted_model1 = np.multiply(self.A_m_int_mid,
-                                               [1, config.stature,config.BMI, config.age, config.shs,
-                                                config.stature*config.BMI, config.stature*config.age,
-                                                config.BMI*config.age])
+            if predictors["bmi"][1] < 22:
+                predicted_model1 = np.dot(self.A_m_int_low,
+                                               np.array([1, predictors["stature"][1], predictors["bmi"][1], predictors["age"][1], predictors["shs"][1],
+                                                predictors["stature"][1]*predictors["bmi"][1], predictors["stature"][1]*predictors["age"][1],
+                                                predictors["bmi"][1]*predictors["age"][1]]).T).T
+            elif predictors["bmi"][1] >= 22 and predictors["bmi"][1] < 33:
+                predicted_model1 = np.dot(self.A_m_int_mid,
+                                               np.array([1, predictors["stature"][1],predictors["bmi"][1], predictors["age"][1], predictors["shs"][1],
+                                                predictors["stature"][1]*predictors["bmi"][1], predictors["stature"][1]*predictors["age"][1],
+                                                predictors["bmi"][1]*predictors["age"][1]]).T).T
             else:
-                predicted_model1 = np.multiply(self.A_m_int_high,
-                                               [1,config.stature, config.BMI, config.age, config.shs,
-                                                config.stature*config.BMI, config.stature*config.age,
-                                                config.BMI*config.age])
+                predicted_model1 = np.dot(self.A_m_int_high,
+                                               np.array([1, predictors["stature"][1], predictors["bmi"][1], predictors["age"][1], predictors["shs"][1],
+                                                predictors["stature"][1]*predictors["bmi"][1], predictors["stature"][1]*predictors["age"][1],
+                                                predictors["bmi"][1]*predictors["age"][1]]).T).T
         else:
             # female subjects
-            if config.BMI < 22:
-                predicted_model1 = np.multiply(self.A_f_int_low,
-                                               [1,config.stature, config.BMI, config.age, config.shs,
-                                                config.stature*config.BMI, config.stature*config.age,
-                                                config.BMI*config.age])
-            elif config.BMI >= 22 and config.BMI < 33:
-                predicted_model1 = np.multiply(self.A_f_int_mid,
-                                               [1, config.stature, config.BMI, config.age, config.shs,
-                                                config.stature*config.BMI, config.stature*config.age,
-                                                config.BMI*config.age])
+            if predictors["bmi"][1] < 22:
+                predicted_model1 = np.dot(self.A_f_int_low,
+                                               np.array([1, predictors["stature"][1], predictors["bmi"][1], predictors["age"][1], predictors["shs"][1],
+                                                predictors["stature"][1]*predictors["bmi"][1], predictors["stature"][1]*predictors["age"][1],
+                                                predictors["bmi"][1]*predictors["age"][1]]).T).T
+            elif predictors["bmi"][1] >= 22 and predictors["bmi"][1] < 33:
+                predicted_model1 = np.dot(self.A_f_int_mid,
+                                               np.array([1, predictors["stature"][1], predictors["bmi"][1], predictors["age"][1], predictors["shs"][1],
+                                                predictors["stature"][1]*predictors["bmi"][1], predictors["stature"][1]*predictors["age"][1],
+                                                predictors["bmi"][1]*predictors["age"][1]]).T).T
             else:
-                predicted_model1 = np.multiply(self.A_f_int_high,
-                                               [1,config.stature,config.BMI,config.age,config.shs,
-                                                config.stature*config.BMI,config.stature*config.age,
-                                                config.BMI*config.age])
+                predicted_model1 = np.dot(self.A_f_int_high,
+                                               np.array([1,predictors["stature"][1],predictors["bmi"][1],predictors["age"][1],predictors["shs"][1],
+                                                predictors["stature"][1]*predictors["bmi"][1],predictors["stature"][1]*predictors["age"][1],
+                                                predictors["bmi"][1]*predictors["age"][1]]).T).T
 
-        # reshape matrix to x,y,z format
-        predicted_model1 = reshape(predicted_model1, 3, [])
-        # read nid for k file output
-        nid = readmatrix('disp_nid.txt');
+        # reshape matrix to x,y,z format (i.e. 3 columns)
+        predicted_model1 = predicted_model1.reshape((-1, 3))
+
         # write the result to HERMES_main.k
-        WriteKfile_includes('HERMES_main.k', ["hermes_includes.k"], [nid, predicted_model1], '');
+        self.WriteKfile_includes('HERMES_main.k', ["hermes_includes.k"], predicted_model1, self.folderPath)
 
 
     def WriteKfile_includes(self, ExpFileName, IncludeFileNames, ExpData, FolderName):
-        [m,n]=size(ExpData);
-        NodeNumber=1:m;
-        if n==3
-        ExpData=[NodeNumber' ExpData] ;
-        end
-        FolderName = char(FolderName);
-        OutPutDirectory = FolderName;
-        if ~isdir(OutPutDirectory)
-            mkdir(OutPutDirectory);
-        end
-        if ~isempty(OutPutDirectory)
-            fid1 = fopen([OutPutDirectory '/' ExpFileName],'w');
-        else
-            fid1 = fopen(ExpFileName,'w');
-        end
-        fprintf(fid1,'%s\n','*KEYWORD');
-        fprintf(fid1,'%s\n','*NODE');
-        fprintf(fid1,'%d,%f,%f,%f\n',ExpData');
+        print(f"Writing {ExpFileName} file to {FolderName}...")
 
-        for i = 1 : length(IncludeFileNames)
-            fprintf(fid1,'%s\n','*INCLUDE');
-            fprintf(fid1,'%s\n',IncludeFileNames(i));
-        end
-        fprintf(fid1,'%s\n','*END');
-        fclose(fid1);
+        # Replace the lines in the file
+        filename = os.path.join(FolderName, ExpFileName)
+        with open(filename, "w") as f:
+            print('*KEYWORD', end="\n", file=f)
+            print('*NODE', end="\n", file=f)
+
+            for i, node in enumerate(ExpData):
+                print(f"{self.nids[i]}, {node[0]}, {node[1]}, {node[2]}", end="\n", file=f)
+
+            for includeFileName in IncludeFileNames:
+                print('*INCLUDE', end="\n", file=f)
+                print(includeFileName, end="\n", file=f)
+
+            print('*END', end="\n", file=f)
+
+
+## test
+# config = readConfigFile('config/regression_config_test1.json')
+# print(config)
+# regression = HermesRegression()
+# regression.generateHBM(config)

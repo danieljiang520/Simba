@@ -23,34 +23,12 @@ from PyQt5.QtWidgets import (
     QSlider,
     QDoubleSpinBox,
     QAbstractSpinBox,
-    QSizePolicy,
+    QSizePolicy
 )
 
-# Default parameters for the configurator
-defaultConfigFilepath = 'default_config.json'
-
-def readConfigFile(configFilepath):
-    # Read the configuration file
-    # If it doesn't exist or invalid, return empty dict
-
-    try:
-        if (not configFilepath or not os.path.isfile(configFilepath)):
-            raise Exception('Invalid config file')
-
-        with open(configFilepath) as f:
-            config = json.load(f)
-
-        if 'predictors' not in config:
-            raise Exception('Invalid config file')
-
-    except:
-        print(f'Error reading configuration file: {configFilepath}')
-        return {}
-
-    return config
 
 class Configurator(QVBoxLayout):
-    def __init__(self, *args, **kargs):
+    def __init__(self, defaultConfigFilepath: str=None, *args, **kargs):
         super(QVBoxLayout, self).__init__(*args, **kargs)
 
         # Add config file input button
@@ -88,6 +66,8 @@ class Configurator(QVBoxLayout):
         self.pushButton_exportConfig = QPushButton()
         self.pushButton_exportConfig.setObjectName("pushButton_exportConfig")
         self.pushButton_exportConfig.setIcon(QIcon(os.path.join(os.getcwd(), 'res', 'export.png')))
+        self.pushButton_exportConfig.setToolTip('Save Current Config')
+        self.pushButton_exportConfig.setStyleSheet('QPushButton::hover{\n	background-color: rgb(18, 18, 18);\n}\nQPushButton{\n	background-color: rgb(51, 51, 51);\n}')
         self.pushButton_exportConfig.clicked.connect(self._exportConfig)
         self.pushButton_exportConfig.hide()
         self.horizontalLayout.addWidget(self.pushButton_exportConfig)
@@ -105,7 +85,8 @@ class Configurator(QVBoxLayout):
         # config elements (QSlider, QDoubleSpinBox, etc.)
         self.configElements = {}
         # optional: default config file path
-        self._initConfig(defaultConfigFilepath)
+        if defaultConfigFilepath is not None:
+            self._initConfig(defaultConfigFilepath)
 
     def _initConfig(self, configFilepath=None):
         """
@@ -195,6 +176,8 @@ class Configurator(QVBoxLayout):
         """
         resetButton = QPushButton()
         resetButton.setIcon(QIcon(os.path.join(os.getcwd(), 'res', 'back.png')))
+        resetButton.setToolTip('Reset to Default')
+        resetButton.setStyleSheet('QPushButton::hover{\n	background-color: rgb(18, 18, 18);\n}\nQPushButton{\n	background-color: rgb(51, 51, 51);\n}')
         return resetButton
 
     def _getConfigFilePath(self):

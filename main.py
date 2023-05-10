@@ -10,17 +10,21 @@ import sys, time, os
 from job import *
 from config import *
 from utils import *
+from regression import *
+from k_parser import *
 
 # %% project-specific imports
 ## Qt
 from PyQt5.uic import loadUi
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, QCoreApplication
+from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (
     QMainWindow,
     QFileDialog,
     QListWidgetItem,
     QMessageBox,
     QApplication,
+    QPushButton,
     QSlider,
     QSpacerItem
 )
@@ -40,6 +44,10 @@ class MainWindow(QMainWindow):
         loadUi("SAS_GUI.ui", self)
 
         """ Connections for all elements in Mainwindow """
+        self.pushButton_regressionPage.clicked.connect(self.switchToRegressionPage)
+        self.pushButton_SASPage.clicked.connect(self.switchToSASPage)
+        self.pushButton_seatPage.clicked.connect(self.switchToSeatPage)
+
         self.pushButton_inputDir.clicked.connect(self.getInputFilePath)
         self.textBrowser_inputDir.textChanged.connect(self.textBrowserDir_state_changed)
         self.checkBox_saveToSameDir.stateChanged.connect(self.checkBoxDir_state_changed)
@@ -84,11 +92,41 @@ class MainWindow(QMainWindow):
         self.sumProcessTime = .0 # process time for each scan
         self.numProcessed = 0 # total number of processed scans
 
-        ''' Initialize the Configurator '''
-        self.configurator = Configurator()
-        self.verticalLayout_2.addLayout(self.configurator)
+        ''' Initialize the Configurator for SAS page'''
+        self.configurator_SAS = Configurator(r'config/default_config.json')
+        self.verticalLayout_2.addLayout(self.configurator_SAS)
         spacer = QSpacerItem(20, 20, hPolicy=QSizePolicy.Minimum, vPolicy=QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacer)
+
+        ''' Initialize the Configurator for Regression Model page '''
+        self.configurator_regression = Configurator(r'config/regression_config_test1.json')
+        self.verticalLayout_4.addLayout(self.configurator_regression)
+        self.pushButton_startRegression = QPushButton(self.stackWidgetPanel_regression)
+        font = QFont()
+        font.setFamily("Arial")
+        font.setPointSize(18)
+        font.setBold(False)
+        font.setWeight(50)
+        self.pushButton_startRegression.setFont(font)
+        self.pushButton_startRegression.setStyleSheet("QPushButton::hover{\n"
+                                                      "    background-color: rgb(41, 83, 144);\n"
+                                                      "}\n"
+                                                      "QPushButton{\n"
+                                                      "    background-color: rgb(49, 110, 186);\n"
+                                                      "}\n"
+                                                      "QPushButton:disabled {\n"
+                                                      "    background-color: rgb(121, 121, 121);\n"
+                                                      "}")
+        self.pushButton_startRegression.setText(QCoreApplication.translate("MainWindow", "START"))
+        self.pushButton_startRegression.setObjectName("pushButton_startRegression")
+        self.pushButton_startRegression.clicked.connect(self.startRegression)
+        self.verticalLayout_4.addWidget(self.pushButton_startRegression)
+        spacer = QSpacerItem(20, 20, hPolicy=QSizePolicy.Minimum, vPolicy=QSizePolicy.Expanding)
+        self.verticalLayout_4.addItem(spacer)
+
+        # initialize the regression model when start is pressed
+        self.regression = None
+
 
     def getfilePath(self, ):
         """
@@ -130,6 +168,15 @@ class MainWindow(QMainWindow):
         self.seatInputPath = self.getScanFilePath()
         self.textBrowser_seatInputDir.setText(self.seatInputPath)
 
+    def switchToRegressionPage(self):
+        self.stackedWidget.setCurrentIndex(0)
+
+    def switchToSASPage(self):
+        self.stackedWidget.setCurrentIndex(1)
+
+    def switchToSeatPage(self):
+        self.stackedWidget.setCurrentIndex(2)
+
     def checkBoxDir_state_changed(self):
         if self.checkBox_saveToSameDir.isChecked():
             self.outputPath = self.inputPath
@@ -170,7 +217,7 @@ class MainWindow(QMainWindow):
         if(self.indPath < len(self.projectPaths)):
             tic = time.perf_counter()
             projectPath = self.projectPaths[self.indPath]
-            config = self.configurator.getConfig()
+            config = self.configurator_SAS.getConfig()
             print(config)
 
             self.resultPath = self.processProject(projectPath, config)
@@ -209,6 +256,9 @@ class MainWindow(QMainWindow):
         fileBaseName = os.path.basename(filename)
         m = Mesh(filename)
         m.name = fileBaseName
+        self.display(m)
+
+    def display(self, m):
         self.plt.clear()
         self.plt.show(m, zoom=True)                 # <--- show the vedo rendering
 
@@ -273,6 +323,28 @@ class MainWindow(QMainWindow):
         mergeJob = MergeJob(self.resultPath, self.seatInputPath,self.resultPath)
         mergeJob.start()
         self.displayResult(mergeJob.getResultPath())
+
+    def startRegression(self):
+        print("Starting regression...")
+        config = self.configurator_regression.getConfig()
+
+        if self.regression is None:
+            print("Creating new regression instance...")
+            self.regression = HermesRegression()
+
+        print("Generating regression model...")
+        self.regression.generateHBM(config)
+
+        # reading k files
+        allFilepaths = getAllKFilesInFolder("regression")
+        print(f"Reading {len(allFilepaths)} files: {allFilepaths}")
+        k_parser = DynaModel(args=allFilepaths)
+        verts, faces = k_parser.getAllPartsData(verbose=True)
+
+        print("Displaying object with vedo...")
+        m = Mesh([verts, faces])
+        self.display(m)
+        print("Done!")
 
 
 class DoubleSlider(QSlider):

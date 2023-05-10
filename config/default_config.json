@@ -1,0 +1,7 @@
+{
+	"predictors": {
+		"radius": [0, 400, 1000],
+		"smoothiter": [0, 2, 10],
+		"edgeLength": [0, 15, 40]
+	}
+}

@@ -4,7 +4,7 @@
 # -----------------------------------------------------------
 
 # %% standard lib imports
-import os
+import os, json
 
 # %% project-specific imports
 ## Qt
@@ -29,3 +29,23 @@ def getfilePath():
         """
         w = QWidget()
         return QFileDialog.getOpenFileName(w, 'Open File', os.getcwd(), "json file (*.json)")[0]
+
+def readConfigFile(configFilepath):
+    # Read the configuration file
+    # If it doesn't exist or invalid, return empty dict
+
+    try:
+        if (not configFilepath or not os.path.isfile(configFilepath)):
+            raise Exception('Invalid config file')
+
+        with open(configFilepath) as f:
+            config = json.load(f)
+
+        if 'predictors' not in config:
+            raise Exception('Invalid config file')
+
+    except:
+        print(f'Error reading configuration file: {configFilepath}')
+        return {}
+
+    return config
