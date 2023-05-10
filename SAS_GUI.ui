@@ -293,7 +293,7 @@ QPushButton{
           </sizepolicy>
          </property>
          <property name="currentIndex">
-          <number>2</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="stackWidgetPanel_regression">
           <layout class="QVBoxLayout" name="verticalLayout_4"/>
