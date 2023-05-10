@@ -343,7 +343,6 @@ class MainWindow(QMainWindow):
 
         print("Displaying object with vedo...")
         m = Mesh([verts, faces])
-        m.show()
         self.display(m)
         print("Done!")
 
