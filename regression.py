@@ -4,13 +4,11 @@
 
 # %% standard lib imports
 import numpy as np
-import os, re
+import os
 
 # %% first party imports
 from utils import *
 
-def regressionToK(coord):
-    print(f"")
 
 class HermesRegression:
     """
@@ -77,13 +75,13 @@ class HermesRegression:
 
         # reshape matrix to x,y,z format (i.e. 3 columns)
         predicted_model1 = predicted_model1.reshape((-1, 3))
-        print(predicted_model1.shape)
 
         # write the result to HERMES_main.k
         self.WriteKfile_includes('HERMES_main.k', ["hermes_includes.k"], predicted_model1, self.folderPath)
 
 
     def WriteKfile_includes(self, ExpFileName, IncludeFileNames, ExpData, FolderName):
+        print(f"Writing {ExpFileName} file to {FolderName}...")
 
         # Replace the lines in the file
         filename = os.path.join(FolderName, ExpFileName)
@@ -101,7 +99,7 @@ class HermesRegression:
             print('*END', end="\n", file=f)
 
 
-
+## test
 # config = readConfigFile('config/regression_config_test1.json')
 # print(config)
 # regression = HermesRegression()

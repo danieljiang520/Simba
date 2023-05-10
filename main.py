@@ -312,16 +312,19 @@ class MainWindow(QMainWindow):
         self.displayResult(mergeJob.getResultPath())
 
     def startRegression(self):
-        print("Starting Regression...")
+        print("Starting regression...")
         config = self.configurator_regression.getConfig()
 
         if self.regression is None:
+            print("Creating new regression instance...")
             self.regression = HermesRegression()
+
+        print("Generating regression model...")
         self.regression.generateHBM(config)
 
         # reading k files
         allFilepaths = getAllKFilesInFolder("regression")
-        print(allFilepaths)
+        print(f"Reading {len(allFilepaths)} files: {allFilepaths}")
         k_parser = DynaModel(args=allFilepaths)
         verts, faces = k_parser.getAllPartsData(verbose=True)
 

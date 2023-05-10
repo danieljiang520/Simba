@@ -23,12 +23,9 @@ from PyQt5.QtWidgets import (
     QSlider,
     QDoubleSpinBox,
     QAbstractSpinBox,
-    QSizePolicy,
-    QMessageBox
+    QSizePolicy
 )
 
-# Default parameters for the configurator
-# defaultConfigFilepath = r'default_config.json'
 
 class Configurator(QVBoxLayout):
     def __init__(self, defaultConfigFilepath: str=None, *args, **kargs):
