@@ -24,6 +24,7 @@ from PyQt5.QtWidgets import (
     QDoubleSpinBox,
     QAbstractSpinBox,
     QSizePolicy,
+    QMessageBox
 )
 
 # Default parameters for the configurator
@@ -68,6 +69,8 @@ class Configurator(QVBoxLayout):
         self.pushButton_exportConfig = QPushButton()
         self.pushButton_exportConfig.setObjectName("pushButton_exportConfig")
         self.pushButton_exportConfig.setIcon(QIcon(os.path.join(os.getcwd(), 'res', 'export.png')))
+        self.pushButton_exportConfig.setToolTip('Save Current Config')
+        self.pushButton_exportConfig.setStyleSheet('QPushButton::hover{\n	background-color: rgb(18, 18, 18);\n}\nQPushButton{\n	background-color: rgb(51, 51, 51);\n}')
         self.pushButton_exportConfig.clicked.connect(self._exportConfig)
         self.pushButton_exportConfig.hide()
         self.horizontalLayout.addWidget(self.pushButton_exportConfig)
@@ -176,6 +179,8 @@ class Configurator(QVBoxLayout):
         """
         resetButton = QPushButton()
         resetButton.setIcon(QIcon(os.path.join(os.getcwd(), 'res', 'back.png')))
+        resetButton.setToolTip('Reset to Default')
+        resetButton.setStyleSheet('QPushButton::hover{\n	background-color: rgb(18, 18, 18);\n}\nQPushButton{\n	background-color: rgb(51, 51, 51);\n}')
         return resetButton
 
     def _getConfigFilePath(self):

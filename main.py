@@ -10,6 +10,8 @@ import sys, time, os
 from job import *
 from config import *
 from utils import *
+from regression import *
+from k_parser import *
 
 # %% project-specific imports
 ## Qt
@@ -87,14 +89,14 @@ class MainWindow(QMainWindow):
         self.numProcessed = 0 # total number of processed scans
 
         ''' Initialize the Configurator for SAS page'''
-        self.configurator = Configurator(r'config/default_config.json')
-        self.verticalLayout_2.addLayout(self.configurator)
+        self.configurator_SAS = Configurator(r'config/default_config.json')
+        self.verticalLayout_2.addLayout(self.configurator_SAS)
         spacer = QSpacerItem(20, 20, hPolicy=QSizePolicy.Minimum, vPolicy=QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacer)
 
         ''' Initialize the Configurator for Regression Model page '''
-        self.configurator = Configurator(r'config/regression_config_test1.json')
-        self.verticalLayout_4.addLayout(self.configurator)
+        self.configurator_regression = Configurator(r'config/regression_config_test1.json')
+        self.verticalLayout_4.addLayout(self.configurator_regression)
         self.pushButton_startRegression = QPushButton(self.stackWidgetPanel_regression)
         font = QFont()
         font.setFamily("Arial")
@@ -113,9 +115,13 @@ class MainWindow(QMainWindow):
                                                       "}")
         self.pushButton_startRegression.setText(QCoreApplication.translate("MainWindow", "START"))
         self.pushButton_startRegression.setObjectName("pushButton_startRegression")
+        self.pushButton_startRegression.clicked.connect(self.startRegression)
         self.verticalLayout_4.addWidget(self.pushButton_startRegression)
         spacer = QSpacerItem(20, 20, hPolicy=QSizePolicy.Minimum, vPolicy=QSizePolicy.Expanding)
         self.verticalLayout_4.addItem(spacer)
+
+        # initialize the regression model when start is pressed
+        self.regression = None
 
 
     def getfilePath(self, ):
@@ -198,7 +204,7 @@ class MainWindow(QMainWindow):
         if(self.indPath < len(self.projectPaths)):
             tic = time.perf_counter()
             projectPath = self.projectPaths[self.indPath]
-            config = self.configurator.getConfig()
+            config = self.configurator_SAS.getConfig()
             print(config)
 
             self.resultPath = self.processProject(projectPath, config)
@@ -237,6 +243,9 @@ class MainWindow(QMainWindow):
         fileBaseName = os.path.basename(filename)
         m = Mesh(filename)
         m.name = fileBaseName
+        self.display(m)
+
+    def display(self, m):
         self.plt.clear()
         self.plt.show(m, zoom=True)                 # <--- show the vedo rendering
 
@@ -301,6 +310,26 @@ class MainWindow(QMainWindow):
         mergeJob = MergeJob(self.resultPath, self.seatInputPath,self.resultPath)
         mergeJob.start()
         self.displayResult(mergeJob.getResultPath())
+
+    def startRegression(self):
+        print("Starting Regression...")
+        config = self.configurator_regression.getConfig()
+
+        if self.regression is None:
+            self.regression = HermesRegression()
+        self.regression.generateHBM(config)
+
+        # reading k files
+        allFilepaths = getAllKFilesInFolder("regression")
+        print(allFilepaths)
+        k_parser = DynaModel(args=allFilepaths)
+        verts, faces = k_parser.getAllPartsData(verbose=True)
+
+        print("Displaying object with vedo...")
+        m = Mesh([verts, faces])
+        m.show()
+        self.display(m)
+        print("Done!")
 
 
 class DoubleSlider(QSlider):

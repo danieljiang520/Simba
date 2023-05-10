@@ -4,24 +4,32 @@
 
 # %% standard lib imports
 import numpy as np
+import os, re
 
 # %% first party imports
 from utils import *
+
+def regressionToK(coord):
+    print(f"")
 
 class HermesRegression:
     """
     HermesRegression is a class that contains all the regression methods for the Hermes project
     """
 
-    def __init__(self):
+    def __init__(self, folderPath: str=r'regression'):
         # load the statistical model matrices
         # Question: are these matrices the same for all Hermes seats?
-        A_f_int_high = np.genfromtxt(r'regression/A_f_int_high.txt', delimiter=',')
-        A_f_int_mid = np.genfromtxt(r'regression/A_f_int_mid.txt', delimiter=',')
-        A_f_int_low = np.genfromtxt(r'regression/A_f_int_low.txt', delimiter=',')
-        A_m_int_high = np.genfromtxt(r'regression/A_m_int_high.txt', delimiter=',')
-        A_m_int_mid = np.genfromtxt(r'regression/A_m_int_mid.txt', delimiter=',')
-        A_m_int_low = np.genfromtxt(r'regression/A_m_int_low.txt', delimiter=',')
+        self.A_f_int_high = np.genfromtxt(os.path.join(folderPath, r'A_f_int_high.txt'), delimiter=',')
+        self.A_f_int_mid = np.genfromtxt(os.path.join(folderPath, r'A_f_int_mid.txt'), delimiter=',')
+        self.A_f_int_low = np.genfromtxt(os.path.join(folderPath, r'A_f_int_low.txt'), delimiter=',')
+        self.A_m_int_high = np.genfromtxt(os.path.join(folderPath, r'A_m_int_high.txt'), delimiter=',')
+        self.A_m_int_mid = np.genfromtxt(os.path.join(folderPath, r'A_m_int_mid.txt'), delimiter=',')
+        self.A_m_int_low = np.genfromtxt(os.path.join(folderPath, r'A_m_int_low.txt'), delimiter=',')
+
+        self.folderPath = folderPath
+        # read nid for k file output
+        self.nids = np.genfromtxt(os.path.join(folderPath, r'disp_nid.txt')).astype(int)
 
     def generateHBM(self, config):
         """
@@ -67,43 +75,34 @@ class HermesRegression:
                                                 predictors["stature"][1]*predictors["bmi"][1],predictors["stature"][1]*predictors["age"][1],
                                                 predictors["bmi"][1]*predictors["age"][1]]).T).T
 
-        # reshape matrix to x,y,z format
+        # reshape matrix to x,y,z format (i.e. 3 columns)
         predicted_model1 = predicted_model1.reshape((-1, 3))
         print(predicted_model1.shape)
-        # # read nid for k file output
-        # nid = readmatrix('disp_nid.txt');
-        # # write the result to HERMES_main.k
-        # WriteKfile_includes('HERMES_main.k', ["hermes_includes.k"], [nid, predicted_model1], '');
+
+        # write the result to HERMES_main.k
+        self.WriteKfile_includes('HERMES_main.k', ["hermes_includes.k"], predicted_model1, self.folderPath)
 
 
-    # def WriteKfile_includes(self, ExpFileName, IncludeFileNames, ExpData, FolderName):
-    #     [m,n]=size(ExpData);
-    #     NodeNumber=1:m;
-    #     if n==3
-    #     ExpData=[NodeNumber' ExpData] ;
-    #     end
-    #     FolderName = char(FolderName);
-    #     OutPutDirectory = FolderName;
-    #     if ~isdir(OutPutDirectory)
-    #         mkdir(OutPutDirectory);
-    #     end
-    #     if ~isempty(OutPutDirectory)
-    #         fid1 = fopen([OutPutDirectory '/' ExpFileName],'w');
-    #     else
-    #         fid1 = fopen(ExpFileName,'w');
-    #     end
-    #     fprintf(fid1,'%s\n','*KEYWORD');
-    #     fprintf(fid1,'%s\n','*NODE');
-    #     fprintf(fid1,'%d,%f,%f,%f\n',ExpData');
+    def WriteKfile_includes(self, ExpFileName, IncludeFileNames, ExpData, FolderName):
 
-    #     for i = 1 : length(IncludeFileNames)
-    #         fprintf(fid1,'%s\n','*INCLUDE');
-    #         fprintf(fid1,'%s\n',IncludeFileNames(i));
-    #     end
-    #     fprintf(fid1,'%s\n','*END');
-    #     fclose(fid1);
+        # Replace the lines in the file
+        filename = os.path.join(FolderName, ExpFileName)
+        with open(filename, "w") as f:
+            print('*KEYWORD', end="\n", file=f)
+            print('*NODE', end="\n", file=f)
+
+            for i, node in enumerate(ExpData):
+                print(f"{self.nids[i]}, {node[0]}, {node[1]}, {node[2]}", end="\n", file=f)
+
+            for includeFileName in IncludeFileNames:
+                print('*INCLUDE', end="\n", file=f)
+                print(includeFileName, end="\n", file=f)
+
+            print('*END', end="\n", file=f)
 
 
-regression = HermesRegression()
-config = readConfigFile('regression_config_test1.json')
-regression.generateHBM(config)
+
+# config = readConfigFile('config/regression_config_test1.json')
+# print(config)
+# regression = HermesRegression()
+# regression.generateHBM(config)

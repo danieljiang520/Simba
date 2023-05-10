@@ -219,6 +219,12 @@ QPushButton{
              <bold>true</bold>
             </font>
            </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hermes Regression Model&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
            <property name="styleSheet">
             <string notr="true">QPushButton::hover{
 	background-color: rgb(18, 18, 18);
@@ -299,6 +305,12 @@ QPushButton{
              <height>0</height>
             </size>
            </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hermes Regression Model&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="whatsThis">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
            <property name="frame">
             <bool>false</bool>
            </property>
@@ -306,7 +318,7 @@ QPushButton{
             <enum>QAbstractSpinBox::NoButtons</enum>
            </property>
            <property name="maximum">
-            <number>1</number>
+            <number>2</number>
            </property>
           </widget>
          </item>

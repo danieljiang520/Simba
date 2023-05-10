@@ -46,6 +46,6 @@ def readConfigFile(configFilepath):
 
     except:
         print(f'Error reading configuration file: {configFilepath}')
-        return None
+        return {}
 
     return config
